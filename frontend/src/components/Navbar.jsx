@@ -42,7 +42,7 @@ const Navbar = () => {
                             <i className="fa-solid fa-magnifying-glass pt-3 pe-4"></i>
                             <div className='border-start'>
                                 <i className="fa-regular fa-circle-user pt-2 ps-3 pe-2 fs-2"></i>
-                                <button className="btn me-3" type="submit">Login/Sign-up</button>
+                                <button className="btn me-3 mt-0 mb-3 pt-0" type="submit">Login/Sign-up</button>
                             </div>
                         </form>
                     </div>

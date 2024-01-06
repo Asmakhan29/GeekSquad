@@ -19,12 +19,15 @@ const Navbar = () => {
                                 <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Categories
                                 </a>
-                                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a className="dropdown-item" href="#">Action</a></li>
-                                    <li><a className="dropdown-item" href="#">Another action</a></li>
-                                    <li><hr className="dropdown-divider" /></li>
-                                    <li><a className="dropdown-item" href="#">Something else here</a></li>
-                                </ul>
+                                
+                                <table className="dropdown-menu">
+                                    <th className="dropdown-item"></th>
+                                    <th className="dropdown-item"></th>
+                                    <td>cricket</td>
+                                    <td>chinese</td>
+                                    <td>football</td>
+                                    <td>italian</td>
+                                </table>
                             </li>
                             <li className="nav-item">
                                 <a className="nav-link" aria-current="page" href="#">Teach with US</a>

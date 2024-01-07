@@ -1,0 +1,17 @@
+.search-icon{
+    position: absolute;
+    right: 10px;
+}
+
+.home-space {
+    padding: 20px 190px;
+}
+
+.home-bg {
+    /* background-image: linear-gradient(rgb(239, 207, 213),#ffff,#ffff); */
+    background: linear-gradient(6deg, #ffff, rgb(247, 195, 204));
+    height: 100vh;
+    width: 100vw;
+    /* padding: 0px 80px; */
+
+}

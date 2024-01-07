@@ -6,7 +6,7 @@ import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 const Navbar = () => {
     return (
         <>
-            <header className='top'>
+            <header className='top w-full'>
                 <nav className='mx-4 flex px-4 bg-white py-4'>
                     <ul className='flex mx-auto'>
                         <li className='mx-3'>categories</li>

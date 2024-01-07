@@ -11,3 +11,7 @@
 .top {
     background-color: #ffff;
 }
+
+.gallery{
+    display: flex;
+}

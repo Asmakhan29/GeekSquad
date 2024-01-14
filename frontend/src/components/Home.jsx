@@ -15,7 +15,7 @@ const Home = () => {
             
 
 
-            <div className="">
+            <div>
                 <div className="flex flex-wrap">
                     <div className="w-full md:w-1/2 lg:w-1/3 p-4">
                         <h1 className='text-4xl font-semibold'>Find a perfect tutor for you<br /> today.</h1>

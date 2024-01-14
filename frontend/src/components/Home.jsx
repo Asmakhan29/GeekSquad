@@ -11,10 +11,6 @@ import { Pagination } from 'swiper/modules';
 const Home = () => {
     return (
         <div className='home-bg'>
-
-            
-
-
             <div>
                 <div className="flex flex-wrap">
                     <div className="w-full md:w-1/2 lg:w-1/3 p-4">

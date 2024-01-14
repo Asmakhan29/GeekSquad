@@ -8,22 +8,14 @@
 }
 
 .home-bg {
-    /* background-image: linear-gradient(rgb(239, 207, 213),#ffff,#ffff); */
     background: linear-gradient(6deg, #ffff, rgb(247, 195, 204));
     height: 100vh;
     width: 100vw;
-    /* background-repeat: no-repeat; */
-    /* padding: 0px 80px; */
-    /* padding: 20px 200px; */
-
 }
 
 #app {
     height: 100%;
 }
-
-
-
 
 .swiper {
     width: 75%;
@@ -34,8 +26,6 @@
     text-align: center;
     font-size: 18px;
     background: transparent;
-
-    /* Center slide text vertically */
     display: flex;
     justify-content: center;
     align-items: center;

@@ -1,27 +1,25 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import Navbar from './components/Navbar'
-import TermsOfUse from './components/TermsOfUse'
-import { BrowserRouter,Link, Route, Routes } from 'react-router-dom';
-import Home from './components/Home'
+import { useState } from 'react';
+import './App.css';
+import Navbar from './components/Navbar';
+import TermsOfUse from './components/TermsOfUse';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Home from './components/Home';
+import ListTutor from './components/ListTutor';
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
       <BrowserRouter>
-        <Navbar/>
-        <Home/>
-
-          <Routes>
-            <Route path='/TermsOfUse' element={ <TermsOfUse /> } />
-          </Routes>
+        <Navbar />
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/TermsOfUse' element={<TermsOfUse />} />
+          <Route path='/tutor/:category' element={<ListTutor />} />
+        </Routes>
       </BrowserRouter>
-      
-      
+
+
     </>
   )
 }

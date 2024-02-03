@@ -80,19 +80,10 @@ const Home = () => {
                 <SwiperSlide className='shrink-0'>Slide 9</SwiperSlide>
             </Swiper>
 
-            <div class="flex bg-purple-400 mx-48 my-16">
-                <div class="flex-1 w-100">
-
-                    <h2 className='text-2xl'>Become Industry Ready: <br />
-                        Journey from campus to <br />Corporate </h2>
-                </div>
-                <div class="flex-1 w-100">
-                    03
-                </div>
-            </div>
+            
 
 
-            <div class="max-w-lg mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+            <div class="max-w-lg mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl m-10">
                 <div class="md:flex">
 
                     <div class="p-2">

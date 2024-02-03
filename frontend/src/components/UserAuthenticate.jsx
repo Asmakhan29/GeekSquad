@@ -1,7 +1,43 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import React, { useRef } from 'react'
+import { Link, useNavigate } from 'react-router-dom';
 
 const UserAuthenticate = () => {
+
+  const emailRef = useRef(null);
+  const otpRef = useRef(null);
+
+  const navigate = useNavigate();
+
+  const sendOTP = async () => {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/util/sendotp`, {
+      method: 'POST',
+      body: JSON.stringify({ email: emailRef.current.value }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    console.log(res.status);
+  }
+
+  const verifyOTP = async () => {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/util/verifyotp/${emailRef.current.value}/${otpRef.current.value}`);
+    console.log(res.status);
+  }
+
+  const addUser = async () => {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/tutor/add`, {
+      method: 'POST',
+      body: JSON.stringify({ email: emailRef.current.value }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    console.log(res.status);
+    if (res.status === 200) {
+      navigate('/tutorprofile');
+    }
+  }
+
   return (
     <div>
       <div className='px-20 py-10'>
@@ -13,9 +49,7 @@ const UserAuthenticate = () => {
             <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm">  +91</span>
             <input
               type="text"
-              name="username"
-              id="username"
-              autoComplete="username"
+              ref={emailRef}
               className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
               placeholder="Enter mobile number or email address"
             />
@@ -37,6 +71,7 @@ const UserAuthenticate = () => {
           </div>
         </div>
         <button
+          onClick={sendOTP}
           type="submit"
           className="mt-5 flex w-full justify-center rounded-3xl bg-indigo-600 px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >

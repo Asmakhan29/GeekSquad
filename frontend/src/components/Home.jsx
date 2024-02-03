@@ -12,6 +12,10 @@ import { Link } from 'react-router-dom';
 const Home = () => {
     return (
         <div className='home-bg'>
+            <div className='group'>
+                <button className='group-hover:opacity-50'>nice</button>
+                <h1 className='hidden'>Content</h1>
+            </div>
             <div>
                 <div className="flex flex-wrap">
                     <div className="w-full md:w-1/2 lg:w-1/3 p-4">

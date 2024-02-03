@@ -5,6 +5,7 @@ import TermsOfUse from './components/TermsOfUse';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './components/Home';
 import ListTutor from './components/ListTutor';
+import NewNavbar from './components/NewNavbar';
 
 function App() {
 
@@ -12,6 +13,7 @@ function App() {
     <>
       <BrowserRouter>
         <Navbar />
+        <NewNavbar />
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/TermsOfUse' element={<TermsOfUse />} />

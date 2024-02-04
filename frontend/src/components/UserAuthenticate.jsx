@@ -9,6 +9,8 @@ const UserAuthenticate = () => {
   const navigate = useNavigate();
 
   const sendOTP = async () => {
+    loginUser();
+    return;
     const res = await fetch(`${import.meta.env.VITE_API_URL}/util/sendotp`, {
       method: 'POST',
       body: JSON.stringify({ email: emailRef.current.value }),
@@ -34,6 +36,16 @@ const UserAuthenticate = () => {
     });
     console.log(res.status);
     if (res.status === 200) {
+      navigate('/tutorprofile');
+    }
+  }
+
+  const loginUser = async () => {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/tutor/getbyemail/${emailRef.current.value}`);
+    console.log(res.status);
+    if (res.status === 200) {
+      const data = await res.json();
+      sessionStorage.setItem('tutor', JSON.stringify(data));
       navigate('/tutorprofile');
     }
   }

@@ -12,11 +12,18 @@
   "dependencies": {
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.1.1",
+    "@mantine/core": "^7.2.2",
+    "@mantine/dates": "^7.3.2",
+    "@mantine/dropzone": "^7.3.2",
+    "@mantine/form": "^7.2.2",
+    "@mantine/hooks": "^7.2.2",
+    "@mantine/notifications": "^7.3.2",
+    "@mantinex/mantine-logo": "^1.0.1",
     "@tabler/icons-react": "^2.46.0",
+    "clsx": "^2.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.21.1",
-    "rsuite": "^5.51.0",
     "swiper": "^11.0.5"
   },
   "devDependencies": {
@@ -29,6 +36,8 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
     "postcss": "^8.4.33",
+    "postcss-preset-mantine": "^1.13.0",
+    "postcss-simple-vars": "^7.0.1",
     "tailwindcss": "^3.4.1",
     "vite": "^5.0.8"
   }

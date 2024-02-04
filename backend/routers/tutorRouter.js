@@ -48,6 +48,17 @@ router.put("/update/:id", (req, res) => {
     });
 });
 
+router.get("/getbyemail/:email", (req, res) => {
+  Model.findOne({email: req.params.email})
+    .then((result) => {
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json(err);
+    });
+});
+
 router.delete("/delete/:id", (req, res) => {
   Model.findByIdAndDelete(req.params.id)
     .then((result) => {

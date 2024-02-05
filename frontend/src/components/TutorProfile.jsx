@@ -21,7 +21,7 @@ const TutorProfile = () => {
 
 
         <Card shadow="sm" padding="lg" radius="md" withBorder>
-          <Title order={2}>Profile</Title>
+          <Title order={2}>Onboarding</Title>
           <Badge
             size="md"
             variant="gradient"

@@ -9,6 +9,7 @@ import { MainNavbar } from './components/MainNavbar';
 import { MantineProvider, createTheme } from '@mantine/core';
 import '@mantine/core/styles.css';
 import Home from './components/Home';
+import { SnackbarProvider } from 'notistack';
 
 const theme = createTheme({
   /** Put your mantine theme override here */
@@ -19,18 +20,20 @@ function App() {
   return (
     <>
       <MantineProvider theme={theme} defaultColorScheme="light">
-        <BrowserRouter>
-          <UserProvider>
-            <MainNavbar />
-            {/* <Navbar /> */}
-            <Routes>
-              <Route path='/' element={<Home />} />
-              <Route path='/TermsOfUse' element={<TermsOfUse />} />
-              <Route path='/tutor/:category' element={<ListTutor />} />
-              <Route path='/tutorprofile' element={<TutorProfile />} />
-            </Routes>
-          </UserProvider>
-        </BrowserRouter>
+        <SnackbarProvider>
+          <BrowserRouter>
+            <UserProvider>
+              <MainNavbar />
+              {/* <Navbar /> */}
+              <Routes>
+                <Route path='/' element={<Home />} />
+                <Route path='/TermsOfUse' element={<TermsOfUse />} />
+                <Route path='/tutor/:category' element={<ListTutor />} />
+                <Route path='/tutorprofile' element={<TutorProfile />} />
+              </Routes>
+            </UserProvider>
+          </BrowserRouter>
+        </SnackbarProvider>
       </MantineProvider>
     </>
   )

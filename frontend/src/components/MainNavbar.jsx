@@ -16,6 +16,7 @@ import {
     ScrollArea,
     rem,
     useMantineTheme,
+    Modal,
 } from '@mantine/core';
 import { MantineLogo } from '@mantinex/mantine-logo';
 import { useDisclosure } from '@mantine/hooks';
@@ -29,6 +30,9 @@ import {
     IconChevronDown,
 } from '@tabler/icons-react';
 import classes from './mainNavbar.module.css';
+import UserAuthenticate from './UserAuthenticate';
+import TutorRegister from './TutorRegister';
+import TutorAuthenticate from './TutorAuthenticate';
 
 const mockdata = [
     {
@@ -67,6 +71,8 @@ export function MainNavbar() {
     const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
     const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
     const theme = useMantineTheme();
+    const [modalOpened, toggleModal] = useDisclosure(false);
+    // const [modalOpened, toggleModal] = useDisclosure(false);
 
     const links = mockdata.map((item) => (
         <UnstyledButton className={classes.subLink} key={item.title}>
@@ -88,6 +94,9 @@ export function MainNavbar() {
 
     return (
         <Box>
+            <Modal opened={modalOpened} onClose={toggleModal.close} title="Authentication">
+                <TutorAuthenticate closeModal={toggleModal.close} />
+            </Modal>
             <header className={classes.header}>
                 <Group justify="space-between" h="100%">
                     <MantineLogo size={30} />
@@ -149,7 +158,7 @@ export function MainNavbar() {
                     </Group>
 
                     <Group visibleFrom="sm">
-                        <Button variant="default">Log in</Button>
+                        <Button variant="default" onClick={toggleModal.open}>Log in</Button>
                         <Button>Sign up</Button>
                     </Group>
 
@@ -194,7 +203,7 @@ export function MainNavbar() {
                     <Divider my="sm" />
 
                     <Group justify="center" grow pb="xl" px="md">
-                        <Button variant="default">Log in</Button>
+                        <Button variant="default" onClick={toggleModal.open}>Log in</Button>
                         <Button>Sign up</Button>
                     </Group>
                 </ScrollArea>

@@ -14,9 +14,8 @@ const TutorAuthenticate = () => {
       {
         selForm === 'Login' ? <TutorLogin /> : <TutorRegister />
       }
-
     </Paper>
   )
 }
 
-export default TutorAuthenticate
+export default TutorAuthenticate;

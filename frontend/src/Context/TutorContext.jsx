@@ -7,7 +7,7 @@ export const UserProvider = ({children}) => {
   
     const navigate = useNavigate();
 
-    const [currentUser, setCurrentUser] = useState(JSON.parse(sessionStorage.getItem('user')));
+    const [currentUser, setCurrentUser] = useState(JSON.parse(sessionStorage.getItem('tutor')));
 
     const [loggedIn, setLoggedIn] = useState(currentUser !== null);
 

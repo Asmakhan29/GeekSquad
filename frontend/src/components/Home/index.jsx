@@ -59,18 +59,18 @@ const Home = () => {
                     {/* <div className={classes.inner}>
                         <div className={classes.content}> */}
                             <Grid>
-                                <Grid.Col span={{ base: 12, md: 6 }}>
+                                <Grid.Col span={{ base: 12, md: 6 }} my={'auto'}>
 
                                     <Title className={classes.title}>
                                     Find a Perfect
-                                    {' '}<Text
+                                    <Text
                                             component="span"
                                             inherit
                                             variant="gradient"
                                             gradient={{ from: 'pink', to: 'yellow' }}
                                         >
-                                            Tutor
-                                        </Text>{' '}
+                                            &nbsp;Tutor&nbsp;
+                                        </Text>
                                         for you today
                                     </Title>
 
@@ -91,7 +91,7 @@ const Home = () => {
                                     </Button>
                                 </Grid.Col>
                                 <Grid.Col span={{ base: 12, md: 6 }}>
-
+                                    <img style={{width: '100%'}} src="/hero-img.png" alt="" />
                                 </Grid.Col>
                             </Grid>
                         {/* </div>

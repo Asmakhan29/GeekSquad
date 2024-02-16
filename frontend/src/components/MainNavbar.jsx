@@ -17,6 +17,7 @@ import {
     rem,
     useMantineTheme,
     Modal,
+    Title,
 } from '@mantine/core';
 import { MantineLogo } from '@mantinex/mantine-logo';
 import { useDisclosure } from '@mantine/hooks';
@@ -99,7 +100,9 @@ export function MainNavbar() {
             </Modal>
             <header className={classes.header}>
                 <Group justify="space-between" h="100%">
-                    <MantineLogo size={30} />
+                    <Title order={1} className={classes.logo} style={{ fontSize: '1.5rem' }}>
+                        GeekSquad
+                    </Title>
 
                     <Group h="100%" gap={0} visibleFrom="sm">
                         <a href="#" className={classes.link}>

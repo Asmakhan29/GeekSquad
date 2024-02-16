@@ -11,6 +11,7 @@ import '@mantine/core/styles.css';
 import Home from './components/Home';
 import { SnackbarProvider } from 'notistack';
 import BrowseTutor from './components/BrowseTutor';
+import TutorDetails from './components/TutorDetails';
 
 const theme = createTheme({
   /** Put your mantine theme override here */
@@ -33,6 +34,7 @@ function App() {
                 <Route path='/browse/:subject' element={<BrowseTutor />} />
                 <Route path='/browse' element={<BrowseTutor />} />
                 <Route path='/tutorprofile' element={  <TutorProfile />} />
+                <Route path='/tutordetails' element={  <TutorDetails />} />
               </Routes>
             </UserProvider>
           </BrowserRouter>

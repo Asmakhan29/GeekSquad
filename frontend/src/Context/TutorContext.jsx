@@ -1,36 +1,36 @@
 import React, { createContext, useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
-const UserContext = createContext();
+const TutorContext = createContext();
 
-export const UserProvider = ({children}) => {
+export const TutorProvider = ({children}) => {
   
     const navigate = useNavigate();
 
-    const [currentUser, setCurrentUser] = useState(JSON.parse(sessionStorage.getItem('tutor')));
+    const [currentTutor, setCurrentTutor] = useState(JSON.parse(sessionStorage.getItem('tutor')));
 
-    const [loggedIn, setLoggedIn] = useState(currentUser !== null);
+    const [tutorLoggedIn, setTutorLoggedIn] = useState(currentTutor !== null);
 
-    const logout = () => {
+    const tutorLogout = () => {
         sessionStorage.removeItem('tutor');
-        setCurrentUser(null);
-        setLoggedIn(false);
+        setCurrentTutor(null);
+        setTutorLoggedIn(false);
         navigate('/');
     }
 
     return (
-        <UserContext.Provider value={{
-            currentUser,
-            setCurrentUser,
-            loggedIn,
-            setLoggedIn,
-            logout
+        <TutorContext.Provider value={{
+            currentTutor,
+            setCurrentTutor,
+            tutorLoggedIn,
+            setTutorLoggedIn,
+            tutorLogout
         }}>
             {children}
-        </UserContext.Provider>
+        </TutorContext.Provider>
     );
 
 }
 
-const useUserProvider = () => useContext(UserContext);
-export default UserProvider;
+const useTutorContext = () => useContext(TutorContext);
+export default useTutorContext;

@@ -2,8 +2,11 @@ import { Anchor, Button, PasswordInput, Text, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { enqueueSnackbar } from 'notistack';
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 
-const TutorLogin = () => {
+const TutorLogin = ({closeModal}) => {
+
+  const navigate = useNavigate();
 
   const form = useForm({
     initialValues: {
@@ -32,7 +35,8 @@ const TutorLogin = () => {
       const data = await res.json();
       console.log(data);
       sessionStorage.setItem('tutor', JSON.stringify(data));
-
+      navigate('/tutorprofile');
+      closeModal();
     } else {
       enqueueSnackbar('Error registering', { variant: 'error' });
     }

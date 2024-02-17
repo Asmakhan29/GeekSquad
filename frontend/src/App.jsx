@@ -12,6 +12,7 @@ import Home from './components/Home';
 import { SnackbarProvider } from 'notistack';
 import BrowseTutor from './components/BrowseTutor';
 import TutorDetails from './components/TutorDetails';
+import { TutorProvider } from './Context/TutorContext';
 
 const theme = createTheme({
   /** Put your mantine theme override here */
@@ -24,19 +25,21 @@ function App() {
       <MantineProvider theme={theme} defaultColorScheme="light">
         <SnackbarProvider>
           <BrowserRouter>
-            <UserProvider>
-              <MainNavbar />
-              {/* <Navbar /> */}
-              <Routes>
-                <Route path='/' element={<Home />} />
-                <Route path='/TermsOfUse' element={<TermsOfUse />} />
-                <Route path='/tutor/:category' element={<ListTutor />} />
-                <Route path='/browse/:subject' element={<BrowseTutor />} />
-                <Route path='/browse' element={<BrowseTutor />} />
-                <Route path='/tutorprofile' element={  <TutorProfile />} />
-                <Route path='/tutordetails' element={  <TutorDetails />} />
-              </Routes>
-            </UserProvider>
+            <TutorProvider>
+              <UserProvider>
+                <MainNavbar />
+                {/* <Navbar /> */}
+                <Routes>
+                  <Route path='/' element={<Home />} />
+                  <Route path='/TermsOfUse' element={<TermsOfUse />} />
+                  <Route path='/tutor/:category' element={<ListTutor />} />
+                  <Route path='/browse/:subject' element={<BrowseTutor />} />
+                  <Route path='/browse' element={<BrowseTutor />} />
+                  <Route path='/tutorprofile' element={<TutorProfile />} />
+                  <Route path='/tutordetails' element={<TutorDetails />} />
+                </Routes>
+              </UserProvider>
+            </TutorProvider>
           </BrowserRouter>
         </SnackbarProvider>
       </MantineProvider>

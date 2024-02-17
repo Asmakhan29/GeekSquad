@@ -34,6 +34,7 @@ import classes from './mainNavbar.module.css';
 import UserAuthenticate from './UserAuthenticate';
 import TutorRegister from './TutorRegister';
 import TutorAuthenticate from './TutorAuthenticate';
+import useTutorContext from '../Context/TutorContext';
 
 const mockdata = [
     {
@@ -73,6 +74,9 @@ export function MainNavbar() {
     const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
     const theme = useMantineTheme();
     const [modalOpened, toggleModal] = useDisclosure(false);
+
+    const { tutorLoggedIn } = useTutorContext();
+
     // const [modalOpened, toggleModal] = useDisclosure(false);
 
     const links = mockdata.map((item) => (
@@ -159,11 +163,14 @@ export function MainNavbar() {
                             Academy
                         </a>
                     </Group>
-
-                    <Group visibleFrom="sm">
-                        <Button variant="default" onClick={toggleModal.open}>Log in</Button>
-                        <Button>Sign up</Button>
-                    </Group>
+                    {
+                        !tutorLoggedIn && (
+                            <Group visibleFrom="sm">
+                                <Button variant="default" onClick={toggleModal.open}>Tutor</Button>
+                                <Button>Sign up</Button>
+                            </Group>
+                        )
+                    }
 
                     <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
                 </Group>

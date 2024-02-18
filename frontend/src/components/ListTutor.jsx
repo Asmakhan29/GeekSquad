@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { categoryData } from '../config';
 import { IconAntennaBars5, IconBrandWhatsapp, IconMessage, IconPhone, IconStar } from '@tabler/icons-react';
 
+
 const ListTutor = () => {
 
   const { category } = useParams();

@@ -1,4 +1,4 @@
-import { ActionIcon, Card, Checkbox, Container, Divider, Grid, Input, TextInput, Title, rem } from '@mantine/core';
+import { ActionIcon, Card, Checkbox, Container, Divider, Grid, Input, Stack, TextInput, Title, rem } from '@mantine/core';
 import React, { useEffect, useState } from 'react'
 import TutorCard from './TutorCard';
 import { IconSearch } from '@tabler/icons-react';
@@ -59,8 +59,55 @@ const BrowseTutor = () => {
                                 label="Online"
                             />
                             <Divider my={10} />
-                            <Input label="City" placeholder="Enter your Address" />
-                            <Title order={4} mb={5}>Availability</Title>
+                            <Input mb={10} label="City" placeholder="Enter your Address" />
+                            <Stack>
+                                <Checkbox
+                                    defaultChecked
+                                    label="Teacher's Studio"
+                                />
+                                <Checkbox
+                                    defaultChecked
+                                    label="Student's Home"
+                                />
+                            </Stack>
+                            <Title order={4} my={10}>Availability</Title>
+                            <ActionIcon.Group>
+                                <ActionIcon variant="default" size="lg" aria-label="Sunday">
+                                    S
+                                </ActionIcon>
+                                <ActionIcon variant="default" size="lg" aria-label="Monday">
+                                    M
+                                </ActionIcon>
+
+                                <ActionIcon variant="filled" size="lg" aria-label="Tuesday">
+                                    T
+                                </ActionIcon>
+
+                                <ActionIcon variant="default" size="lg" aria-label="Wednesday">
+                                    W
+                                </ActionIcon>
+
+                                <ActionIcon variant="filled" size="lg" aria-label="Thursday">
+                                    T
+                                </ActionIcon>
+
+                                <ActionIcon variant="default" size="lg" aria-label="Friday">
+                                    F
+                                </ActionIcon>
+
+                                <ActionIcon variant="default" size="lg" aria-label="Saturday">
+                                    S
+                                </ActionIcon>
+                            </ActionIcon.Group>
+                            <ActionIcon.Group>
+                                <ActionIcon variant="default" size="lg" aria-label="Sunday">
+                                    6-9 am
+                                </ActionIcon>
+                                <ActionIcon variant="default" size="lg" aria-label="Monday">
+                                    M
+                                </ActionIcon>
+
+                            </ActionIcon.Group>
                         </Card>
                     </Grid.Col>
                     <Grid.Col span={{ md: 9 }}>

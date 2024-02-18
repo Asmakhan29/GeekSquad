@@ -1,7 +1,7 @@
 
 import './App.css';
 import TermsOfUse from './components/TermsOfUse';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import ListTutor from './components/ListTutor';
 import TutorProfile from './components/TutorProfile';
 import UserProvider from './Context/UserContext';
@@ -30,7 +30,8 @@ function App() {
                 <MainNavbar />
                 {/* <Navbar /> */}
                 <Routes>
-                  <Route path='/' element={<Home />} />
+                  <Route path='/' element={<Navigate to="/home" />} />
+                  <Route path='/home' element={<Home />} />
                   <Route path='/TermsOfUse' element={<TermsOfUse />} />
                   <Route path='/tutor/:category' element={<ListTutor />} />
                   <Route path='/browse/:subject' element={<BrowseTutor />} />

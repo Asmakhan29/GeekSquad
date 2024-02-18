@@ -35,26 +35,27 @@ import UserAuthenticate from './UserAuthenticate';
 import TutorRegister from './TutorRegister';
 import TutorAuthenticate from './TutorAuthenticate';
 import useTutorContext from '../Context/TutorContext';
+import { NavLink } from 'react-router-dom';
 
 const mockdata = [
     {
         icon: IconCode,
-        title: 'Open source',
+        title: 'Maths',
         description: 'This Pokémon’s cry is very loud and distracting',
     },
     {
         icon: IconCoin,
-        title: 'Free for everyone',
+        title: 'Algebra',
         description: 'The fluid of Smeargle’s tail secretions changes',
     },
     {
         icon: IconBook,
-        title: 'Documentation',
+        title: 'Calculas',
         description: 'Yanma is capable of seeing 360 degrees without',
     },
     {
         icon: IconFingerprint,
-        title: 'Security',
+        title: 'Geometry',
         description: 'The shell’s rounded shape and the grooves on its.',
     },
     {
@@ -109,9 +110,9 @@ export function MainNavbar() {
                     </Title>
 
                     <Group h="100%" gap={0} visibleFrom="sm">
-                        <a href="#" className={classes.link}>
+                        <NavLink to="/" className={classes.link}>
                             Home
-                        </a>
+                        </NavLink>
                         <HoverCard width={600} position="bottom" radius="md" shadow="md" withinPortal>
                             <HoverCard.Target>
                                 <a href="#" className={classes.link}>

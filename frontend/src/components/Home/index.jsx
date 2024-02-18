@@ -85,9 +85,9 @@ const Home = () => {
                                         className={classes.control}
                                         mt={40}
                                         component={Link}
-                                        to="/signup"
+                                        to="/browse"
                                     >
-                                        Get started
+                                        Find Tutor
                                     </Button>
                                 </Grid.Col>
                                 <Grid.Col span={{ base: 12, md: 6 }}>

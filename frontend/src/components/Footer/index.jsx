@@ -7,28 +7,28 @@ const data = [
   {
     title: 'About',
     links: [
-      { label: 'Features', link: '#' },
-      { label: 'Pricing', link: '#' },
-      { label: 'Support', link: '#' },
-      { label: 'Forums', link: '#' },
+      { label: 'Contact', link: '#' },
+      // { label: 'Pricing', link: '#' },
+      // { label: 'Support', link: '#' },
+      // { label: 'Forums', link: '#' },
     ],
   },
   {
-    title: 'Project',
+    title: 'Legal',
     links: [
-      { label: 'Contribute', link: '#' },
-      { label: 'Media assets', link: '#' },
-      { label: 'Changelog', link: '#' },
-      { label: 'Releases', link: '#' },
+      { label: 'Terms of Use', link: '#' },
+      { label: 'Privacy', link: '#' },
+      // { label: 'Changelog', link: '#' },
+      // { label: 'Releases', link: '#' },
     ],
   },
   {
-    title: 'Community',
+    title: 'Help Center',
     links: [
-      { label: 'Join Discord', link: '#' },
-      { label: 'Follow on Twitter', link: '#' },
-      { label: 'Email newsletter', link: '#' },
-      { label: 'GitHub discussions', link: '#' },
+      { label: 'Support Center', link: '#' },
+      { label: 'Report a Concern', link: '#' },
+      // { label: 'Email newsletter', link: '#' },
+      // { label: 'GitHub discussions', link: '#' },
     ],
   },
 ];
@@ -59,16 +59,16 @@ export function Footer() {
       <Container className={classes.inner}>
         <div className={classes.logo}>
           {/* <MantineLogo size={30} /> */}
-          <h2>Credit Card Application</h2>
+          <h2>Geek Squad</h2>
           <Text size="xs" c="dimmed" className={classes.description}>
-            Build fully functional accessible web applications faster than ever
+            Find tutor fast and effectively.
           </Text>
         </div>
         <div className={classes.groups}>{groups}</div>
       </Container>
       <Container className={classes.afterFooter}>
         <Text c="dimmed" size="sm">
-          © 2024 Credit Card Application. All rights reserved
+          © Geek Squad
         </Text>
 
         <Group gap={0} className={classes.social} justify="flex-end" wrap="nowrap">

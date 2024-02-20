@@ -71,12 +71,10 @@ const Home = () => {
                                         >
                                             &nbsp;Tutor&nbsp;
                                         </Text>
-                                        for you today
+                                        for you today.
                                     </Title>
 
-                                    <Text className={classes.description} mt={30}>
-                                        Apply for a credit card with ease. We have simplified the process for you. Just fill in the details and you are good to go.
-                                    </Text>
+                                    
 
                                     <Button
                                         variant="gradient"

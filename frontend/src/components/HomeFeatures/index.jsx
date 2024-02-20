@@ -22,15 +22,15 @@ const mockdata = [
     icon: IconUserCheck,
   },
   {
-    title: 'Fill in the Details',
+    title: 'Search Tutor',
     description:
-      'Fill all the details required for the application. The more details you provide, the better the chances of approval',
+      'Filter to find a tutor by bio, subject category, price, review rating and more.',
     icon: IconForms,
   },
   {
-    title: 'Apply for Credit Card',
+    title: 'Connect',
     description:
-      "Apply for the credit card you want. We'll let you know if you are eligible for the card or not",
+      "Chat with tutors to see if they meet your needs, then arrange a lesson!",
     icon: IconCreditCard,
   },
 ];
@@ -63,11 +63,11 @@ export function HomeFeatures() {
         </Group> */}
 
       <Title order={2} className={classes.title} ta="center" mt="sm">
-        Apply for Credit Card in 3 Easy Steps
+      Perfect tutor for your needs
       </Title>
 
       <Text c="dimmed" className={classes.description} ta="center" mt="md">
-        Better Credit Score has better chances of Credit Card Application approfa-flip-vertical.
+      Find the perfect tutor for your needs in 3 steps. Our innovative teacher matching service connects you with qualified instructors tailored to your on-demand learning needs. Say goodbye to the hassle of searching and hello to personalized learning.
       </Text>
 
       <SimpleGrid cols={{ base: 1, md: 3 }} spacing="xl" mt={50}>

@@ -65,7 +65,7 @@ const TutorProfile = () => {
               <Button fullWidth variant="outline" color="blue">Add Subject</Button>
             </Grid.Col>
           </Grid>
-          <Divider my="md" />
+          <Divider my="md"/>
           <Grid align='flex-end' justify='space-between'>
             <Grid.Col span={{ md: 6, sm: 12 }}>
               <Stack gap="md" align="space-between" direction="column" padding="md" radius="md" shadow="sm" withBorder color="gray" size="xl" >

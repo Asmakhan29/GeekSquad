@@ -8,7 +8,7 @@
   }
   
   .description {
-    max-width: rem(600px);
+    max-width: rem(1000px);
     margin: auto;
   
     &::after {

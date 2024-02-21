@@ -41,32 +41,32 @@ const mockdata = [
     {
         icon: IconCode,
         title: 'Maths',
-        description: 'This Pokémon’s cry is very loud and distracting',
+        // description: 'This Pokémon’s cry is very loud and distracting',
     },
     {
         icon: IconCoin,
-        title: 'Algebra',
-        description: 'The fluid of Smeargle’s tail secretions changes',
+        title: 'Physics',
+        // description: 'The fluid of Smeargle’s tail secretions changes',
     },
     {
         icon: IconBook,
-        title: 'Calculas',
-        description: 'Yanma is capable of seeing 360 degrees without',
+        title: 'Chemistry',
+        // description: 'Yanma is capable of seeing 360 degrees without',
     },
     {
         icon: IconFingerprint,
-        title: 'Geometry',
-        description: 'The shell’s rounded shape and the grooves on its.',
+        title: 'Computer',
+        // description: 'The shell’s rounded shape and the grooves on its.',
     },
     {
         icon: IconChartPie3,
-        title: 'Analytics',
-        description: 'This Pokémon uses its flying ability to quickly chase',
+        title: 'Accountancy',
+        // description: 'This Pokémon uses its flying ability to quickly chase',
     },
     {
         icon: IconNotification,
         title: 'Notifications',
-        description: 'Combusken battles with the intensely hot flames it spews',
+        // description: 'Combusken battles with the intensely hot flames it spews',
     },
 ];
 
@@ -149,7 +149,8 @@ export function MainNavbar() {
                                                 Get started
                                             </Text>
                                             <Text size="xs" c="dimmed">
-                                                Their food sources have decreased, and their numbers
+                                                {/* Their food sources have decreased, and their numbers */}
+                                                Connect with tutors to grow in a single click
                                             </Text>
                                         </div>
                                         <Button variant="default">Get started</Button>

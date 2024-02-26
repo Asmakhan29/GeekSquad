@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Card, Checkbox, Container, Divider, Grid, Input, RangeSlider, Stack, TextInput, Title, rem } from '@mantine/core';
+import { ActionIcon, Button, Card, Checkbox, Container, Divider, Flex, Grid, Input, RangeSlider, Stack, TextInput, Title, rem } from '@mantine/core';
 import React, { useEffect, useState } from 'react'
 import TutorCard from './TutorCard';
 import { IconSearch } from '@tabler/icons-react';
@@ -32,6 +32,7 @@ const BrowseTutor = () => {
     const [tutorList, setTutorList] = useState([]);
     const [loading, setLoading] = useState(false);
     const [masterList, setMasterList] = useState([]);
+    const [priceRange, setPriceRange] = useState({ min: 60, max: 1000 });
 
     const fetchTutors = async () => {
         setLoading(true);
@@ -44,11 +45,15 @@ const BrowseTutor = () => {
     }
 
     useEffect(() => {
-        // fetchTutors();
+        fetchTutors();
     }, [])
 
     const displayTutors = () => {
-
+        return tutorList.map(tutor => (
+            <Grid.Col span={{ md: 4 }} key={tutor._id}>
+                <TutorCard tutorData={tutor} />
+            </Grid.Col>
+        ))
     }
 
     return (
@@ -139,7 +144,12 @@ const BrowseTutor = () => {
                             <p>Times are shown in your local timezone (UTC+05:30) Chennai, Kolkata, Mumbai, New Delhi
                             </p>
 
-                            <RangeSlider minRange={0.2} min={0} max={1} step={0.0005} defaultValue={[0.1245, 0.5535]} />
+                            <Title order={4} my={10}>Price Range</Title>
+                            <RangeSlider minRange={0.2} min={50} max={2000} step={20} defaultValue={[priceRange.min, priceRange.max]} onChange={([min, max]) => { setPriceRange({ min, max }) }} />
+                            <Flex justify="space-between">
+                                <TextInput size="sm" placeholder="Min" value={priceRange.min} onChange={v => { setPriceRange({ ...priceRange, min: v }); }} />
+                                <TextInput size="sm" placeholder="Max" value={priceRange.max} onChange={v => { setPriceRange({ ...priceRange, max: v }); }} />
+                            </Flex>
 
                             <Divider my={10} />
 
@@ -169,21 +179,7 @@ const BrowseTutor = () => {
                     </Grid.Col>
                     <Grid.Col span={{ md: 9 }}>
                         <Grid>
-                            <Grid.Col span={{ md: 4 }}>
-                                <TutorCard />
-                            </Grid.Col>
-                            <Grid.Col span={{ md: 4 }}>
-                                <TutorCard />
-                            </Grid.Col>
-                            <Grid.Col span={{ md: 4 }}>
-                                <TutorCard />
-                            </Grid.Col>
-                            <Grid.Col span={{ md: 4 }}>
-                                <TutorCard />
-                            </Grid.Col>
-                            <Grid.Col span={{ md: 4 }}>
-                                <TutorCard />
-                            </Grid.Col>
+                            {displayTutors()}
                         </Grid>
                     </Grid.Col>
                 </Grid>

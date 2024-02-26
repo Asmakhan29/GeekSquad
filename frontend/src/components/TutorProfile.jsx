@@ -75,8 +75,8 @@ const TutorProfile = () => {
     ));
 
   return (
-    <div>
-      <div className="container">
+    <div className='profile-header'>
+      <div className="container ">
         <h3>Hi, {currentUser.name}, welcome to your dashboard!</h3>
         <h5>Overview at glance</h5>
 

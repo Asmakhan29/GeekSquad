@@ -58,9 +58,9 @@ const BrowseTutor = () => {
 
     return (
         <div>
-            <div style={{ backgroundColor: '#444' }}>
+            <div className='browse-header'>
 
-                <Container size="md" my={20} py={50}>
+                <Container size="md" my={20} py={50} className='browse-container' >
                     <Title order={1} align="center" mb={20}>Find a Tutor</Title>
                     <TextInput
                         radius="xl"

@@ -75,6 +75,8 @@ export function MainNavbar() {
     const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
     const theme = useMantineTheme();
     const [modalOpened, toggleModal] = useDisclosure(false);
+    const [userModalOpened, userToggleModal] = useDisclosure(false);
+
 
     const { tutorLoggedIn } = useTutorContext();
 
@@ -100,8 +102,11 @@ export function MainNavbar() {
 
     return (
         <Box>
-            <Modal opened={modalOpened} onClose={toggleModal.close} title="Authentication">
+            <Modal opened={modalOpened} onClose={toggleModal.close}>
                 <TutorAuthenticate closeModal={toggleModal.close} />
+            </Modal>
+            <Modal opened={userModalOpened} onClose={userToggleModal.close}>
+                <UserAuthenticate closeModal={userToggleModal.close} />
             </Modal>
             <header className={classes.header}>
                 <Group justify="space-between" h="100%">
@@ -168,7 +173,7 @@ export function MainNavbar() {
                         !tutorLoggedIn && (
                             <Group visibleFrom="sm">
                                 <Button variant="default" onClick={toggleModal.open}>Tutor</Button>
-                                <Button>Sign up</Button>
+                                <Button onClick={userToggleModal.open}>Sign up</Button>
                             </Group>
                         )
                     }
@@ -215,7 +220,7 @@ export function MainNavbar() {
 
                     <Group justify="center" grow pb="xl" px="md">
                         <Button variant="default" onClick={toggleModal.open}>Log in</Button>
-                        <Button>Sign up</Button>
+                        <Button onClick={userToggleModal.open}>Sign up</Button>
                     </Group>
                 </ScrollArea>
             </Drawer>

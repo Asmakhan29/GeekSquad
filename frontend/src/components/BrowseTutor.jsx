@@ -1,8 +1,31 @@
-import { ActionIcon, Card, Checkbox, Container, Divider, Grid, Input, Stack, TextInput, Title, rem } from '@mantine/core';
+import { ActionIcon, Button, Card, Checkbox, Container, Divider, Grid, Input, RangeSlider, Stack, TextInput, Title, rem } from '@mantine/core';
 import React, { useEffect, useState } from 'react'
 import TutorCard from './TutorCard';
 import { IconSearch } from '@tabler/icons-react';
 import { IconArrowRight } from '@tabler/icons-react';
+
+const curriculamOptions = [
+    'CBSE',
+    'ICSE',
+    'CAMBINT',
+    'IB',
+    'IGCSE',
+    'State Board - AP/TS',
+    'State Board - KA',
+    'State Board - MH',
+    'State Board - TN',
+    'State Board - UP',
+    'Others'
+];
+
+const levelOptions = [
+    'Pre-Primary',
+    'Grades 1-5',
+    'Grades 6-10',
+    'Grades 11-12',
+    'UG',
+    'PG & Above'
+]
 
 const BrowseTutor = () => {
 
@@ -71,43 +94,77 @@ const BrowseTutor = () => {
                                 />
                             </Stack>
                             <Title order={4} my={10}>Availability</Title>
-                            <ActionIcon.Group>
-                                <ActionIcon variant="default" size="lg" aria-label="Sunday">
+                            <ActionIcon.Group w={'100%'} mb={10}>
+                                <ActionIcon w={'100%'} variant="default" size="lg" aria-label="Sunday">
                                     S
                                 </ActionIcon>
-                                <ActionIcon variant="default" size="lg" aria-label="Monday">
+                                <ActionIcon w={'100%'} variant="default" size="lg" aria-label="Monday">
                                     M
                                 </ActionIcon>
 
-                                <ActionIcon variant="filled" size="lg" aria-label="Tuesday">
+                                <ActionIcon w={'100%'} variant="filled" size="lg" aria-label="Tuesday">
                                     T
                                 </ActionIcon>
 
-                                <ActionIcon variant="default" size="lg" aria-label="Wednesday">
+                                <ActionIcon w={'100%'} variant="default" size="lg" aria-label="Wednesday">
                                     W
                                 </ActionIcon>
 
-                                <ActionIcon variant="filled" size="lg" aria-label="Thursday">
+                                <ActionIcon w={'100%'} variant="filled" size="lg" aria-label="Thursday">
                                     T
                                 </ActionIcon>
 
-                                <ActionIcon variant="default" size="lg" aria-label="Friday">
+                                <ActionIcon w={'100%'} variant="default" size="lg" aria-label="Friday">
                                     F
                                 </ActionIcon>
 
-                                <ActionIcon variant="default" size="lg" aria-label="Saturday">
+                                <ActionIcon w={'100%'} variant="default" size="lg" aria-label="Saturday">
                                     S
                                 </ActionIcon>
                             </ActionIcon.Group>
-                            <ActionIcon.Group>
-                                <ActionIcon variant="default" size="lg" aria-label="Sunday">
-                                    6-9 am
-                                </ActionIcon>
-                                <ActionIcon variant="default" size="lg" aria-label="Monday">
-                                    M
-                                </ActionIcon>
+                            <Button.Group w={'100%'} mb={10}>
+                                <Button w={'100%'} variant="default">6AM - 9AM</Button>
+                                <Button w={'100%'} variant="default">9AM - 12PM</Button>
+                            </Button.Group>
+                            <Button.Group w={'100%'} mb={10}>
+                                <Button w={'100%'} variant="default">12PM - 3PM</Button>
+                                <Button w={'100%'} variant="default">3PM - 6PM</Button>
+                            </Button.Group>
 
-                            </ActionIcon.Group>
+                            <Button.Group w={'100%'} mb={10}>
+                                <Button w={'100%'} variant="default">6PM - 9PM</Button>
+                                <Button w={'100%'} variant="default">9PM -12AM</Button>
+                            </Button.Group>
+
+                            <p>Times are shown in your local timezone (UTC+05:30) Chennai, Kolkata, Mumbai, New Delhi
+                            </p>
+
+                            <RangeSlider minRange={0.2} min={0} max={1} step={0.0005} defaultValue={[0.1245, 0.5535]} />
+
+                            <Divider my={10} />
+
+                            <Title order={4} my={10}>Curriculam</Title>
+                            {
+                                curriculamOptions.map((option) => {
+                                    return <Checkbox
+                                        mb={5}
+                                        defaultChecked
+                                        label={option}
+                                    />
+                                })
+                            }
+                            <Divider my={10} />
+                            <Title order={4} my={10}>Levels Taught</Title>
+                            {
+                                levelOptions.map((option) => {
+                                    return <Checkbox
+                                        mb={5}
+                                        defaultChecked
+                                        label={option}
+                                    />
+                                })
+                            }
+
                         </Card>
                     </Grid.Col>
                     <Grid.Col span={{ md: 9 }}>

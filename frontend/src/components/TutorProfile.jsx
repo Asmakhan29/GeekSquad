@@ -1,9 +1,32 @@
-import { Badge, Button, Card, Divider, Flex, Grid, Progress, Stack, Tabs, Text, Title, rem } from '@mantine/core';
+import { Badge, Box, Button, Card, CheckIcon, Combobox, Divider, Flex, Grid, Group, Pill, PillsInput, Progress, Stack, Tabs, Text, Title, rem, useCombobox } from '@mantine/core';
 import { IconSettings } from '@tabler/icons-react';
 import { IconMessageCircle, IconPhoto } from '@tabler/icons-react';
 import React, { useState } from 'react'
 
 const iconStyle = { width: rem(12), height: rem(12) };
+
+const grades = [
+  'Pre-Primary',
+  'Grades 1-5',
+  'Grades 6-10',
+  'Grades 11-12',
+  'UG',
+  'PG & Above'
+];
+
+const curriculams = [
+  'CBSE',
+  'ICSE',
+  'CAMBINT',
+  'IB',
+  'IGCSE',
+  'State Board - AP/TS',
+  'State Board - KA',
+  'State Board - MH',
+  'State Board - TN',
+  'State Board - UP',
+  'Others'
+];
 
 const TutorProfile = () => {
 
@@ -12,6 +35,44 @@ const TutorProfile = () => {
   const getProfileStatus = () => {
     return
   }
+
+  const gradeCombobox = useCombobox({
+    onDropdownClose: () => gradeCombobox.resetSelectedOption(),
+    onDropdownOpen: () => gradeCombobox.updateSelectedOptionIndex('active'),
+  });
+
+  const curriculamCombobox = useCombobox({
+    onDropdownClose: () => curriculamCombobox.resetSelectedOption(),
+    onDropdownOpen: () => curriculamCombobox.updateSelectedOptionIndex('active'),
+  });
+
+  const [gradeSearch, setGradeSearch] = useState('');
+  const [gradeValue, setGradeValue] = useState([]);
+
+  const handleValueSelect = (val) =>
+    setGradeValue((current) =>
+      current.includes(val) ? current.filter((v) => v !== val) : [...current, val]
+    );
+
+  const handleGradeValueRemove = (val) =>
+    setGradeValue((current) => current.filter((v) => v !== val));
+
+  const gradeValues = gradeValue.map((item) => (
+    <Pill key={item} withRemoveButton onRemove={() => handleGradeValueRemove(item)}>
+      {item}
+    </Pill>
+  ));
+
+  const gradeOptions = grades
+    .filter((item) => item.toLowerCase().includes(gradeSearch.trim().toLowerCase()))
+    .map((item) => (
+      <Combobox.Option value={item} key={item} active={gradeValue.includes(item)}>
+        <Group gap="sm">
+          {gradeValue.includes(item) ? <CheckIcon size={12} /> : null}
+          <span>{item}</span>
+        </Group>
+      </Combobox.Option>
+    ));
 
   return (
     <div>
@@ -65,7 +126,7 @@ const TutorProfile = () => {
               <Button fullWidth variant="outline" color="blue">Add Subject</Button>
             </Grid.Col>
           </Grid>
-          <Divider my="md"/>
+          <Divider my="md" />
           <Grid align='flex-end' justify='space-between'>
             <Grid.Col span={{ md: 6, sm: 12 }}>
               <Stack gap="md" align="space-between" direction="column" padding="md" radius="md" shadow="sm" withBorder color="gray" size="xl" >
@@ -84,13 +145,14 @@ const TutorProfile = () => {
 
         <Card mt={'lg'} shadow="sm" padding="lg" radius="md" withBorder>
           <Title order={2}>Analytics</Title>
+          <Button variant="outline" color="blue">Save Profile</Button>
           <Tabs defaultValue="gallery">
             <Tabs.List>
               <Tabs.Tab value="gallery" leftSection={<IconPhoto style={iconStyle} />}>
-                Gallery
+                Skills
               </Tabs.Tab>
-              <Tabs.Tab value="messages" leftSection={<IconMessageCircle style={iconStyle} />}>
-                Messages
+              <Tabs.Tab value="teaching" leftSection={<IconMessageCircle style={iconStyle} />}>
+                Teaching
               </Tabs.Tab>
               <Tabs.Tab value="settings" leftSection={<IconSettings style={iconStyle} />}>
                 Settings
@@ -101,8 +163,44 @@ const TutorProfile = () => {
               Gallery tab content
             </Tabs.Panel>
 
-            <Tabs.Panel value="messages">
-              Messages tab content
+            <Tabs.Panel value="teaching">
+              <Box>
+                <Title order={3}>Select Grade</Title>
+                <Combobox store={gradeCombobox} onOptionSubmit={handleValueSelect}>
+                  <Combobox.DropdownTarget>
+                    <PillsInput onClick={() => gradeCombobox.openDropdown()}>
+                      <Pill.Group>
+                        {gradeValues}
+
+                        <Combobox.EventsTarget>
+                          <PillsInput.Field
+                            onFocus={() => gradeCombobox.openDropdown()}
+                            onBlur={() => gradeCombobox.closeDropdown()}
+                            value={gradeSearch}
+                            placeholder="Search Grade"
+                            onChange={(event) => {
+                              gradeCombobox.updateSelectedOptionIndex();
+                              setGradeSearch(event.currentTarget.value);
+                            }}
+                            onKeyDown={(event) => {
+                              if (event.key === 'Backspace' && search.length === 0) {
+                                event.preventDefault();
+                                handleGradeValueRemove(value[value.length - 1]);
+                              }
+                            }}
+                          />
+                        </Combobox.EventsTarget>
+                      </Pill.Group>
+                    </PillsInput>
+                  </Combobox.DropdownTarget>
+
+                  <Combobox.Dropdown>
+                    <Combobox.Options>
+                      {gradeOptions.length > 0 ? gradeOptions : <Combobox.Empty>Nothing found...</Combobox.Empty>}
+                    </Combobox.Options>
+                  </Combobox.Dropdown>
+                </Combobox>
+              </Box>
             </Tabs.Panel>
 
             <Tabs.Panel value="settings">

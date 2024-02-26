@@ -18,6 +18,8 @@ import {
     useMantineTheme,
     Modal,
     Title,
+    Menu,
+    Avatar,
 } from '@mantine/core';
 import { MantineLogo } from '@mantinex/mantine-logo';
 import { useDisclosure } from '@mantine/hooks';
@@ -29,13 +31,23 @@ import {
     IconFingerprint,
     IconCoin,
     IconChevronDown,
+    IconHeart,
+    IconStar,
+    IconSwitchHorizontal,
+    IconPlayerPause,
+    IconTrash,
 } from '@tabler/icons-react';
 import classes from './mainNavbar.module.css';
 import UserAuthenticate from './UserAuthenticate';
 import TutorRegister from './TutorRegister';
 import TutorAuthenticate from './TutorAuthenticate';
 import useTutorContext from '../Context/TutorContext';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { IconMessage } from '@tabler/icons-react';
+import { IconSettings } from '@tabler/icons-react';
+import { IconLogout } from '@tabler/icons-react';
+import cx from 'clsx';
 
 const mockdata = [
     {
@@ -76,9 +88,13 @@ export function MainNavbar() {
     const theme = useMantineTheme();
     const [modalOpened, toggleModal] = useDisclosure(false);
     const [userModalOpened, userToggleModal] = useDisclosure(false);
+    const [userMenuOpened, setUserMenuOpened] = useState(false);
+
+    const [currentUser, setCurrentUser] = useState(JSON.parse(sessionStorage.getItem('tutor')));
 
 
     const { tutorLoggedIn } = useTutorContext();
+    const navigate = useNavigate();
 
     // const [modalOpened, toggleModal] = useDisclosure(false);
 
@@ -171,11 +187,63 @@ export function MainNavbar() {
                         </a>
                     </Group>
                     {
-                        !tutorLoggedIn && (
+                        !tutorLoggedIn ? (
                             <Group visibleFrom="sm">
                                 <Button variant="default" onClick={toggleModal.open}>Tutor</Button>
                                 <Button onClick={userToggleModal.open}>Sign up</Button>
                             </Group>
+                        ) : (
+                            <Menu
+                                width={260}
+                                position="bottom-end"
+                                transitionProps={{ transition: 'pop-top-right' }}
+                                onClose={() => setUserMenuOpened(false)}
+                                onOpen={() => setUserMenuOpened(true)}
+                                withinPortal
+                            >
+                                <Menu.Target>
+                                    <UnstyledButton
+                                        className={cx(classes.user, { [classes.userActive]: userMenuOpened })}
+                                    >
+                                        <Group gap={7}>
+                                            <Avatar src={'http://localhost:5000/' + currentUser.avatar} alt={currentUser.name} radius="xl" size={20} />
+                                            <Text fw={500} size="sm" lh={1} mr={3}>
+                                                {currentUser.name}
+                                            </Text>
+                                            <IconChevronDown style={{ width: rem(12), height: rem(12) }} stroke={1.5} />
+                                        </Group>
+                                    </UnstyledButton>
+                                </Menu.Target>
+                                <Menu.Dropdown>
+
+                                    <Menu.Label>Settings</Menu.Label>
+                                    <Menu.Item
+                                    onClick={e => navigate('/tutorprofile')}
+                                        leftSection={
+                                            <IconSettings style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+                                        }
+                                    >
+                                        Profile
+                                    </Menu.Item>
+                                    <Menu.Item
+                                        leftSection={
+                                            <IconSwitchHorizontal style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+                                        }
+                                    >
+                                        Change account
+                                    </Menu.Item>
+                                    <Menu.Item
+                                        color='red'
+                                        leftSection={
+                                            <IconLogout style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+                                        }
+                                    >
+                                        Logout
+                                    </Menu.Item>
+
+
+                                </Menu.Dropdown>
+                            </Menu>
                         )
                     }
 

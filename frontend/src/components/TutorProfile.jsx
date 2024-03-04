@@ -1,7 +1,8 @@
-import { Badge, Box, Button, Card, CheckIcon, Combobox, Divider, Flex, Grid, Group, Pill, PillsInput, Progress, Stack, Tabs, Text, Title, rem, useCombobox } from '@mantine/core';
+import { Badge, Box, Button, Card, CheckIcon, Combobox, Divider, Flex, Grid, Group, Pill, PillsInput, Progress, Stack, Tabs, Text, TextInput, Textarea, Title, rem, useCombobox } from '@mantine/core';
 import { IconSettings } from '@tabler/icons-react';
 import { IconMessageCircle, IconPhoto } from '@tabler/icons-react';
 import React, { useState } from 'react'
+import { DatePickerInput } from '@mantine/dates';
 
 const iconStyle = { width: rem(12), height: rem(12) };
 
@@ -49,16 +50,36 @@ const TutorProfile = () => {
   const [gradeSearch, setGradeSearch] = useState('');
   const [gradeValue, setGradeValue] = useState([]);
 
+  const [curriculamSearch, setCurriculamSearch] = useState('');
+  const [curriculamValue, setCurriculamValue] = useState([]);
+
   const handleValueSelect = (val) =>
     setGradeValue((current) =>
       current.includes(val) ? current.filter((v) => v !== val) : [...current, val]
     );
 
+  const handleCurriculamValueSelect = (val) =>
+
+    setCurriculamValue((current) =>
+      current.includes(val) ? current.filter((v) => v !== val) : [...current, val]
+    );
+
+
   const handleGradeValueRemove = (val) =>
     setGradeValue((current) => current.filter((v) => v !== val));
 
+  const handleCurriculamValueRemove = (val) =>
+    setCurriculamValue((current) => current.filter((v) => v !== val));
+
+
   const gradeValues = gradeValue.map((item) => (
     <Pill key={item} withRemoveButton onRemove={() => handleGradeValueRemove(item)}>
+      {item}
+    </Pill>
+  ));
+
+  const curriculamValues = curriculamValue.map((item) => (
+    <Pill key={item} withRemoveButton onRemove={() => handleCurriculamValueRemove(item)}>
       {item}
     </Pill>
   ));
@@ -73,6 +94,19 @@ const TutorProfile = () => {
         </Group>
       </Combobox.Option>
     ));
+
+  const curriculamOptions = curriculams
+    .filter((item) => item.toLowerCase().includes(curriculamSearch.trim().toLowerCase()))
+    .map((item) => (
+      <Combobox.Option value={item} key={item} active={curriculamValue.includes(item)}>
+        <Group gap="sm">
+          {curriculamValue.includes(item) ? <CheckIcon size={12} /> : null}
+          <span>{item}</span>
+        </Group>
+      </Combobox.Option>
+    ));
+
+  // const personalForm = useForm
 
   return (
     <div className='profile-header'>
@@ -148,8 +182,8 @@ const TutorProfile = () => {
           <Button variant="outline" color="blue">Save Profile</Button>
           <Tabs defaultValue="gallery">
             <Tabs.List>
-              <Tabs.Tab value="gallery" leftSection={<IconPhoto style={iconStyle} />}>
-                Skills
+              <Tabs.Tab value="personal" leftSection={<IconPhoto style={iconStyle} />}>
+                Personal Details
               </Tabs.Tab>
               <Tabs.Tab value="teaching" leftSection={<IconMessageCircle style={iconStyle} />}>
                 Teaching
@@ -159,47 +193,149 @@ const TutorProfile = () => {
               </Tabs.Tab>
             </Tabs.List>
 
-            <Tabs.Panel value="gallery">
-              Gallery tab content
+            <Tabs.Panel value="personal">
+              <Box mt={20}>
+                <Box mb={10}>
+                  <Title order={3}>Profile Picture</Title>
+                  <Flex align="center" gap="md">
+                    <IconPhoto style={iconStyle} />
+                    <Text size="sm">Upload a profile picture</Text>
+                  </Flex>
+                </Box>
+
+                <Box mb={10}>
+                  <Title order={3}>Cover Picture</Title>
+                  <Flex align="center" gap="md">
+                    <IconPhoto style={iconStyle} />
+                    <Text size="sm">Upload a cover picture</Text>
+                  </Flex>
+                </Box>
+
+                <Box mb={10}>
+                  <Title order={3}>Bio</Title>
+                  <Textarea
+                    placeholder="Bio"
+                    rows={4}
+                  />
+                </Box>
+
+                <Box mb={10}>
+                  <Title order={3}>Education</Title>
+                  <TextInput
+                    placeholder="Degree"
+                  />
+                  <Textarea
+                    placeholder="Institution Details"
+                  />
+
+                  <DatePickerInput
+                    label="Pick date"
+                    placeholder="Pick date"
+                  />
+
+                </Box>
+              </Box>
             </Tabs.Panel>
 
             <Tabs.Panel value="teaching">
-              <Box>
-                <Title order={3}>Select Grade</Title>
-                <Combobox store={gradeCombobox} onOptionSubmit={handleValueSelect}>
-                  <Combobox.DropdownTarget>
-                    <PillsInput onClick={() => gradeCombobox.openDropdown()}>
-                      <Pill.Group>
-                        {gradeValues}
+              <Box mt={20}>
+                <Box mb={10}>
+                  <Title order={3}>Public Description</Title>
+                  <Textarea
+                    placeholder="Public Description"
+                    rows={4}
+                  />
+                </Box>
+                <Box mb={10}>
+                  <Title order={3}>Select Grades Taught</Title>
+                  <Combobox store={gradeCombobox} onOptionSubmit={handleValueSelect}>
+                    <Combobox.DropdownTarget>
+                      <PillsInput onClick={() => gradeCombobox.openDropdown()}>
+                        <Pill.Group>
+                          {gradeValues}
 
-                        <Combobox.EventsTarget>
-                          <PillsInput.Field
-                            onFocus={() => gradeCombobox.openDropdown()}
-                            onBlur={() => gradeCombobox.closeDropdown()}
-                            value={gradeSearch}
-                            placeholder="Search Grade"
-                            onChange={(event) => {
-                              gradeCombobox.updateSelectedOptionIndex();
-                              setGradeSearch(event.currentTarget.value);
-                            }}
-                            onKeyDown={(event) => {
-                              if (event.key === 'Backspace' && search.length === 0) {
-                                event.preventDefault();
-                                handleGradeValueRemove(value[value.length - 1]);
-                              }
-                            }}
-                          />
-                        </Combobox.EventsTarget>
-                      </Pill.Group>
-                    </PillsInput>
-                  </Combobox.DropdownTarget>
+                          <Combobox.EventsTarget>
+                            <PillsInput.Field
+                              onFocus={() => gradeCombobox.openDropdown()}
+                              onBlur={() => gradeCombobox.closeDropdown()}
+                              value={gradeSearch}
+                              placeholder="Search Grade"
+                              onChange={(event) => {
+                                gradeCombobox.updateSelectedOptionIndex();
+                                setGradeSearch(event.currentTarget.value);
+                              }}
+                              onKeyDown={(event) => {
+                                if (event.key === 'Backspace' && search.length === 0) {
+                                  event.preventDefault();
+                                  handleGradeValueRemove(value[value.length - 1]);
+                                }
+                              }}
+                            />
+                          </Combobox.EventsTarget>
+                        </Pill.Group>
+                      </PillsInput>
+                    </Combobox.DropdownTarget>
 
-                  <Combobox.Dropdown>
-                    <Combobox.Options>
-                      {gradeOptions.length > 0 ? gradeOptions : <Combobox.Empty>Nothing found...</Combobox.Empty>}
-                    </Combobox.Options>
-                  </Combobox.Dropdown>
-                </Combobox>
+                    <Combobox.Dropdown>
+                      <Combobox.Options>
+                        {gradeOptions.length > 0 ? gradeOptions : <Combobox.Empty>Nothing found...</Combobox.Empty>}
+                      </Combobox.Options>
+                    </Combobox.Dropdown>
+                  </Combobox>
+                </Box>
+
+                <Box mt={10}>
+                  <Title order={3}>Select Curriculam</Title>
+                  <Combobox store={curriculamCombobox} onOptionSubmit={handleCurriculamValueSelect}>
+                    <Combobox.DropdownTarget>
+                      <PillsInput onClick={() => curriculamCombobox.openDropdown()}>
+                        <Pill.Group>
+                          {curriculamValues}
+
+                          <Combobox.EventsTarget>
+                            <PillsInput.Field
+                              onFocus={() => curriculamCombobox.openDropdown()}
+                              onBlur={() => curriculamCombobox.closeDropdown()}
+                              value={curriculamSearch}
+                              placeholder="Search Curriculam"
+                              onChange={(event) => {
+                                curriculamCombobox.updateSelectedOptionIndex();
+                                setCurriculamSearch(event.currentTarget.value);
+                              }}
+                              onKeyDown={(event) => {
+                                if (event.key === 'Backspace' && search.length === 0) {
+                                  event.preventDefault();
+                                  handleCurriculamValueRemove(value[value.length - 1]);
+                                }
+                              }}
+                            />
+                          </Combobox.EventsTarget>
+                        </Pill.Group>
+                      </PillsInput>
+                    </Combobox.DropdownTarget>
+
+                    <Combobox.Dropdown>
+                      <Combobox.Options>
+                        {curriculamOptions.length > 0 ? curriculamOptions : <Combobox.Empty>Nothing found...</Combobox.Empty>}
+                      </Combobox.Options>
+                    </Combobox.Dropdown>
+                  </Combobox>
+                </Box>
+
+                <Box mt={10}>
+
+                  <Title order={3}>Select Subjects Taught</Title>
+                </Box>
+                <Box mt={10}>
+
+                  <Title order={3}>Pricing per hour</Title>
+                  <TextInput
+                    placeholder="Pricing per hour"
+                    type="number"
+                  />
+
+                </Box>
+
               </Box>
             </Tabs.Panel>
 

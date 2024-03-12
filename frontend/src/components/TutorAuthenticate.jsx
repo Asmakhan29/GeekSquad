@@ -12,7 +12,7 @@ const TutorAuthenticate = ({closeModal}) => {
       </Title>
       <SegmentedControl fullWidth mb={'lg'} onChange={v => { setSelForm(v) }} color="violet" value={selForm} data={['Create Account', 'Login']} />
       {
-        selForm === 'Login' ? <TutorLogin closeModal={closeModal} /> : <TutorRegister />
+        selForm === 'Login' ? <TutorLogin closeModal={closeModal} /> : <TutorRegister setPage={setSelForm} />
       }
     </Paper>
   )

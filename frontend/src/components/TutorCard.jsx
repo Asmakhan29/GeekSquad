@@ -24,8 +24,9 @@ function TutorCard({ tutorData }) {
             <Card.Section
                 h={140}
                 style={{
-                    backgroundImage:
-                        'url(https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80)',
+                    backgroundImage: `url(${import.meta.env.VITE_API_URL}/${tutorData.cover})`,
+                    backgroundPosition:'center',
+                    backgroundSize:'cover'
                 }}
             />
             <Avatar
@@ -40,13 +41,13 @@ function TutorCard({ tutorData }) {
                 {tutorData.name}
             </Text>
             <Text ta="center" fz="sm" c="dimmed">
-                4+ years of experience
+                {tutorData.experience}+ years of experience
             </Text>
             <Text ta="center" fz="sm" c="dimmed" mt="sm">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab nihil facilis voluptatem aliquid ad eos numquam, asperiores iste sunt sed!
+                {tutorData.description}
             </Text>
             <Title ta="center" order={4} mt="md" mb="sm">
-                Price {'₹150'}/60mins
+                Price ₹{tutorData.pricing} per hour
             </Title>
             {/* <Group mt="md" justify="center" gap={30}>
                 {items}

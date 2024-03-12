@@ -35,3 +35,9 @@ input{
 .profile-header{
     background-image: linear-gradient(to top, #ffffff00, #006dac);
 }
+
+.profile-avatar-upload{
+    height: 300px;
+    object-fit: contain;
+    width: 100%;
+}

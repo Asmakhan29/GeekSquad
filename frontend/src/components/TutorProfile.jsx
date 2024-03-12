@@ -1,8 +1,10 @@
 import { Badge, Box, Button, Card, CheckIcon, Combobox, Divider, Flex, Grid, Group, Pill, PillsInput, Progress, Stack, Tabs, Text, TextInput, Textarea, Title, rem, useCombobox } from '@mantine/core';
 import { IconSettings } from '@tabler/icons-react';
 import { IconMessageCircle, IconPhoto } from '@tabler/icons-react';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { DatePickerInput } from '@mantine/dates';
+import { FileUploader } from './FileUploader';
+import { enqueueSnackbar } from 'notistack';
 
 const iconStyle = { width: rem(12), height: rem(12) };
 
@@ -33,6 +35,50 @@ const TutorProfile = () => {
 
   const [currentUser, setCurrentUser] = useState(JSON.parse(sessionStorage.getItem('tutor')));
 
+  const updateProfile = (dataToUpdate) => {
+    fetch(`${import.meta.env.VITE_API_URL}/tutor/update/${currentUser._id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(dataToUpdate)
+    }).then(res => {
+      if (res.status === 200) {
+        console.log(res.status);
+        enqueueSnackbar('Profile updated successfully', { variant: 'success' });
+        res.json()
+          .then((data) => {
+            sessionStorage.setItem('tutor', JSON.stringify(data));
+            setCurrentUser(data);
+          })
+      }
+    })
+  }
+
+  const uploadFile = (files, updateCB) => {
+    let file = files[0];
+    const fd = new FormData();
+    fd.append('myfile', file);
+    fetch(`${import.meta.env.VITE_API_URL}/util/uploadfile`, {
+      method: 'POST',
+      body: fd
+    }).then(res => {
+      if (res.status === 200) {
+        console.log('file uploaded');
+        updateCB();
+      }
+    });
+
+  }
+
+  // useEffect(() => {
+  //   if (currentUser !== null) {
+  //     const { name, email, avatar, cover, bio } = currentUser;
+  //     setTutorPersonalData({ name, email, avatar, cover, bio });
+  //   }
+  // }, []);
+
+
   const getProfileStatus = () => {
     return
   }
@@ -58,11 +104,16 @@ const TutorProfile = () => {
       current.includes(val) ? current.filter((v) => v !== val) : [...current, val]
     );
 
-  const handleCurriculamValueSelect = (val) =>
-
+  const handleCurriculamValueSelect = (val) => {
     setCurriculamValue((current) =>
       current.includes(val) ? current.filter((v) => v !== val) : [...current, val]
     );
+  }
+
+  useEffect(() => {
+    console.log(curriculamValue);
+  }, [curriculamValue])
+
 
 
   const handleGradeValueRemove = (val) =>
@@ -178,9 +229,11 @@ const TutorProfile = () => {
         </Card>
 
         <Card mt={'lg'} shadow="sm" padding="lg" radius="md" withBorder>
-          <Title order={2}>Analytics</Title>
-          <Button variant="outline" color="blue">Save Profile</Button>
-          <Tabs defaultValue="gallery">
+          <Title order={2} align="center" my="lg">Edit Your Profile</Title>
+          <Button onClick={() => {
+            updateProfile(currentUser)
+          }} variant="outline" color="blue">Save Profile</Button>
+          <Tabs defaultValue="personal">
             <Tabs.List>
               <Tabs.Tab value="personal" leftSection={<IconPhoto style={iconStyle} />}>
                 Personal Details
@@ -197,23 +250,42 @@ const TutorProfile = () => {
               <Box mt={20}>
                 <Box mb={10}>
                   <Title order={3}>Profile Picture</Title>
-                  <Flex align="center" gap="md">
-                    <IconPhoto style={iconStyle} />
-                    <Text size="sm">Upload a profile picture</Text>
-                  </Flex>
+                  <Grid>
+                    <Grid.Col span={{ md: 6, sm: 12 }}>
+                      <img className='profile-avatar-upload' src={`${import.meta.env.VITE_API_URL}/${currentUser.avatar}`} alt={currentUser.name} />
+                    </Grid.Col>
+                    <Grid.Col span={{ md: 6, sm: 12 }}>
+                      <FileUploader uploadFile={
+                        (files) => uploadFile(files, () => {
+                          updateProfile({ avatar: files[0].name });
+                        })
+                      } label={'Upload Profile Image'} />
+                    </Grid.Col>
+                  </Grid>
                 </Box>
 
                 <Box mb={10}>
                   <Title order={3}>Cover Picture</Title>
-                  <Flex align="center" gap="md">
-                    <IconPhoto style={iconStyle} />
-                    <Text size="sm">Upload a cover picture</Text>
-                  </Flex>
+                  <Grid>
+                    <Grid.Col span={{ md: 6, sm: 12 }}>
+                      <img style={{ width: '100%' }} src={`${import.meta.env.VITE_API_URL}/${currentUser.cover}`} alt={currentUser.name} />
+                    </Grid.Col>
+                    <Grid.Col span={{ md: 6, sm: 12 }}>
+                      <FileUploader uploadFile={
+                        (files) => uploadFile(files, () => {
+                          updateProfile({ cover: files[0].name });
+                        }
+                        )
+                      } label={'Upload Cover Image'} />
+                    </Grid.Col>
+                  </Grid>
                 </Box>
 
                 <Box mb={10}>
                   <Title order={3}>Bio</Title>
                   <Textarea
+                    onChange={e => setCurrentUser({ ...currentUser, bio: e.target.value })}
+                    value={currentUser.bio}
                     placeholder="Bio"
                     rows={4}
                   />
@@ -227,12 +299,6 @@ const TutorProfile = () => {
                   <Textarea
                     placeholder="Institution Details"
                   />
-
-                  <DatePickerInput
-                    label="Pick date"
-                    placeholder="Pick date"
-                  />
-
                 </Box>
               </Box>
             </Tabs.Panel>
@@ -242,9 +308,22 @@ const TutorProfile = () => {
                 <Box mb={10}>
                   <Title order={3}>Public Description</Title>
                   <Textarea
+                    onChange={e => setCurrentUser({ ...currentUser, description: e.target.value })}
+                    value={currentUser.description}
                     placeholder="Public Description"
                     rows={4}
                   />
+                </Box>
+
+                <Box mb={10}>
+                  <Title order={3}>Experience</Title>
+                  <TextInput
+                    onChange={e => setCurrentUser({ ...currentUser, experience: e.target.value })}
+                    value={currentUser.experience}
+                    placeholder="Experience"
+                    type="number"
+                  />
+
                 </Box>
                 <Box mb={10}>
                   <Title order={3}>Select Grades Taught</Title>
@@ -324,12 +403,20 @@ const TutorProfile = () => {
 
                 <Box mt={10}>
 
-                  <Title order={3}>Select Subjects Taught</Title>
+                  <Title order={3}>Select Subject Taught</Title>
+                  <TextInput
+                    onChange={e => setCurrentUser({ ...currentUser, subject: e.target.value })}
+                    value={currentUser.subject}
+                    placeholder="Subject Taught"
+                  />
+
                 </Box>
                 <Box mt={10}>
 
                   <Title order={3}>Pricing per hour</Title>
                   <TextInput
+                    onChange={e => setCurrentUser({ ...currentUser, pricing: e.target.value })}
+                    value={currentUser.pricing}
                     placeholder="Pricing per hour"
                     type="number"
                   />

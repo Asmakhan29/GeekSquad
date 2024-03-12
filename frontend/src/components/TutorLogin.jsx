@@ -3,10 +3,12 @@ import { useForm } from '@mantine/form';
 import { enqueueSnackbar } from 'notistack';
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
+import useTutorContext from '../Context/TutorContext';
 
 const TutorLogin = ({closeModal}) => {
 
   const navigate = useNavigate();
+  const { setTutorLoggedIn } = useTutorContext();
 
   const form = useForm({
     initialValues: {
@@ -35,6 +37,7 @@ const TutorLogin = ({closeModal}) => {
       const data = await res.json();
       console.log(data);
       sessionStorage.setItem('tutor', JSON.stringify(data));
+      setTutorLoggedIn(true);
       navigate('/tutorprofile');
       closeModal();
     } else {

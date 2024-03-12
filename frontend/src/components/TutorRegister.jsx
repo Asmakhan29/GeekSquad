@@ -49,7 +49,7 @@ function getStrength(password) {
     return Math.max(100 - (100 / (requirements.length + 1)) * multiplier, 0);
 }
 
-const TutorRegister = () => {
+const TutorRegister = ({setPage}) => {
 
 
 
@@ -81,6 +81,7 @@ const TutorRegister = () => {
 
             if (res.status === 200) {
                 enqueueSnackbar('Registered successfully', { variant: 'success' });
+                setPage('Login')
             } else {
                 enqueueSnackbar('Error registering', { variant: 'error' });
             }

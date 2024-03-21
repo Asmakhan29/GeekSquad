@@ -1,5 +1,6 @@
 import { Button, TextInput, Title } from '@mantine/core';
-import React, { useRef } from 'react'
+import { enqueueSnackbar } from 'notistack';
+import React, { useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 
 const UserAuthenticate = () => {
@@ -7,11 +8,13 @@ const UserAuthenticate = () => {
   const emailRef = useRef(null);
   const otpRef = useRef(null);
 
+  const [otpSent, setOtpSent] = useState(false);
+
   const navigate = useNavigate();
 
   const sendOTP = async () => {
-    loginUser();
-    return;
+    // loginUser();
+    // return;
     const res = await fetch(`${import.meta.env.VITE_API_URL}/util/sendotp`, {
       method: 'POST',
       body: JSON.stringify({ email: emailRef.current.value }),
@@ -20,15 +23,37 @@ const UserAuthenticate = () => {
       }
     });
     console.log(res.status);
+    if (res.status === 201) {
+      setOtpSent(true);
+    }
   }
 
   const verifyOTP = async () => {
     const res = await fetch(`${import.meta.env.VITE_API_URL}/util/verifyotp/${emailRef.current.value}/${otpRef.current.value}`);
     console.log(res.status);
+    if(res.status === 200){
+      authenticateUser();
+    }
+  }
+
+  const authenticateUser = async () => {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/user/getbyemail/${emailRef.current.value}`);
+    console.log(res.status);
+    if (res.status === 200) {
+      // perform login
+      const data = await res.json();
+      sessionStorage.setItem('user', JSON.stringify(data));
+      enqueueSnackbar('Logged In Successfully', { variant: 'success' });
+      navigate('/browse');
+
+    } else if (res.status === 404) {
+      // perform signup
+      addUser();
+    }
   }
 
   const addUser = async () => {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/tutor/add`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/user/add`, {
       method: 'POST',
       body: JSON.stringify({ email: emailRef.current.value }),
       headers: {
@@ -37,17 +62,10 @@ const UserAuthenticate = () => {
     });
     console.log(res.status);
     if (res.status === 200) {
-      navigate('/tutorprofile');
-    }
-  }
-
-  const loginUser = async () => {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/tutor/getbyemail/${emailRef.current.value}`);
-    console.log(res.status);
-    if (res.status === 200) {
       const data = await res.json();
-      sessionStorage.setItem('tutor', JSON.stringify(data));
-      navigate('/tutorprofile');
+      sessionStorage.setItem('user', JSON.stringify(data));
+      enqueueSnackbar('Registered Successfully', { variant: 'success' });
+      navigate('/browse');
     }
   }
 
@@ -58,15 +76,32 @@ const UserAuthenticate = () => {
         <Title order={3} align="center" mb={20}>Login In Or Sign Up</Title>
 
         <TextInput label="Email address" placeholder="user@mail.com" mt="md" size="md" ref={emailRef} />
-
         <Button
           fullWidth
           mt={20}
           onClick={sendOTP}
           type="submit"
         >
-          Continue
+          Send OTP
         </Button>
+        {
+          otpSent &&
+          (
+            <>
+              <TextInput label="Enter OTP recieved on your mail" placeholder="XXXXXX" mt="md" size="md" ref={otpRef} />
+              <Button
+                fullWidth
+                mt={20}
+                onClick={verifyOTP}
+                type="submit"
+              >
+                Continue
+              </Button>
+            </>
+          )
+        }
+
+
 
         <p className='text-center mt-5'>
           To continue, you must be 18 or older. You agree to the TakeLessons <Link to="/">Terms of Use</Link> and acknowledge our

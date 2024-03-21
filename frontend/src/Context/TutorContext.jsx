@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 const TutorContext = createContext();
 
 export const TutorProvider = ({children}) => {
-  
+    
     const navigate = useNavigate();
 
     const [currentTutor, setCurrentTutor] = useState(JSON.parse(sessionStorage.getItem('tutor')));

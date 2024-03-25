@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Card, Checkbox, Container, Divider, Flex, Grid, Input, RangeSlider, Stack, TextInput, Title, rem } from '@mantine/core';
+import { ActionIcon, Button, Card, Checkbox, Container, Divider, Flex, Grid, Input, RangeSlider, Stack, TextInput, Title, Tooltip, rem } from '@mantine/core';
 import React, { useEffect, useState } from 'react'
 import TutorCard from './TutorCard';
 import { IconSearch } from '@tabler/icons-react';
@@ -25,6 +25,14 @@ const levelOptions = [
     'Grades 11-12',
     'UG',
     'PG & Above'
+];
+
+const availabilityOptions = [
+    'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
+]
+
+const timingOptions = [
+    '6AM-9AM', '9AM-12PM', '12PM-3PM', '3PM-6PM', '6PM-9PM', '9PM-12AM'
 ]
 
 const BrowseTutor = () => {
@@ -33,6 +41,8 @@ const BrowseTutor = () => {
     const [loading, setLoading] = useState(false);
     const [masterList, setMasterList] = useState([]);
     const [priceRange, setPriceRange] = useState({ min: 60, max: 1000 });
+    const [selDays, setSelDays] = useState([]);
+    const [selTimings, setSelTimings] = useState([]);
 
     const fetchTutors = async () => {
         setLoading(true);
@@ -55,6 +65,48 @@ const BrowseTutor = () => {
             </Grid.Col>
         ))
     }
+
+    const filterAvailability = () => {
+        setTutorList(
+            masterList.filter(tutor => {
+                return selDays.every(day => tutor.availability.includes(day));
+            }
+            )
+        )
+    }
+
+    const filterTimings = () => {
+        setTutorList(
+            masterList.filter(tutor => {
+                return selTimings.every(timing => tutor.timings.includes(timing));
+            }
+            )
+        )
+
+    }
+
+    const filterPrice = () => {
+        setTutorList(
+            masterList.filter(tutor => {
+                return tutor.pricing >= priceRange.min && tutor.pricing <= priceRange.max;
+            }
+            )
+        )
+
+    }
+
+    useEffect(() => {
+        filterAvailability();
+    }, [selDays])
+
+    useEffect(() => {
+        filterTimings();
+    }, [selTimings])
+
+    useEffect(() => {
+        filterPrice();
+    }
+        , [priceRange])
 
     return (
         <div>
@@ -82,12 +134,6 @@ const BrowseTutor = () => {
                     <Grid.Col span={{ md: 3 }}>
                         <Card shadow="sm" padding="lg" radius="md" withBorder>
                             <Title order={4} mt={10} mb={5}>Location</Title>
-                            <Checkbox
-                                defaultChecked
-                                label="Online"
-                            />
-                            <Divider my={10} />
-                            <Input mb={10} label="City" placeholder="Enter your Address" />
                             <Stack>
                                 <Checkbox
                                     defaultChecked
@@ -100,46 +146,52 @@ const BrowseTutor = () => {
                             </Stack>
                             <Title order={4} my={10}>Availability</Title>
                             <ActionIcon.Group w={'100%'} mb={10}>
-                                <ActionIcon w={'100%'} variant="default" size="lg" aria-label="Sunday">
-                                    S
-                                </ActionIcon>
-                                <ActionIcon w={'100%'} variant="default" size="lg" aria-label="Monday">
-                                    M
-                                </ActionIcon>
+                                {
+                                    availabilityOptions.map(day => (
+                                        <Tooltip label={day}>
+                                            <ActionIcon w={'100%'}
+                                                onClick={() => {
+                                                    if (selDays.includes(day)) {
+                                                        setSelDays(selDays.filter(d => d !== day));
+                                                    } else {
+                                                        setSelDays([...selDays, day]);
+                                                    }
+                                                }}
+                                                variant={
+                                                    selDays.includes(day) ? 'filled' : 'default'
+                                                }
+                                                size="lg"
+                                                aria-label={day}>
 
-                                <ActionIcon w={'100%'} variant="filled" size="lg" aria-label="Tuesday">
-                                    T
-                                </ActionIcon>
-
-                                <ActionIcon w={'100%'} variant="default" size="lg" aria-label="Wednesday">
-                                    W
-                                </ActionIcon>
-
-                                <ActionIcon w={'100%'} variant="filled" size="lg" aria-label="Thursday">
-                                    T
-                                </ActionIcon>
-
-                                <ActionIcon w={'100%'} variant="default" size="lg" aria-label="Friday">
-                                    F
-                                </ActionIcon>
-
-                                <ActionIcon w={'100%'} variant="default" size="lg" aria-label="Saturday">
-                                    S
-                                </ActionIcon>
+                                                {day[0]}
+                                            </ActionIcon>
+                                        </Tooltip>
+                                    ))
+                                }
                             </ActionIcon.Group>
-                            <Button.Group w={'100%'} mb={10}>
-                                <Button w={'100%'} variant="default">6AM - 9AM</Button>
-                                <Button w={'100%'} variant="default">9AM - 12PM</Button>
-                            </Button.Group>
-                            <Button.Group w={'100%'} mb={10}>
-                                <Button w={'100%'} variant="default">12PM - 3PM</Button>
-                                <Button w={'100%'} variant="default">3PM - 6PM</Button>
-                            </Button.Group>
+                            <Grid>
+                                {
+                                    timingOptions.map(timing => (
+                                        <Grid.Col span={{ md: 6 }}>
+                                            <Button
+                                                w={'100%'}
+                                                onClick={() => {
+                                                    if (selTimings.includes(timing)) {
+                                                        setSelTimings(selTimings.filter(t => t !== timing));
+                                                    } else {
+                                                        setSelTimings([...selTimings, timing]);
+                                                    }
 
-                            <Button.Group w={'100%'} mb={10}>
-                                <Button w={'100%'} variant="default">6PM - 9PM</Button>
-                                <Button w={'100%'} variant="default">9PM -12AM</Button>
-                            </Button.Group>
+                                                }}
+                                                variant={
+                                                    selTimings.includes(timing) ? 'filled' : 'default'
+                                                }>
+                                                {timing}
+                                            </Button>
+                                        </Grid.Col>
+                                    ))
+                                }
+                            </Grid>
 
                             <p>Times are shown in your local timezone (UTC+05:30) Chennai, Kolkata, Mumbai, New Delhi
                             </p>

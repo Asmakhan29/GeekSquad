@@ -8,7 +8,7 @@ import useTutorContext from '../Context/TutorContext';
 const TutorLogin = ({closeModal}) => {
 
   const navigate = useNavigate();
-  const { setTutorLoggedIn } = useTutorContext();
+  const { setTutorLoggedIn, setCurrentTutor } = useTutorContext();
 
   const form = useForm({
     initialValues: {
@@ -38,6 +38,7 @@ const TutorLogin = ({closeModal}) => {
       console.log(data);
       sessionStorage.setItem('tutor', JSON.stringify(data));
       setTutorLoggedIn(true);
+      setCurrentTutor(data);
       navigate('/tutorprofile');
       closeModal();
     } else {

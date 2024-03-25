@@ -3,7 +3,7 @@ import { enqueueSnackbar } from 'notistack';
 import React, { useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 
-const UserAuthenticate = () => {
+const UserAuthenticate = ({closeModal}) => {
 
   const emailRef = useRef(null);
   const otpRef = useRef(null);
@@ -45,6 +45,7 @@ const UserAuthenticate = () => {
       sessionStorage.setItem('user', JSON.stringify(data));
       enqueueSnackbar('Logged In Successfully', { variant: 'success' });
       navigate('/browse');
+      closeModal();
 
     } else if (res.status === 404) {
       // perform signup
@@ -66,6 +67,7 @@ const UserAuthenticate = () => {
       sessionStorage.setItem('user', JSON.stringify(data));
       enqueueSnackbar('Registered Successfully', { variant: 'success' });
       navigate('/browse');
+      closeModal();
     }
   }
 

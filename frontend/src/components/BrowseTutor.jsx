@@ -103,6 +103,35 @@ const BrowseTutor = () => {
 
     }
 
+    const filterAvailability = () => {
+        setTutorList(
+            masterList.filter(tutor => {
+                return selDays.every(day => tutor.availability.includes(day));
+            }
+            )
+        )
+    }
+
+    const filterTimings = () => {
+        setTutorList(
+            masterList.filter(tutor => {
+                return selTimings.every(timing => tutor.timings.includes(timing));
+            }
+            )
+        )
+
+    }
+
+    const filterPrice = () => {
+        setTutorList(
+            masterList.filter(tutor => {
+                return tutor.pricing >= priceRange.min && tutor.pricing <= priceRange.max;
+            }
+            )
+        )
+
+    }
+
     useEffect(() => {
         filterAvailability();
     }, [selDays])

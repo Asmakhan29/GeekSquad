@@ -85,14 +85,7 @@ const UserProfile = () => {
                             {...profileForm.getInputProps('email')}
                             radius="md"
                         />
-                        <TextInput
-                            mb="lg"
-                            required
-                            label="Password"
-                            leftSection={<IconLock style={{ width: rem(16), height: rem(16) }} />}
-                            {...profileForm.getInputProps('password')}
-                            radius="md"
-                        />
+                        
                         <Group mt="lg">
                             <FileButton accept="image/png,image/jpeg" onChange={handleFileUpload}>
                                 {(props) => <Button color="red" radius="md" {...props} leftSection={<IconUpload size={14} />}> Upload Profile Image</Button>}

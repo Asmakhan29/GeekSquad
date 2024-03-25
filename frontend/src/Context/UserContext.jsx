@@ -12,7 +12,7 @@ export const UserProvider = ({children}) => {
     const [loggedIn, setLoggedIn] = useState(currentUser !== null);
 
     const logout = () => {
-        sessionStorage.removeItem('tutor');
+        sessionStorage.removeItem('user');
         setCurrentUser(null);
         setLoggedIn(false);
         navigate('/');

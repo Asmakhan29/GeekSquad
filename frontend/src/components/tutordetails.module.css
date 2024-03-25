@@ -58,3 +58,7 @@
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }
+
+  .avatar{
+    box-shadow: -2px -2px 5px 1px rgba(0, 0, 0, 0.366);
+  }

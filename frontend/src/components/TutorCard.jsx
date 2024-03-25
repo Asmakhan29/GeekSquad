@@ -7,7 +7,7 @@ const stats = [
     { value: '1.6K', label: 'Posts' },
 ];
 
-function TutorCard({ tutorData }) {
+function TutorCard({ tutorData, onClick }) {
     const items = stats.map((stat) => (
         <div key={stat.label}>
             <Text ta="center" fz="lg" fw={500}>
@@ -20,7 +20,7 @@ function TutorCard({ tutorData }) {
     ));
 
     return (
-        <Card withBorder padding="xl" radius="md" className={classes.card}>
+        <Card withBorder padding="xl" radius="md" className={classes.card} onClick={onClick}>
             <Card.Section
                 h={140}
                 style={{

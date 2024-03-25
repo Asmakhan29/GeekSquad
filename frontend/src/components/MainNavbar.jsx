@@ -42,8 +42,8 @@ import UserAuthenticate from './UserAuthenticate';
 import TutorRegister from './TutorRegister';
 import TutorAuthenticate from './TutorAuthenticate';
 import useTutorContext from '../Context/TutorContext';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { IconMessage } from '@tabler/icons-react';
 import { IconSettings } from '@tabler/icons-react';
 import { IconLogout } from '@tabler/icons-react';
@@ -91,17 +91,19 @@ export function MainNavbar() {
     const [userModalOpened, userToggleModal] = useDisclosure(false);
     const [userMenuOpened, setUserMenuOpened] = useState(false);
 
-    const [currentUser, setCurrentUser] = useState(
-        JSON.parse(sessionStorage.getItem('tutor')) ||
-        JSON.parse(sessionStorage.getItem('user'))
-    );
 
 
-    const { tutorLoggedIn, tutorLogout } = useTutorContext();
-    const { loggedIn,
-        setLoggedIn,
-        logout } = useUserContext();
+    const { tutorLoggedIn, tutorLogout, currentTutor } = useTutorContext();
+    const { loggedIn, logout, currentUser } = useUserContext();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        // setCurrentUser(
+        //     JSON.parse(sessionStorage.getItem('tutor'))
+        // )
+
+    }, [])
+
 
     // const [modalOpened, toggleModal] = useDisclosure(false);
 
@@ -123,115 +125,71 @@ export function MainNavbar() {
         </UnstyledButton>
     ));
 
+    const displayMenu = (userData, profileLink, logoutFn) => {
+        return <Menu
+            width={260}
+            position="bottom-end"
+            transitionProps={{ transition: 'pop-top-right' }}
+            onClose={() => setUserMenuOpened(false)}
+            onOpen={() => setUserMenuOpened(true)}
+            withinPortal
+        >
+            <Menu.Target>
+                <UnstyledButton
+                    className={cx(classes.user, { [classes.userActive]: userMenuOpened })}
+                >
+                    <Group gap={7}>
+                        <Avatar src={'http://localhost:5000/' + userData.avatar} alt={userData.name} radius="xl" size={20} />
+                        <Text fw={500} size="sm" lh={1} mr={3}>
+                            {userData.name}
+                        </Text>
+                        <IconChevronDown style={{ width: rem(12), height: rem(12) }} stroke={1.5} />
+
+                    </Group>
+                </UnstyledButton>
+            </Menu.Target>
+            <Menu.Dropdown>
+
+                <Menu.Label>Settings</Menu.Label>
+                <Menu.Item
+                    onClick={e => navigate(profileLink)}
+                    leftSection={
+                        <IconSettings style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+                    }
+                >
+                    Profile
+                </Menu.Item>
+                <Menu.Item
+                    leftSection={
+                        <IconSwitchHorizontal style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+                    }
+                >
+                    Change user account
+                </Menu.Item>
+                <Menu.Item
+                    onClick={logoutFn}
+                    color='red'
+                    leftSection={
+                        <IconLogout style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+                    }
+                >
+                    Logout
+                </Menu.Item>
+
+
+            </Menu.Dropdown>
+        </Menu>
+    }
+
     const displayLoginOptions = () => {
         if (tutorLoggedIn) {
-            return <Menu
-                width={260}
-                position="bottom-end"
-                transitionProps={{ transition: 'pop-top-right' }}
-                onClose={() => setUserMenuOpened(false)}
-                onOpen={() => setUserMenuOpened(true)}
-                withinPortal
-            >
-                <Menu.Target>
-                    <UnstyledButton
-                        className={cx(classes.user, { [classes.userActive]: userMenuOpened })}
-                    >
-                        <Group gap={7}>
-                            <Avatar src={'http://localhost:5000/' + currentUser.avatar} alt={currentUser.name} radius="xl" size={20} />
-                            <Text fw={500} size="sm" lh={1} mr={3}>
-                                {currentUser.name}
-                            </Text>
-                            <IconChevronDown style={{ width: rem(12), height: rem(12) }} stroke={1.5} />
-                        </Group>
-                    </UnstyledButton>
-                </Menu.Target>
-                <Menu.Dropdown>
-
-                    <Menu.Label>Settings</Menu.Label>
-                    <Menu.Item
-                        onClick={e => navigate('/tutorprofile')}
-                        leftSection={
-                            <IconSettings style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
-                        }
-                    >
-                        Profile
-                    </Menu.Item>
-                    <Menu.Item
-                        leftSection={
-                            <IconSwitchHorizontal style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
-                        }
-                    >
-                        Change account
-                    </Menu.Item>
-                    <Menu.Item
-                        onClick={tutorLogout}
-                        color='red'
-                        leftSection={
-                            <IconLogout style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
-                        }
-                    >
-                        Logout
-                    </Menu.Item>
-
-
-                </Menu.Dropdown>
-            </Menu>
+            return displayMenu(currentTutor, 'tutorprofile', tutorLogout)
         } else if (loggedIn) {
-            return <Menu
-                width={260}
-                position="bottom-end"
-                transitionProps={{ transition: 'pop-top-right' }}
-                onClose={() => setUserMenuOpened(false)}
-                onOpen={() => setUserMenuOpened(true)}
-                withinPortal
-            >
-                <Menu.Target>
-                    <UnstyledButton
-                        className={cx(classes.user, { [classes.userActive]: userMenuOpened })}
-                    >
-                        <Group gap={7}>
-                            <Avatar src={'http://localhost:5000/' + currentUser.avatar} alt={currentUser.name} radius="xl" size={20} />
-                            <Text fw={500} size="sm" lh={1} mr={3}>
-                                {currentUser.name}
-                            </Text>
-                            <IconChevronDown style={{ width: rem(12), height: rem(12) }} stroke={1.5} />
-                        </Group>
-                    </UnstyledButton>
-                </Menu.Target>
-                <Menu.Dropdown>
-
-                    <Menu.Label>Settings</Menu.Label>
-                    <Menu.Item
-                        onClick={e => navigate('/userprofile')}
-                        leftSection={
-                            <IconSettings style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
-                        }
-                    >
-                        Profile
-                    </Menu.Item>
-                    <Menu.Item
-                        leftSection={
-                            <IconSwitchHorizontal style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
-                        }
-                    >
-                        Change account
-                    </Menu.Item>
-                    <Menu.Item
-                        onClick={logout}
-                        color='red'
-                        leftSection={
-                            <IconLogout style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
-                        }
-                    >
-                        Logout
-                    </Menu.Item>
-                </Menu.Dropdown>
-            </Menu>
+            return displayMenu(currentUser, 'userprofile', logout)
         } else {
             return <Group visibleFrom="sm">
-                <Button variant="default" onClick={toggleModal.open}>Log in</Button>
-                <Button onClick={userToggleModal.open}>Sign up</Button>
+                <Button variant="default" onClick={toggleModal.open}>Tutor</Button>
+                <Button onClick={userToggleModal.open}>Student</Button>
             </Group>
         }
     }
@@ -272,7 +230,7 @@ export function MainNavbar() {
                             <HoverCard.Dropdown style={{ overflow: 'hidden' }}>
                                 <Group justify="space-between" px="md">
                                     <Text fw={500}>Features</Text>
-                                    <Anchor href="#" fz="xs">
+                                    <Anchor component={Link} to="/browse" fz="xs">
                                         View all
                                     </Anchor>
                                 </Group>
@@ -351,8 +309,8 @@ export function MainNavbar() {
                     <Divider my="sm" />
 
                     <Group justify="center" grow pb="xl" px="md">
-                        <Button variant="default" onClick={toggleModal.open}>Log in</Button>
-                        <Button onClick={userToggleModal.open}>Sign up</Button>
+                        <Button variant="default" onClick={toggleModal.open}>Tutor</Button>
+                        <Button onClick={userToggleModal.open}>Student</Button>
                     </Group>
                 </ScrollArea>
             </Drawer>

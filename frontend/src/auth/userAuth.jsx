@@ -2,15 +2,15 @@ import { enqueueSnackbar } from 'notistack';
 import React, { useEffect, useRef, useState } from 'react'
 import { Navigate } from 'react-router-dom';
 
-const TutorAuthoriser = ({ children }) => {
+const UserAuthoriser = ({children}) => {
   const hasRun = useRef(false);
 
-  const [currentUser, setCurrentUser] = useState(JSON.parse(sessionStorage.getItem('tutor')));
+  const [currentUser, setCurrentUser] = useState(JSON.parse(sessionStorage.getItem('user')));
 
   useEffect(() => {
     if (currentUser === null && !hasRun.current) {
       // console.log('ok');
-      enqueueSnackbar('Login as Tutor to Continue', { variant: 'error' });
+      enqueueSnackbar('Login to Continue', { variant: 'error' });
       hasRun.current = true;
     } else if (currentUser !== null) {
       hasRun.current = false;
@@ -26,4 +26,4 @@ const TutorAuthoriser = ({ children }) => {
   return <Navigate to="/home" />
 }
 
-export default TutorAuthoriser
+export default UserAuthoriser

@@ -20,7 +20,6 @@ function TutorDetails() {
     JSON.parse(sessionStorage.getItem('user'))
   )
 
-
   const fetchTutorData = async () => {
     setLoading(true);
     const response = await fetch(`${import.meta.env.VITE_API_URL}/tutor/getbyid/${id}`);

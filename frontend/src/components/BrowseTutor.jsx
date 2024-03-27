@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import TutorCard from './TutorCard';
 import { IconSearch } from '@tabler/icons-react';
 import { IconArrowRight } from '@tabler/icons-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const curriculamOptions = [
     'CBSE',
@@ -18,6 +18,15 @@ const curriculamOptions = [
     'State Board - UP',
     'Others'
 ];
+
+const subjects = [
+    'Maths',
+    'Physics',
+    'Chemitry',
+    'Computer',
+    'Accountancy',
+    'Economics'
+]
 
 const levelOptions = [
     'Pre-Primary',
@@ -44,7 +53,10 @@ const BrowseTutor = () => {
     const [priceRange, setPriceRange] = useState({ min: 60, max: 1000 });
     const [selDays, setSelDays] = useState([]);
     const [selTimings, setSelTimings] = useState([]);
+    const [selSubjects, setSelSubjects] = useState([]);
     const navigate = useNavigate();
+
+    const { subject } = useParams();
 
     const fetchTutors = async () => {
         setLoading(true);
@@ -54,6 +66,9 @@ const BrowseTutor = () => {
         setTutorList(data);
         setMasterList(data);
         setLoading(false);
+        if (subject) {
+            setSelSubjects([subject]);
+        }
     }
 
     useEffect(() => {
@@ -103,6 +118,19 @@ const BrowseTutor = () => {
 
     }
 
+    const filterSubjects = () => {
+        if (selSubjects.length === 0) {
+            setTutorList(masterList);
+            return;
+        }
+        console.log(selSubjects);
+        setTutorList(
+            masterList.filter(tutor => {
+                return selSubjects.some(subject => tutor.subject.toLowerCase().includes(subject.toLowerCase()));
+            })
+        )
+    }
+
     useEffect(() => {
         filterAvailability();
     }, [selDays])
@@ -113,8 +141,11 @@ const BrowseTutor = () => {
 
     useEffect(() => {
         filterPrice();
-    }
-        , [priceRange])
+    }, [priceRange])
+
+    useEffect(() => {
+        filterSubjects();
+    }, [selSubjects])
 
     return (
         <div>
@@ -123,11 +154,11 @@ const BrowseTutor = () => {
                 <Container size="md" my={20} py={50} className='browse-container' >
                     <Title order={1} align="center" mb={20}>Find a Tutor</Title>
                     <TextInput
-                    onChange={e => (
-                        setTutorList(
-                            masterList.filter(tutor => tutor.name.toLowerCase().includes(e.target.value.toLowerCase()))
-                        )
-                    )}
+                        onChange={e => (
+                            setTutorList(
+                                masterList.filter(tutor => tutor.name.toLowerCase().includes(e.target.value.toLowerCase()))
+                            )
+                        )}
                         radius="xl"
                         size="md"
                         placeholder="Search questions"
@@ -218,13 +249,20 @@ const BrowseTutor = () => {
 
                             <Divider my={10} />
 
-                            <Title order={4} my={10}>Curriculam</Title>
+                            <Title order={4} my={10}>Subjects</Title>
                             {
-                                curriculamOptions.map((option) => {
+                                subjects.map((option) => {
                                     return <Checkbox
+                                        onChange={(e) => {
+                                            if (e.target.checked) {
+                                                setSelSubjects([...selSubjects, option]);
+                                            } else {
+                                                setSelSubjects(selSubjects.filter(sub => sub.toLowerCase() !== option.toLowerCase()));
+                                            }
+                                        }}
                                         mb={5}
-                                        defaultChecked
                                         label={option}
+                                        checked={selSubjects.map(sub => sub.toLowerCase()).includes(option.toLowerCase())}
                                     />
                                 })
                             }

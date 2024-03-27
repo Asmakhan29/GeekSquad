@@ -54,31 +54,37 @@ const mockdata = [
     {
         icon: IconCode,
         title: 'Maths',
+        link: '/browse/Maths',
         // description: 'This Pokémon’s cry is very loud and distracting',
     },
     {
         icon: IconCoin,
         title: 'Physics',
+        link: '/browse/Physics',
         // description: 'The fluid of Smeargle’s tail secretions changes',
     },
     {
         icon: IconBook,
         title: 'Chemistry',
+        link: '/browse/Chemistry',
         // description: 'Yanma is capable of seeing 360 degrees without',
     },
     {
         icon: IconFingerprint,
         title: 'Computer',
+        link: '/browse/Computer',
         // description: 'The shell’s rounded shape and the grooves on its.',
     },
     {
         icon: IconChartPie3,
         title: 'Accountancy',
+        link: '/browse/Accountancy',
         // description: 'This Pokémon uses its flying ability to quickly chase',
     },
     {
         icon: IconNotification,
-        title: 'Notifications',
+        title: 'Economics',
+        link: '/browse/Economics',
         // description: 'Combusken battles with the intensely hot flames it spews',
     },
 ];
@@ -109,7 +115,9 @@ export function MainNavbar() {
 
     const links = mockdata.map((item) => (
         <UnstyledButton className={classes.subLink} key={item.title}>
-            <Group wrap="nowrap" p={10} align="center">
+            <Group wrap="nowrap" p={10} align="center" onClick={
+                () => navigate(item.link)
+            }>
                 <ThemeIcon size={34} variant="default" radius="md">
                     <item.icon style={{ width: rem(22), height: rem(22) }} color={theme.colors.blue[6]} />
                 </ThemeIcon>
@@ -135,16 +143,13 @@ export function MainNavbar() {
             withinPortal
         >
             <Menu.Target>
-                <UnstyledButton
-                    className={cx(classes.user, { [classes.userActive]: userMenuOpened })}
-                >
+                <UnstyledButton className={cx(classes.user, { [classes.userActive]: userMenuOpened })}>
                     <Group gap={7}>
                         <Avatar src={'http://localhost:5000/' + userData.avatar} alt={userData.name} radius="xl" size={20} />
                         <Text fw={500} size="sm" lh={1} mr={3}>
                             {userData.name}
                         </Text>
                         <IconChevronDown style={{ width: rem(12), height: rem(12) }} stroke={1.5} />
-
                     </Group>
                 </UnstyledButton>
             </Menu.Target>

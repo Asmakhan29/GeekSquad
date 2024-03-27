@@ -12,7 +12,7 @@ const myschema = new Schema({
     curriculam: { type: Array, default: [] },
     education: { type: Object },
     experience: { type: Number, default: 0 },
-    subject: { type: String },
+    subject: { type: String, default: ''},
     pricing: { type: Number, default: 0 },
     preferredLocation: { type: Array, default: ['Home', 'Studio'] },
     availability: { type: Array, default: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] },

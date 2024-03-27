@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+require("dotenv").config();
 
 const userRouter = require("./routers/userRouter");
 const tutorRouter = require("./routers/tutorRouter");
@@ -9,7 +10,7 @@ const utilRouter = require("./routers/util");
 
 
 const app = express();
-const stripe = require('stripe')('sk_test_4ypbMh4aR9gRNnUkQCwgOyCT00rSoAbXzZ');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 // middlewares
 app.use(

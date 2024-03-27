@@ -12,7 +12,7 @@ const appearance = {
 const Checkout = () => {
 
     const hasRun = useRef(false);
-    const stripePromise = loadStripe('pk_test_Vmvhpm2TASsGcgF4RcyQfkF000KwucQJR1');
+    const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
     console.log(stripePromise);
     const [clientSecret, setClientSecret] = useState('');
     // const [ stripePromise, setStripePromise ] = useState(null);

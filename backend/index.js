@@ -6,6 +6,7 @@ const userRouter = require("./routers/userRouter");
 const tutorRouter = require("./routers/tutorRouter");
 const feedbackRouter = require("./routers/feedbackRouter");
 const reviewRouter = require("./routers/reviewRouter");
+const paymentRouter = require("./routers/paymentRouter");
 const utilRouter = require("./routers/util");
 
 
@@ -25,6 +26,7 @@ app.use("/user", userRouter);
 app.use("/util", utilRouter);
 app.use("/tutor", tutorRouter);
 app.use("/feedback", feedbackRouter);
+app.use("/payment", paymentRouter);
 app.use("/review", reviewRouter);
 app.use(express.static('./static/uploads'));
 

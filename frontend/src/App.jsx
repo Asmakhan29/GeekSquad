@@ -55,7 +55,7 @@ function App() {
                       <Checkout />
                     </UserAuthoriser>} />
                   <Route path='/tutordetails' element={<TutorDetails />} />
-                  <Route path='/thankyou' element={<ThankYou />} />
+                  <Route path='/thankyou/:tutorid' element={<ThankYou />} />
                   <Route path='/feedback' element={<UserAuthoriser> <Feedback /> </UserAuthoriser>} />
                 </Routes>
               </UserProvider>

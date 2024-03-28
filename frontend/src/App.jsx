@@ -50,7 +50,7 @@ function App() {
                   <Route path='/details/:id' element={<TutorDetails />} />
                   <Route path='/tutorprofile' element={<TutorAuthoriser> <TutorProfile /> </TutorAuthoriser>} />
                   <Route path='/userprofile' element={<UserAuthoriser> <UserProfile /> </UserAuthoriser>} />
-                  <Route path='/checkout' element={
+                  <Route path='/checkout/:tutorid' element={
                     <UserAuthoriser>
                       <Checkout />
                     </UserAuthoriser>} />

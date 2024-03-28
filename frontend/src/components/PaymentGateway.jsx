@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ElementsConsumer, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js';
-import { Button, Title } from '@mantine/core';
+import { Button, Card, Title } from '@mantine/core';
 
 const PaymentGateway = () => {
+
+    const [currentUser, setCurrentUser] = useState(JSON.parse(sessionStorage.getItem('user')));
+
     const stripe = useStripe();
     const elements = useElements();
 
@@ -24,7 +27,9 @@ const PaymentGateway = () => {
             //`Elements` instance that was used to create the Payment Element
             elements,
             confirmParams: {
-                return_url: "http://localhost:3000/thankyou",
+                return_url: "http://localhost:5173/thankyou",
+                receipt_email: currentUser.email,
+
             },
         });
 
@@ -39,14 +44,14 @@ const PaymentGateway = () => {
     };
 
     return (
-        <div>
-
+        <Card withBorder p={30} mt={30}>
+            
             <form onSubmit={handleSubmit}>
-                <Title order={3} my={30} mx="auto">Payment Gateway</Title>
+                <Title order={3} my={30} mx="auto">Secure Payment Gateway</Title>
                 <PaymentElement />
                 <Button disabled={!stripe} type="submit" variant='filled' mt={20}>Submit</Button>
             </form>
-        </div>
+        </Card>
     )
 }
 

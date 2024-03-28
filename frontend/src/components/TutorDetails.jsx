@@ -1,9 +1,9 @@
 import { Text, Title, TextInput, Button, Image, Box, Container, BackgroundImage, Center, Grid, Rating, Divider, ActionIcon, Paper, Group, Avatar, TypographyStylesProvider, Textarea, Flex, Stack } from '@mantine/core';
 // import image from './image.svg';
 import classes from './tutordetails.module.css';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
-import { IconAt, IconTrash, IconTrashFilled } from '@tabler/icons-react';
+import { IconAt, IconCoin, IconTrash, IconTrashFilled } from '@tabler/icons-react';
 import { enqueueSnackbar } from 'notistack';
 import ReactTimeAgo from 'react-time-ago'
 
@@ -73,12 +73,20 @@ function TutorDetails() {
                 />
               </Grid.Col>
               <Grid.Col span={{ sm: 12, md: 8 }}>
-                <Text size="lg" fw={'bold'}>{tutorDetails.experience}+ years of experience</Text>
-                <Title order={1}>{tutorDetails.name}</Title>
-                <Text size="lg" c={'dimmed'}> <IconAt /> {tutorDetails.email}</Text>
-                <Text size="lg">{tutorDetails.description}</Text>
-                <Rating value={calculateAverageRating()} size={'lg'} fractions={3} readOnly />
-                <Text size="lg">{reviewList.length} Reviews</Text>
+                <Flex justify="space-between">
+                  <Box>
+
+                    <Text size="lg" fw={'bold'}>{tutorDetails.experience}+ years of experience</Text>
+                    <Title order={1}>{tutorDetails.name}</Title>
+                    <Text size="lg" c={'dimmed'}> <IconAt /> {tutorDetails.email}</Text>
+                    <Text size="lg">{tutorDetails.description}</Text>
+                    <Rating value={calculateAverageRating()} size={'lg'} fractions={3} readOnly />
+                    <Text size="lg">{reviewList.length} Reviews</Text>
+                  </Box>
+                  <Button component={Link} to={"/checkout/"+tutorDetails._id} color='green' leftSection={<IconCoin size={24} />} variant="filled">
+                    Pay Tutor
+                  </Button>
+                </Flex>
                 <Divider my={20} />
                 <Text size="xl" fw={'bold'}>Pricing: ₹{tutorDetails.pricing}/hour</Text>
                 <Text size="lg">Subject: {tutorDetails.subject}</Text>

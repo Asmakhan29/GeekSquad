@@ -3,7 +3,8 @@ import React, { useEffect, useRef } from 'react';
 import { useState } from 'react';
 import PaymentGateway from './PaymentGateway';
 import { Elements } from '@stripe/react-stripe-js';
-import { Box, Container } from '@mantine/core';
+import { Box, Button, Container, Flex, Loader, Text, Title } from '@mantine/core';
+import { useParams } from 'react-router-dom';
 
 const appearance = {
     theme: 'night'
@@ -11,11 +12,26 @@ const appearance = {
 
 const Checkout = () => {
 
+    const { tutorid } = useParams();
+
     const hasRun = useRef(false);
     const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
     console.log(stripePromise);
     const [clientSecret, setClientSecret] = useState('');
+    const [tutorDetails, setTutorDetails] = useState(null);
+
     // const [ stripePromise, setStripePromise ] = useState(null);
+    const fetchTutorData = async () => {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/tutor/getbyid/${tutorid}`);
+        console.log(response.status);
+        const data = await response.json();
+        console.log(data);
+        setTutorDetails(data);
+    }
+
+    useEffect(() => {
+        fetchTutorData();
+    }, [])
 
     const getPaymentIntent = async () => {
         const res = await fetch(`${import.meta.env.VITE_API_URL}/create-payment-intent`, {
@@ -23,32 +39,51 @@ const Checkout = () => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ amount: 747.68 })
+            body: JSON.stringify({ amount: tutorDetails.pricing*100 })
         });
         const data = await res.json();
         console.log(data);
         setClientSecret(data.clientSecret);
     }
 
-    useEffect(() => {
-        if (!hasRun.current) {
-            getPaymentIntent();
-            hasRun.current = true;
+    const displayTutorDetails = () => {
+        if (tutorDetails !== null) {
+            return (
+                <Box>
+                    <Title order={3} mb={20}>Paying To</Title>
+                    <Flex gap={30}>
+
+                        <img width={200} src={`${import.meta.env.VITE_API_URL}/${tutorDetails.avatar}`} alt={tutorDetails.name} />
+                        <Box>
+                            <Text size='xl' fw={'bold'}>{tutorDetails.name}</Text>
+                            <Text size='md'>{tutorDetails.email}</Text>
+                            <Text size='md'>{tutorDetails.experience}+ years of experience</Text>
+                            <Button mt={30} onClick={getPaymentIntent}>Pay Now</Button>
+                        </Box>
+                    </Flex>
+
+                </Box>
+            )
         } else {
-            hasRun.current = false;
+            return (
+                <Loader />
+            )
         }
-    }, [])
+    }
 
     return (
         <Box>
             <Container size={'lg'}>
+                {
+                    displayTutorDetails()
+                }
                 {
                     clientSecret && (
                         <Elements stripe={stripePromise} options={{
                             clientSecret,
                             appearance
                         }}>
-                            <PaymentGateway />
+                            <PaymentGateway amount={tutorDetails.pricing} />
                         </Elements>
                     )
                 }

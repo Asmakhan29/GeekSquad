@@ -44,6 +44,12 @@ app.post('/create-payment-intent', async (req, res) => {
   });
 });
 
+app.post('/retrieve-payment-intent', async (req, res) => {
+  const { paymentIntentId } = req.body;
+  const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+  res.json(paymentIntent);
+});
+
 app.listen(process.env.PORT, () => {
   console.info("Server Started>>");
 });

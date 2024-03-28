@@ -41,7 +41,7 @@ const Checkout = () => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ amount: tutorDetails.pricing * selHrs * 100 })
+            body: JSON.stringify({ amount: tutorDetails.pricing * selHrs })
         });
         const data = await res.json();
         console.log(data);

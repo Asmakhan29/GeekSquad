@@ -21,6 +21,7 @@ import ThankYou from './components/ThankYou';
 import Feedback from './components/Feedback';
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en'
+import PaymentHistory from './components/PaymentHistory';
 
 TimeAgo.addDefaultLocale(en)
 
@@ -55,7 +56,8 @@ function App() {
                       <Checkout />
                     </UserAuthoriser>} />
                   <Route path='/tutordetails' element={<TutorDetails />} />
-                  <Route path='/thankyou/:tutorid' element={<ThankYou />} />
+                  <Route path='/thankyou/:tutorid' element={<UserAuthoriser> <ThankYou /> </UserAuthoriser>} />
+                  <Route path='/payment-history' element={<UserAuthoriser><PaymentHistory /> </UserAuthoriser>} />
                   <Route path='/feedback' element={<UserAuthoriser> <Feedback /> </UserAuthoriser>} />
                 </Routes>
               </UserProvider>

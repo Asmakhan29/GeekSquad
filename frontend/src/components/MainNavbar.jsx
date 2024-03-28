@@ -165,11 +165,12 @@ export function MainNavbar() {
                     Profile
                 </Menu.Item>
                 <Menu.Item
+                    onClick={e => navigate('payment-history')}
                     leftSection={
                         <IconSwitchHorizontal style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
                     }
                 >
-                    Change user account
+                    Payment History
                 </Menu.Item>
                 <Menu.Item
                     onClick={logoutFn}

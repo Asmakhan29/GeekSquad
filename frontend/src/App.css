@@ -27,3 +27,17 @@ input{
 #mega-menu-full-dropdown-button:hover #mega-menu-full-dropdown{
     display: block;
 }
+
+.browse-header{
+    background-image: linear-gradient(to top, #ffffff00, #006dac);
+}
+
+.profile-header{
+    background-image: linear-gradient(to top, #ffffff00, #006dac);
+}
+
+.profile-avatar-upload{
+    height: 300px;
+    object-fit: contain;
+    width: 100%;
+}

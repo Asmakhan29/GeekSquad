@@ -1,14 +1,20 @@
-import React, { useRef } from 'react'
+import { Button, TextInput, Title } from '@mantine/core';
+import { enqueueSnackbar } from 'notistack';
+import React, { useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 
-const UserAuthenticate = () => {
+const UserAuthenticate = ({closeModal}) => {
 
   const emailRef = useRef(null);
   const otpRef = useRef(null);
 
+  const [otpSent, setOtpSent] = useState(false);
+
   const navigate = useNavigate();
 
   const sendOTP = async () => {
+    // loginUser();
+    // return;
     const res = await fetch(`${import.meta.env.VITE_API_URL}/util/sendotp`, {
       method: 'POST',
       body: JSON.stringify({ email: emailRef.current.value }),
@@ -17,66 +23,87 @@ const UserAuthenticate = () => {
       }
     });
     console.log(res.status);
+    if (res.status === 201) {
+      setOtpSent(true);
+    }
   }
 
   const verifyOTP = async () => {
     const res = await fetch(`${import.meta.env.VITE_API_URL}/util/verifyotp/${emailRef.current.value}/${otpRef.current.value}`);
     console.log(res.status);
+    if(res.status === 200){
+      authenticateUser();
+    }
+  }
+
+  const authenticateUser = async () => {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/user/getbyemail/${emailRef.current.value}`);
+    console.log(res.status);
+    if (res.status === 200) {
+      // perform login
+      const data = await res.json();
+      sessionStorage.setItem('user', JSON.stringify(data));
+      enqueueSnackbar('Logged In Successfully', { variant: 'success' });
+      navigate('/browse');
+      closeModal();
+
+    } else if (res.status === 404) {
+      // perform signup
+      addUser();
+    }
   }
 
   const addUser = async () => {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/tutor/add`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/user/add`, {
       method: 'POST',
-      body: JSON.stringify({ email: emailRef.current.value }),
+      body: JSON.stringify({ email: emailRef.current.value, name: emailRef.current.value}),
       headers: {
         'Content-Type': 'application/json'
       }
     });
     console.log(res.status);
     if (res.status === 200) {
-      navigate('/tutorprofile');
+      const data = await res.json();
+      sessionStorage.setItem('user', JSON.stringify(data));
+      enqueueSnackbar('Registered Successfully', { variant: 'success' });
+      navigate('/browse');
+      closeModal();
     }
   }
 
   return (
     <div>
       <div className='px-20 py-10'>
-        <h4 className="text-center mt-4">Logo Here</h4>
-        <h2 className='text-2xl font-semibold text-center mt-3'>Login In Or Sign Up</h2>
+        <Title order={2} align="center" mb={20}>Welcome to GeekSquad!</Title>
+        <Title order={3} align="center" mb={20}>Login In Or Sign Up</Title>
 
-        <div className="mt-2">
-          <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-            <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm">  +91</span>
-            <input
-              type="text"
-              ref={emailRef}
-              className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-              placeholder="Enter mobile number or email address"
-            />
-          </div>
-        </div>
-        <div className="relative flex gap-x-3 mt-3">
-          <div className="flex h-6 items-center">
-            <input
-              id="comments"
-              name="comments"
-              type="checkbox"
-              className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-            />
-          </div>
-          <div className="text-sm leading-6">
-            <label htmlFor="comments" className="font-medium text-gray-900">
-              Remeber me
-            </label>
-          </div>
-        </div>
-        <button
-          onClick={sendOTP}
+        <TextInput label="Email address" placeholder="user@mail.com" mt="md" size="md" ref={emailRef} />
+        <Button
+          fullWidth
+          mt={20}
+          onClick={authenticateUser}
           type="submit"
-          className="mt-5 flex w-full justify-center rounded-3xl bg-indigo-600 px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
-          Continue
-        </button>
+          Send OTP
+        </Button>
+        {
+          otpSent &&
+          (
+            <>
+              <TextInput label="Enter OTP recieved on your mail" placeholder="XXXXXX" mt="md" size="md" ref={otpRef} />
+              <Button
+                fullWidth
+                mt={20}
+                onClick={verifyOTP}
+                type="submit"
+              >
+                Continue
+              </Button>
+            </>
+          )
+        }
+
+
 
         <p className='text-center mt-5'>
           To continue, you must be 18 or older. You agree to the TakeLessons <Link to="/">Terms of Use</Link> and acknowledge our

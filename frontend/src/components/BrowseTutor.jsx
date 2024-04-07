@@ -32,9 +32,7 @@ const levelOptions = [
     'Pre-Primary',
     'Grades 1-5',
     'Grades 6-10',
-    'Grades 11-12',
-    'UG',
-    'PG & Above'
+    'Grades 11-12'
 ];
 
 const availabilityOptions = [

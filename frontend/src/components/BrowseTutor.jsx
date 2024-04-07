@@ -22,7 +22,7 @@ const curriculamOptions = [
 const subjects = [
     'Maths',
     'Physics',
-    'Chemitry',
+    'Chemistry',
     'Computer',
     'Accountancy',
     'Economics'

@@ -5,6 +5,7 @@ import PaymentGateway from './PaymentGateway';
 import { Elements } from '@stripe/react-stripe-js';
 import { Box, Button, Container, Flex, Loader, NumberInput, Text, TextInput, Title } from '@mantine/core';
 import { useParams } from 'react-router-dom';
+require("dotenv").config();
 
 const appearance = {
     theme: 'night'

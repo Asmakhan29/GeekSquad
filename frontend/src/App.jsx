@@ -30,7 +30,6 @@ const theme = createTheme({
 });
 
 function App() {
-
   return (
     <>
       <MantineProvider theme={theme} defaultColorScheme="light">
@@ -48,7 +47,7 @@ function App() {
                   <Route path='/tutor/:category' element={<ListTutor />} />
                   <Route path='/browse/:subject' element={<BrowseTutor />} />
                   <Route path='/browse' element={<BrowseTutor />} />
-                  <Route path='/details/:id' element={<TutorDetails />} />
+                  <Route path='/details/:id' element={<UserAuthoriser> <TutorDetails /> </UserAuthoriser> } />
                   <Route path='/tutorprofile' element={<TutorAuthoriser> <TutorProfile /> </TutorAuthoriser>} />
                   <Route path='/userprofile' element={<UserAuthoriser> <UserProfile /> </UserAuthoriser>} />
                   <Route path='/checkout/:tutorid' element={

@@ -411,11 +411,11 @@ const TutorProfile = () => {
                 </Box>
                 <Box mt={10}>
 
-                  <Title order={3}>Pricing per hour</Title>
+                  <Title order={3}>Fees per hour</Title>
                   <TextInput
                     onChange={e => setCurrentUser({ ...currentUser, pricing: e.target.value })}
                     value={currentUser.pricing}
-                    placeholder="Pricing per hour"
+                    placeholder="Fees per hour"
                     type="number"
                   />
 

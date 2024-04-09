@@ -47,7 +47,7 @@ function TutorCard({ tutorData, onClick }) {
                 {tutorData.description}
             </Text>
             <Title ta="center" order={4} mt="md" mb="sm">
-                Price ₹{tutorData.pricing} per hour
+                Fees ₹{tutorData.pricing} per hour
             </Title>
             {/* <Group mt="md" justify="center" gap={30}>
                 {items}

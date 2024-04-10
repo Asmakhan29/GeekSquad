@@ -35,6 +35,7 @@ const UserAuthenticate = ({closeModal}) => {
     console.log(res.status);
     if(res.status === 200){
       authenticateUser();
+      // sendOTP();
     }
   }
 
@@ -85,7 +86,7 @@ const UserAuthenticate = ({closeModal}) => {
         <Button
           fullWidth
           mt={20}
-          onClick={authenticateUser}
+          onClick={sendOTP}
           type="submit"
         >
           Send OTP

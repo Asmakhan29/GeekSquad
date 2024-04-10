@@ -12,9 +12,7 @@ const grades = [
   'Pre-Primary',
   'Grades 1-5',
   'Grades 6-10',
-  'Grades 11-12',
-  'UG',
-  'PG & Above'
+  'Grades 11-12'
 ];
 
 const curriculams = [
@@ -420,11 +418,11 @@ const TutorProfile = () => {
                 </Box>
                 <Box mt={10}>
 
-                  <Title order={3}>Pricing per hour</Title>
+                  <Title order={3}>Fees per hour</Title>
                   <TextInput
                     onChange={e => setCurrentUser({ ...currentUser, pricing: e.target.value })}
                     value={currentUser.pricing}
-                    placeholder="Pricing per hour"
+                    placeholder="Fees per hour"
                     type="number"
                   />
 

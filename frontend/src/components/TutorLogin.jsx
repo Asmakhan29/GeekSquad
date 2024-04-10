@@ -32,7 +32,7 @@ const TutorLogin = ({closeModal}) => {
     })
 
     if (res.status === 200) {
-      enqueueSnackbar('Loggedin successfully', { variant: 'success' });
+      enqueueSnackbar('Logged in successfully', { variant: 'success' });
 
       const data = await res.json();
       console.log(data);

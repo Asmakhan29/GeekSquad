@@ -34,6 +34,19 @@ const curriculams = [
 const TutorProfile = () => {
 
   const [currentUser, setCurrentUser] = useState(JSON.parse(sessionStorage.getItem('tutor')));
+  const [paymentList, setPaymentList] = useState([]);
+
+  const getPaymentInfo = async() => {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/payment/getbytutor/${currentUser._id}`);
+    const data = await res.json();
+    console.log(data);
+    setPaymentList(data);
+  }
+
+  useEffect(() => {
+    getPaymentInfo()
+  }, [])
+  
 
   const updateProfile = (dataToUpdate) => {
     fetch(`${import.meta.env.VITE_API_URL}/tutor/update/${currentUser._id}`, {
@@ -167,15 +180,9 @@ const TutorProfile = () => {
 
 
         <Card shadow="sm" padding="lg" radius="md" withBorder>
-          <Title order={2}>Onboarding</Title>
-          <Badge
-            size="md"
-            variant="gradient"
-            gradient={{ from: 'pink', to: 'pink', deg: 90 }}
-          >
-            Profile is not live
-          </Badge>
-          <Button variant="filled" mt={'lg'} color="blue">Complete Onboarding</Button>
+          <Title order={3}>Number of Students : {paymentList.length}</Title>
+         
+          {/* <Button variant="filled" mt={'lg'} color="blue">Complete Onboarding</Button>
 
           <Text mt="lg" size="sm" color="dimmed">
             You must complete all mandatory fields marked red in each of the sections below to be “Live”. You will be visible to students only if your profile is Live.
@@ -225,7 +232,7 @@ const TutorProfile = () => {
             <Grid.Col span={{ md: 4, sm: 12 }}>
               <Button fullWidth variant="outline" color="blue">Add Working Hours</Button>
             </Grid.Col>
-          </Grid>
+          </Grid> */}
         </Card>
 
         <Card mt={'lg'} shadow="sm" padding="lg" radius="md" withBorder>

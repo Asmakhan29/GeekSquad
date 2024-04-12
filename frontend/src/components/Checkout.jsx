@@ -60,7 +60,7 @@ const Checkout = () => {
                             <Text size='xl' fw={'bold'}>{tutorDetails.name}</Text>
                             <Text size='md'>{tutorDetails.email}</Text>
                             <Text size='md'>{tutorDetails.experience}+ years of experience</Text>
-                            <Text size='xl' fw={'bold'}>Pricing: ₹{tutorDetails.pricing}</Text>
+                            <Text size='xl' fw={'bold'}>Fees: ₹{tutorDetails.pricing}</Text>
                             <Flex gap={10} align={'center'} my={20}>
 
                                 <Text size='lg'>Paying for : </Text>

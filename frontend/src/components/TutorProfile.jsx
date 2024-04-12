@@ -173,8 +173,10 @@ const TutorProfile = () => {
   return (
     <div className='profile-header'>
       <div className="container ">
+        <div className='dash-head'>
         <h3>Hi, {currentUser.name}, welcome to your dashboard!</h3>
         <h5>Overview at glance</h5>
+        </div>
 
 
         <Card shadow="sm" padding="lg" radius="md" withBorder>
@@ -246,9 +248,9 @@ const TutorProfile = () => {
               <Tabs.Tab value="teaching" leftSection={<IconMessageCircle style={iconStyle} />}>
                 Teaching
               </Tabs.Tab>
-              <Tabs.Tab value="settings" leftSection={<IconSettings style={iconStyle} />}>
+              {/* <Tabs.Tab value="settings" leftSection={<IconSettings style={iconStyle} />}>
                 Settings
-              </Tabs.Tab>
+              </Tabs.Tab> */}
             </Tabs.List>
 
             <Tabs.Panel value="personal">
@@ -269,7 +271,7 @@ const TutorProfile = () => {
                   </Grid>
                 </Box>
 
-                <Box mb={10}>
+                {/* <Box mb={10}>
                   <Title order={3}>Cover Picture</Title>
                   <Grid>
                     <Grid.Col span={{ md: 6, sm: 12 }}>
@@ -284,7 +286,7 @@ const TutorProfile = () => {
                       } label={'Upload Cover Image'} />
                     </Grid.Col>
                   </Grid>
-                </Box>
+                </Box> */}
 
                 <Box mb={10}>
                   <Title order={3}>Bio</Title>

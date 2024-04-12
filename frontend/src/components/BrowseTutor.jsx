@@ -43,6 +43,10 @@ const timingOptions = [
     '6AM-9AM', '9AM-12PM', '12PM-3PM', '3PM-6PM', '6PM-9PM', '9PM-12AM'
 ]
 
+const locations = [
+    'Zone A', 'Zone B', 'Zone C', 'Zone D'
+]
+
 const BrowseTutor = () => {
 
     const [tutorList, setTutorList] = useState([]);
@@ -52,6 +56,7 @@ const BrowseTutor = () => {
     const [selDays, setSelDays] = useState([]);
     const [selTimings, setSelTimings] = useState([]);
     const [selSubjects, setSelSubjects] = useState([]);
+    const [selLocations, setSelLocations] = useState([]);
     const navigate = useNavigate();
 
     const { subject } = useParams();
@@ -116,6 +121,16 @@ const BrowseTutor = () => {
 
     }
 
+    const filterLocation = () => {
+        setTutorList(
+            masterList.filter(tutor => {
+                return selLocations.every(location => tutor.location.toLowerCase().includes(location.toLowerCase()));
+            }
+            )
+        )
+    }
+
+
     const filterSubjects = () => {
         if (selSubjects.length === 0) {
             setTutorList(masterList);
@@ -144,6 +159,11 @@ const BrowseTutor = () => {
     useEffect(() => {
         filterSubjects();
     }, [selSubjects])
+
+    useEffect(() => {
+        filterLocation();
+    }, [selLocations])
+
 
     return (
         <div>
@@ -272,6 +292,25 @@ const BrowseTutor = () => {
                                         mb={5}
                                         defaultChecked
                                         label={option}
+                                    />
+                                })
+                            }
+
+                            <Divider my={10} />
+                            <Title order={4} my={10}>Locations</Title>
+                            {
+                                locations.map((option) => {
+                                    return <Checkbox
+                                        onChange={(e) => {
+                                            if (e.target.checked) {
+                                                setSelLocations([...selLocations, option]);
+                                            } else {
+                                                setSelLocations(selLocations.filter(loc => loc.toLowerCase() !== option.toLowerCase()));
+                                            }
+                                        }}
+                                        mb={5}
+                                        label={option}
+                                        checked={selLocations.map(loc => loc.toLowerCase()).includes(option.toLowerCase())}
                                     />
                                 })
                             }

@@ -1,11 +1,13 @@
-import { Text, Title, TextInput, Button, Image, Box, Container, BackgroundImage, Center, Grid, Rating, Divider, ActionIcon, Paper, Group, Avatar, TypographyStylesProvider, Textarea, Flex, Stack } from '@mantine/core';
+import { Text, Title, TextInput, Button, Image, Box, Container, BackgroundImage, Center, Grid, Rating, Divider, ActionIcon, Paper, Group, Avatar, TypographyStylesProvider, Textarea, Flex, Stack, Drawer } from '@mantine/core';
 // import image from './image.svg';
 import classes from './tutordetails.module.css';
 import { Link, useParams } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
-import { IconAt, IconCoin, IconTrash, IconTrashFilled } from '@tabler/icons-react';
+import { IconAt, IconCoin, IconMessage, IconTrash, IconTrashFilled } from '@tabler/icons-react';
 import { enqueueSnackbar } from 'notistack';
 import ReactTimeAgo from 'react-time-ago'
+import ChatPage from './ChatPage';
+import { useDisclosure } from '@mantine/hooks';
 
 function TutorDetails() {
 
@@ -15,6 +17,8 @@ function TutorDetails() {
   const [reviewList, setReviewList] = useState([]);
   const [rating, setRating] = useState(3);
   const reviewRef = useRef();
+
+  const [chatOpened, toggleChat] = useDisclosure(false);
 
   const [currentUser, setCurrentUser] = useState(
     JSON.parse(sessionStorage.getItem('user'))
@@ -83,8 +87,11 @@ function TutorDetails() {
                     <Rating value={calculateAverageRating()} size={'lg'} fractions={3} readOnly />
                     <Text size="lg">{reviewList.length} Reviews</Text>
                   </Box>
-                  <Button component={Link} to={"/checkout/"+tutorDetails._id} color='green' leftSection={<IconCoin size={24} />} variant="filled">
+                  {/* <Button component={Link} to={"/checkout/" + tutorDetails._id} color='green' leftSection={<IconCoin size={24} />} variant="filled">
                     Pay Tutor
+                  </Button> */}
+                  <Button color='blue' onClick={toggleChat.open} leftSection={<IconMessage size={24} />} variant="filled">
+                    Chat with Tutor
                   </Button>
                 </Flex>
                 <Divider my={20} />
@@ -217,6 +224,9 @@ function TutorDetails() {
 
   return (
     <Box>
+      <Drawer opened={chatOpened} onClose={toggleChat.close} title="Chat with Tutor" position='right'>
+        <ChatPage />
+      </Drawer>
       <Container size={'xl'}>
         {displayTutorDetails()}
       </Container>

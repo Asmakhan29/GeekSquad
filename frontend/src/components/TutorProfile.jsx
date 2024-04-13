@@ -1,10 +1,12 @@
-import { Badge, Box, Button, Card, CheckIcon, Combobox, Divider, Flex, Grid, Group, Pill, PillsInput, Progress, Select, Stack, Tabs, Text, TextInput, Textarea, Title, rem, useCombobox } from '@mantine/core';
-import { IconSettings } from '@tabler/icons-react';
+import { Badge, Box, Button, Card, CheckIcon, Combobox, Divider, Drawer, Flex, Grid, Group, Pill, PillsInput, Progress, Select, Stack, Tabs, Text, TextInput, Textarea, Title, rem, useCombobox } from '@mantine/core';
+import { IconMessage, IconSettings } from '@tabler/icons-react';
 import { IconMessageCircle, IconPhoto } from '@tabler/icons-react';
 import React, { useEffect, useState } from 'react'
 import { DatePickerInput } from '@mantine/dates';
 import { FileUploader } from './FileUploader';
 import { enqueueSnackbar } from 'notistack';
+import ChatPage from './ChatPage';
+import { useDisclosure } from '@mantine/hooks';
 
 const iconStyle = { width: rem(12), height: rem(12) };
 
@@ -36,6 +38,8 @@ const TutorProfile = () => {
 
   const [selLocation, setSelLocation] = useState('');
   const [selSubject, setSelSubject] = useState('');
+
+  const [chatOpened, toggleChat] = useDisclosure(false);
 
   const getPaymentInfo = async () => {
     const res = await fetch(`${import.meta.env.VITE_API_URL}/payment/getbytutor/${currentUser._id}`);
@@ -146,6 +150,9 @@ const TutorProfile = () => {
 
   return (
     <div className='profile-header'>
+      <Drawer opened={chatOpened} onClose={toggleChat.close} title="Chat with Student" position='right'>
+        <ChatPage />
+      </Drawer>
       <div className="container ">
         <div className='dash-head'>
           <h3>Hi, {currentUser.name}, welcome to your dashboard!</h3>
@@ -154,7 +161,13 @@ const TutorProfile = () => {
 
 
         <Card shadow="sm" padding="lg" radius="md" withBorder>
-          <Title order={3}>Number of Students : {paymentList.length}</Title>
+          <Flex justify={'space-between'}>
+
+            <Title order={3}>Number of Students : {paymentList.length}</Title>
+            <Button color='blue' onClick={toggleChat.open} leftSection={<IconMessage size={24} />} variant="filled">
+              Open Chat
+            </Button>
+          </Flex>
 
           {/* <Button variant="filled" mt={'lg'} color="blue">Complete Onboarding</Button>
 

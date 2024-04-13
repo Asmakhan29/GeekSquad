@@ -1,4 +1,4 @@
-import { Badge, Box, Button, Card, CheckIcon, Combobox, Divider, Flex, Grid, Group, Pill, PillsInput, Progress, Stack, Tabs, Text, TextInput, Textarea, Title, rem, useCombobox } from '@mantine/core';
+import { Badge, Box, Button, Card, CheckIcon, Combobox, Divider, Flex, Grid, Group, Pill, PillsInput, Progress, Select, Stack, Tabs, Text, TextInput, Textarea, Title, rem, useCombobox } from '@mantine/core';
 import { IconSettings } from '@tabler/icons-react';
 import { IconMessageCircle, IconPhoto } from '@tabler/icons-react';
 import React, { useEffect, useState } from 'react'
@@ -15,26 +15,24 @@ const grades = [
   'Grades 11-12'
 ];
 
-const curriculams = [
-  'CBSE',
-  'ICSE',
-  'CAMBINT',
-  'IB',
-  'IGCSE',
-  'State Board - AP/TS',
-  'State Board - KA',
-  'State Board - MH',
-  'State Board - TN',
-  'State Board - UP',
-  'Others'
-];
+
+const locations = [
+  'Zone A', 'Zone B', 'Zone C', 'Zone D'
+]
+
+const subjects = [
+  'Maths', 'Science', 'English', 'Social Studies'
+]
 
 const TutorProfile = () => {
 
   const [currentUser, setCurrentUser] = useState(JSON.parse(sessionStorage.getItem('tutor')));
   const [paymentList, setPaymentList] = useState([]);
 
-  const getPaymentInfo = async() => {
+  const [selLocation, setSelLocation] = useState('');
+  const [selSubject, setSelSubject] = useState('');
+
+  const getPaymentInfo = async () => {
     const res = await fetch(`${import.meta.env.VITE_API_URL}/payment/getbytutor/${currentUser._id}`);
     const data = await res.json();
     console.log(data);
@@ -44,9 +42,10 @@ const TutorProfile = () => {
   useEffect(() => {
     getPaymentInfo()
   }, [])
-  
+
 
   const updateProfile = (dataToUpdate) => {
+    dataToUpdate.location = selLocation;
     fetch(`${import.meta.env.VITE_API_URL}/tutor/update/${currentUser._id}`, {
       method: 'PUT',
       headers: {
@@ -61,6 +60,7 @@ const TutorProfile = () => {
           .then((data) => {
             sessionStorage.setItem('tutor', JSON.stringify(data));
             setCurrentUser(data);
+            console.log(data);
           })
       }
     })
@@ -90,9 +90,9 @@ const TutorProfile = () => {
   // }, []);
 
 
-  const getProfileStatus = () => {
-    return
-  }
+  // const getProfileStatus = () => {
+  //   return
+  // }
 
   const gradeCombobox = useCombobox({
     onDropdownClose: () => gradeCombobox.resetSelectedOption(),
@@ -107,41 +107,19 @@ const TutorProfile = () => {
   const [gradeSearch, setGradeSearch] = useState('');
   const [gradeValue, setGradeValue] = useState([]);
 
-  const [curriculamSearch, setCurriculamSearch] = useState('');
-  const [curriculamValue, setCurriculamValue] = useState([]);
-
   const handleValueSelect = (val) =>
     setGradeValue((current) =>
       current.includes(val) ? current.filter((v) => v !== val) : [...current, val]
     );
 
-  const handleCurriculamValueSelect = (val) => {
-    setCurriculamValue((current) =>
-      current.includes(val) ? current.filter((v) => v !== val) : [...current, val]
-    );
-  }
-
-  useEffect(() => {
-    console.log(curriculamValue);
-  }, [curriculamValue])
-
-
 
   const handleGradeValueRemove = (val) =>
     setGradeValue((current) => current.filter((v) => v !== val));
 
-  const handleCurriculamValueRemove = (val) =>
-    setCurriculamValue((current) => current.filter((v) => v !== val));
 
 
   const gradeValues = gradeValue.map((item) => (
     <Pill key={item} withRemoveButton onRemove={() => handleGradeValueRemove(item)}>
-      {item}
-    </Pill>
-  ));
-
-  const curriculamValues = curriculamValue.map((item) => (
-    <Pill key={item} withRemoveButton onRemove={() => handleCurriculamValueRemove(item)}>
       {item}
     </Pill>
   ));
@@ -157,16 +135,7 @@ const TutorProfile = () => {
       </Combobox.Option>
     ));
 
-  const curriculamOptions = curriculams
-    .filter((item) => item.toLowerCase().includes(curriculamSearch.trim().toLowerCase()))
-    .map((item) => (
-      <Combobox.Option value={item} key={item} active={curriculamValue.includes(item)}>
-        <Group gap="sm">
-          {curriculamValue.includes(item) ? <CheckIcon size={12} /> : null}
-          <span>{item}</span>
-        </Group>
-      </Combobox.Option>
-    ));
+
 
   // const personalForm = useForm
 
@@ -179,7 +148,7 @@ const TutorProfile = () => {
 
         <Card shadow="sm" padding="lg" radius="md" withBorder>
           <Title order={3}>Number of Students : {paymentList.length}</Title>
-         
+
           {/* <Button variant="filled" mt={'lg'} color="blue">Complete Onboarding</Button>
 
           <Text mt="lg" size="sm" color="dimmed">
@@ -368,7 +337,7 @@ const TutorProfile = () => {
                   </Combobox>
                 </Box>
 
-                <Box mt={10}>
+                {/* <Box mt={10}>
                   <Title order={3}>Select Curriculam</Title>
                   <Combobox store={curriculamCombobox} onOptionSubmit={handleCurriculamValueSelect}>
                     <Combobox.DropdownTarget>
@@ -404,15 +373,27 @@ const TutorProfile = () => {
                       </Combobox.Options>
                     </Combobox.Dropdown>
                   </Combobox>
-                </Box>
+                </Box> */}
 
                 <Box mt={10}>
 
+                  <Title order={3}>Select Location</Title>
+                  <Select
+                    placeholder="Pick Location"
+                    data={locations}
+                    value={currentUser.location}
+                    onChange={v => setCurrentUser({ ...currentUser, location: v })}
+                  />
+
+                </Box>
+                <Box mt={10}>
+
                   <Title order={3}>Select Subject Taught</Title>
-                  <TextInput
-                    onChange={e => setCurrentUser({ ...currentUser, subject: e.target.value })}
+
+                  <Select
+                    data={subjects}
                     value={currentUser.subject}
-                    placeholder="Subject Taught"
+                    onChange={v => setCurrentUser({ ...currentUser, subject: v })}
                   />
 
                 </Box>

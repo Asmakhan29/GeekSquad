@@ -17,7 +17,7 @@ const ResetPassword = () => {
     const navigate = useNavigate();
 
     const checkMailExists = async () => {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/user/getbymail/${emailRef.current.value}`);
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/tutor/getbymail/${emailRef.current.value}`);
         // console.log(res.status);
         const data = await res.json();
         // console.log(data);
@@ -56,7 +56,7 @@ const ResetPassword = () => {
     }
 
     const updatePassword = async (values) => {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/user/update/${verifiedUser._id}`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/tutor/update/${verifiedUser._id}`, {
             method: 'PUT',
             body: JSON.stringify(values),
             headers: {
@@ -66,7 +66,7 @@ const ResetPassword = () => {
         // console.log(res.status);
         if(res.status === 200) {
             enqueueSnackbar('Password updated successfully', { variant: 'success' });
-            navigate('/login');
+            navigate('/');
         }else{
             enqueueSnackbar('Something went wrong', { variant: 'error' });
         }

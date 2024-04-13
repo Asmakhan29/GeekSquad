@@ -2,10 +2,10 @@ import { Anchor, Button, PasswordInput, Text, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { enqueueSnackbar } from 'notistack';
 import React from 'react'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useTutorContext from '../Context/TutorContext';
 
-const TutorLogin = ({closeModal}) => {
+const TutorLogin = ({ closeModal, setSelForm }) => {
 
   const navigate = useNavigate();
   const { setTutorLoggedIn, setCurrentTutor } = useTutorContext();
@@ -42,7 +42,7 @@ const TutorLogin = ({closeModal}) => {
       navigate('/tutorprofile');
       closeModal();
     } else {
-      enqueueSnackbar('Error registering', { variant: 'error' });
+      enqueueSnackbar('Error logging', { variant: 'error' });
     }
 
   }
@@ -59,6 +59,15 @@ const TutorLogin = ({closeModal}) => {
           {...form.getInputProps('password')}
         />
 
+        <Anchor mt={6} onClick={(e) => {
+          e.preventDefault();
+          closeModal();
+          navigate('/reset-password');
+        }} fw={700} >
+        
+          Forgot Password?
+        </Anchor>
+
         <Button type='submit' fullWidth mt="xl" size="md">
           Login
         </Button>
@@ -66,7 +75,10 @@ const TutorLogin = ({closeModal}) => {
 
       <Text ta="center" mt="md">
         Don&apos;t have an account?{' '}
-        <Anchor href="#" fw={700} onClick={(event) => event.preventDefault()}>
+        <Anchor fw={700} onClick={(event) => {
+          event.preventDefault()
+          setSelForm('Create Account');
+        }}>
           Register
         </Anchor>
       </Text>

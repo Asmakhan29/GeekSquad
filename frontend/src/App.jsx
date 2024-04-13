@@ -22,6 +22,7 @@ import Feedback from './components/Feedback';
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en'
 import PaymentHistory from './components/PaymentHistory';
+import ResetPassword from './components/reset-password';
 
 TimeAgo.addDefaultLocale(en)
 
@@ -43,6 +44,7 @@ function App() {
                 <Routes>
                   <Route path='/' element={<Navigate to="/home" />} />
                   <Route path='/home' element={<Home />} />
+                  <Route path='/reset-password' element={<ResetPassword />} />
                   <Route path='/TermsOfUse' element={<TermsOfUse />} />
                   <Route path='/tutor/:category' element={<ListTutor />} />
                   <Route path='/browse/:subject' element={<BrowseTutor />} />

@@ -210,8 +210,8 @@ export function MainNavbar() {
             </Modal>
             <header className={classes.header}>
                 <Group justify="space-between" h="100%">
-                    <Title order={1} className={classes.logo} style={{ fontSize: '1.5rem' }}>
-                        GeekSquad
+                    <Title order={1} className={classes.logo} style={{ fontSize: '1.5rem' , color: 'rgb(34, 139, 230)'}}>
+                    <i class="fa-solid fa-graduation-cap"></i> GeekSquad
                     </Title>
 
                     <Group h="100%" gap={0} visibleFrom="sm">
@@ -247,20 +247,20 @@ export function MainNavbar() {
                                     {links}
                                 </SimpleGrid>
 
-                                <div className={classes.dropdownFooter}>
-                                    <Group justify="space-between">
-                                        <div>
-                                            <Text fw={500} fz="sm">
-                                                Get started
-                                            </Text>
-                                            <Text size="xs" c="dimmed">
+                                {/* <div className={classes.dropdownFooter}> */}
+                                    {/* <Group justify="space-between"> */}
+                                        {/* <div> */}
+                                            {/* <Text fw={500} fz="sm"> */}
+                                                {/* Get started */}
+                                            {/* </Text> */}
+                                            {/* <Text size="xs" c="dimmed"> */}
                                                 {/* Their food sources have decreased, and their numbers */}
-                                                Connect with tutors to grow in a single click
-                                            </Text>
-                                        </div>
-                                        <Button variant="default">Get started</Button>
-                                    </Group>
-                                </div>
+                                                {/* Connect with tutors to grow in a single click */}
+                                            {/* </Text> */}
+                                        {/* </div> */}
+                                        {/* <Button variant="default">Get started</Button> */}
+                                    {/* </Group> */}
+                                {/* </div> */}
                             </HoverCard.Dropdown>
                         </HoverCard>
                         <a href="#" className={classes.link}>

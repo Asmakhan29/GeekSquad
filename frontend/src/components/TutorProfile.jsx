@@ -21,7 +21,12 @@ const locations = [
 ]
 
 const subjects = [
-  'Maths', 'Science', 'English', 'Social Studies'
+  'Maths',
+  'Physics',
+  'Chemistry',
+  'Computer',
+  'Accountancy',
+  'Economics'
 ]
 
 const TutorProfile = () => {
@@ -143,8 +148,8 @@ const TutorProfile = () => {
     <div className='profile-header'>
       <div className="container ">
         <div className='dash-head'>
-        <h3>Hi, {currentUser.name}, welcome to your dashboard!</h3>
-        <h5>Overview at glance</h5>
+          <h3>Hi, {currentUser.name}, welcome to your dashboard!</h3>
+          <h5>Overview at glance</h5>
         </div>
 
 
@@ -272,9 +277,9 @@ const TutorProfile = () => {
                   <TextInput
                     placeholder="Degree"
                   />
-                  <Textarea
+                  {/* <Textarea
                     placeholder="Institution Details"
-                  />
+                  /> */}
                 </Box>
               </Box>
             </Tabs.Panel>

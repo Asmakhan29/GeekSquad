@@ -133,12 +133,12 @@ const TutorRegister = ({setPage}) => {
                 </Button>
             </form>
 
-            <Text ta="center" mt="md">
+            {/* <Text ta="center" mt="md">
                 Don&apos;t have an account?{' '}
                 <Anchor href="#" fw={700} onClick={(event) => event.preventDefault()}>
                     Register
                 </Anchor>
-            </Text>
+            </Text> */}
         </>
     )
 }

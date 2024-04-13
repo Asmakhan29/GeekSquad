@@ -170,8 +170,8 @@ const BrowseTutor = () => {
             <div className='browse-header'>
 
                 <Container size="md" my={20} py={50} className='browse-container' >
-                    <Title order={1} align="center" mb={20}>Find a Tutor</Title>
-                    <TextInput
+                    <Title order={1} align="center" mb={20} className='find'>Connect with Tutors...</Title>
+                    {/* <TextInput
                         onChange={e => (
                             setTutorList(
                                 masterList.filter(tutor => tutor.name.toLowerCase().includes(e.target.value.toLowerCase()))
@@ -187,7 +187,7 @@ const BrowseTutor = () => {
                                 <IconArrowRight style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
                             </ActionIcon>
                         }
-                    />
+                    /> */}
                 </Container>
             </div>
             <Container size="xl" my={20}>
@@ -195,7 +195,7 @@ const BrowseTutor = () => {
                 <Grid>
                     <Grid.Col span={{ md: 3 }}>
                         <Card shadow="sm" padding="lg" radius="md" withBorder>
-                            <Title order={4} mt={10} mb={5}>Location</Title>
+                            {/* <Title order={4} mt={10} mb={5}>Location</Title>
                             <Stack>
                                 <Checkbox
                                     defaultChecked
@@ -205,7 +205,7 @@ const BrowseTutor = () => {
                                     defaultChecked
                                     label="Student's Home"
                                 />
-                            </Stack>
+                            </Stack> */}
                             <Title order={4} my={10}>Availability</Title>
                             <ActionIcon.Group w={'100%'} mb={10}>
                                 {

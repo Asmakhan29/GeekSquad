@@ -88,7 +88,7 @@ function TutorDetails() {
                   </Button>
                 </Flex>
                 <Divider my={20} />
-                <Text size="xl" fw={'bold'}>Pricing: ₹{tutorDetails.pricing}/hour</Text>
+                <Text size="xl" fw={'bold'}>Fees: ₹{tutorDetails.pricing}/hour</Text>
                 <Text size="lg">Subject: {tutorDetails.subject}</Text>
                 <Text size="lg">Avalaible Days</Text>
                 <ActionIcon.Group my={20}>
@@ -111,7 +111,7 @@ function TutorDetails() {
                   }
                 </ActionIcon.Group>
 
-                <Text size="lg">Preferred Locations: {tutorDetails.preferredLocation.join(',')}</Text>
+                {/* <Text size="lg">Preferred Locations: {tutorDetails.preferredLocation.join(',')}</Text> */}
               </Grid.Col>
             </Grid>
 

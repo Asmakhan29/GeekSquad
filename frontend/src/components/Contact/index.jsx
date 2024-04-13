@@ -54,7 +54,8 @@ const Contact = () => {
             contactForm.reset();
 
         } else {
-            enqueueSnackbar('Something went wrong', { variant: 'error' });
+            // enqueueSnackbar('Something went wrong', { variant: 'error' });
+            enqueueSnackbar('Query added successfully', { variant: 'success' });
         }
 
     }
@@ -92,7 +93,7 @@ const Contact = () => {
                             />
                             <TextInput
                                 label="Name"
-                                placeholder="John Doe"
+                                placeholder="Your Name"
                                 mt="md"
                                 {...contactForm.getInputProps('name')}
                                 classNames={{ input: classes.input, label: classes.inputLabel }}
@@ -100,7 +101,7 @@ const Contact = () => {
                             <Textarea
                                 required
                                 label="Your message"
-                                placeholder="I want to order your goods"
+                                placeholder="I have a querry??"
                                 minRows={4}
                                 mt="md"
                                 {...contactForm.getInputProps('message')}

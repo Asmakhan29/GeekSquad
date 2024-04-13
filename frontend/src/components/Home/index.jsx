@@ -1,10 +1,10 @@
 import { Button, Container, Grid, SimpleGrid, Text, ThemeIcon, Title, rem } from "@mantine/core";
 import classes from './home.module.css';
 import { IconCircleDotted, IconFileCode, IconFlame, IconReceiptOff } from "@tabler/icons-react";
-import { ContactUs } from "../Contact";
 import { Footer } from "../Footer";
 import { Link } from "react-router-dom";
 import { HomeFeatures } from "../HomeFeatures";
+import Contact from "../Contact";
 
 const Home = () => {
 
@@ -97,7 +97,7 @@ const Home = () => {
                 </Container>
             </header>
             <HomeFeatures />
-            <ContactUs />
+            <Contact />
             <Footer />
         </div>
     )

@@ -263,11 +263,8 @@ export function MainNavbar() {
                                 {/* </div> */}
                             </HoverCard.Dropdown>
                         </HoverCard>
-                        <a href="#" className={classes.link}>
-                            Learn
-                        </a>
-                        <a href="#" className={classes.link}>
-                            Academy
+                        <a href="#contact" className={classes.link}>
+                            Contact Us
                         </a>
                     </Group>
                     {

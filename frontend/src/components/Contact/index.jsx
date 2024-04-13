@@ -17,7 +17,7 @@ import { enqueueSnackbar } from 'notistack';
 
 const social = [IconBrandTwitter, IconBrandYoutube, IconBrandInstagram];
 
-export function ContactUs() {
+const Contact = () => {
 
     const contactForm = useForm({
         initialValues: {
@@ -66,7 +66,7 @@ export function ContactUs() {
     ));
 
     return (
-        <div className={classes.wrapper}>
+        <div className={classes.wrapper} id="contact">
             <Container size="lg" >
                 <SimpleGrid cols={{ base: 1, sm: 2 }} spacing={50}>
                     <div>
@@ -117,3 +117,5 @@ export function ContactUs() {
         </div>
     );
 }
+
+export default Contact;

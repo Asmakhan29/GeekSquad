@@ -223,7 +223,7 @@ export function MainNavbar() {
                                 <a href="#" className={classes.link}>
                                     <Center inline>
                                         <Box component="span" mr={5}>
-                                            Features
+                                            Categories
                                         </Box>
                                         <IconChevronDown
                                             style={{ width: rem(16), height: rem(16) }}
@@ -235,7 +235,7 @@ export function MainNavbar() {
 
                             <HoverCard.Dropdown style={{ overflow: 'hidden' }}>
                                 <Group justify="space-between" px="md">
-                                    <Text fw={500}>Features</Text>
+                                    <Text fw={500}>Categories</Text>
                                     <Anchor component={Link} to="/browse" fz="xs">
                                         View all
                                     </Anchor>

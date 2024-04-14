@@ -87,12 +87,16 @@ function TutorDetails() {
                     <Rating value={calculateAverageRating()} size={'lg'} fractions={3} readOnly />
                     <Text size="lg">{reviewList.length} Reviews</Text>
                   </Box>
-                  {/* <Button component={Link} to={"/checkout/" + tutorDetails._id} color='green' leftSection={<IconCoin size={24} />} variant="filled">
-                    Pay Tutor
-                  </Button> */}
-                  <Button disabled={tutorDetails.status === 'not available'} color='blue' w={170} onClick={toggleChat.open} leftSection={<IconMessage size={24} />} variant="filled">
-                    {tutorDetails.status === 'not available' ? 'Not Available' : 'Chat'}
-                  </Button>
+                  <Stack>
+
+                    <Button disabled={tutorDetails.status === 'not available'} color='blue' w={170} onClick={toggleChat.open} leftSection={<IconMessage size={24} />} variant="filled">
+                      {tutorDetails.status === 'not available' ? 'Not Available' : 'Chat'}
+                    </Button>
+                    <Button component={Link} to={"/checkout/" + tutorDetails._id} color='green' leftSection={<IconCoin size={24} />} variant="filled">
+                      Pay Tutor
+                    </Button>
+                  </Stack>
+
                 </Flex>
                 <Divider my={20} />
                 <Text size="xl" fw={'bold'}>Fees: ₹{tutorDetails.pricing}/hour</Text>

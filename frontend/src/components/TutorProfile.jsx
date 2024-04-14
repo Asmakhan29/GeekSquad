@@ -54,7 +54,7 @@ const TutorProfile = () => {
 
 
   const updateProfile = (dataToUpdate, alertMsg="Profile updated successfully") => {
-    dataToUpdate.location = selLocation;
+    // dataToUpdate.location = selLocation;
     fetch(`${import.meta.env.VITE_API_URL}/tutor/update/${currentUser._id}`, {
       method: 'PUT',
       headers: {

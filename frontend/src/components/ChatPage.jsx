@@ -1,4 +1,4 @@
-import { ActionIcon, Flex, Group, Paper, TextInput, rem } from '@mantine/core';
+import { ActionIcon, Flex, Group, Paper, Text, TextInput, rem } from '@mantine/core';
 import { IconArrowRight, IconSearch } from '@tabler/icons-react';
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { io } from "socket.io-client";
@@ -12,47 +12,54 @@ const ChatPage = () => {
 
     const socket = useMemo(() => io("http://localhost:5000"), []);
     const [currentUser, setCurrentUser] = useState(
-        JSON.parse(sessionStorage.getItem("user")) | JSON.parse(localStorage.getItem("tutor"))
-    )
+        JSON.parse(sessionStorage.getItem("user")) || JSON.parse(sessionStorage.getItem("tutor"))
+    );
 
     useEffect(() => {
-        // if (!hasConnected.current) {
-        //     socket.emit("connect-user", currentUser._id);
-        //     hasConnected.current = true;
-        // }
+        if (!hasConnected.current) {
+            socket.emit("connect-user", currentUser._id);
+            hasConnected.current = true;
+        }
     }, [])
-    socket.on("rec-message", ({ senderData, message }) => {
-        console.log({ senderData, message });
-        setMessageList([...messageList, { senderData, message, sent: false }]);
+    socket.on("rec-message", ({ senderData, message, date }) => {
+        console.log({ senderData, message, date });
+        setMessageList([...messageList, { senderData, message, sent: false, date }]);
     })
 
     const sendMessage = () => {
         console.log(messageList);
         socket.emit("send-message", {
             message: messageRef.current.value,
-            senderData: currentUser
+            senderData: currentUser,
+            date: new Date()
         });
-        setMessageList([...messageList, { senderData: currentUser, message: messageRef.current.value, sent: true }]);
+        setMessageList([...messageList, { senderData: currentUser, message: messageRef.current.value, sent: true, date: new Date() }]);
         messageRef.current.value = '';
     }
 
-    
-     
+
+
 
 
     return (
         <Paper h={'90vh'} >
-            <Flex direction={'column'} justify={'end'} mah={'85vh'}>
+            <Flex direction={'column'} justify={'end'} h={'85vh'} style={{overflowY: 'scroll'}}>
                 {
                     messageList.map((message, index) => (
-                        <div key={index} className={`message ${message.sent? 'sent-msg' : 'rec-msg' }`}>
-                            <p>{message.message}</p>
-                        </div>
+                        <>
+                            <div key={index} className={`message ${message.sent ? 'sent-msg' : 'rec-msg'}`} >
+                                <Text fw={'bold'} c={'dimmed'} size='sm'>{message.senderData.name}</Text>
+                                <p className='inner-text'>{message.message}</p>
+                                <Text c={'dimmed'} size='sm'>
+                                    <ReactTimeAgo date={new Date(message.date)} locale="en-US" />
+                                </Text>
+                            </div>
+                        </>
                     ))
                 }
             </Flex>
             <TextInput
-            ref={messageRef}
+                ref={messageRef}
                 mt={'auto'}
                 radius="xl"
                 size="md"

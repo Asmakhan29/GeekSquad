@@ -1,4 +1,4 @@
-import { Badge, Box, Button, Card, CheckIcon, Combobox, Divider, Drawer, Flex, Grid, Group, Pill, PillsInput, Progress, Select, Stack, Tabs, Text, TextInput, Textarea, Title, rem, useCombobox } from '@mantine/core';
+import { Badge, Box, Button, Card, CheckIcon, Combobox, Divider, Drawer, Flex, Grid, Group, Pill, PillsInput, Progress, SegmentedControl, Select, Stack, Tabs, Text, TextInput, Textarea, Title, rem, useCombobox } from '@mantine/core';
 import { IconMessage, IconSettings } from '@tabler/icons-react';
 import { IconMessageCircle, IconPhoto } from '@tabler/icons-react';
 import React, { useEffect, useState } from 'react'
@@ -53,7 +53,7 @@ const TutorProfile = () => {
   }, [])
 
 
-  const updateProfile = (dataToUpdate) => {
+  const updateProfile = (dataToUpdate, alertMsg="Profile updated successfully") => {
     dataToUpdate.location = selLocation;
     fetch(`${import.meta.env.VITE_API_URL}/tutor/update/${currentUser._id}`, {
       method: 'PUT',
@@ -64,7 +64,7 @@ const TutorProfile = () => {
     }).then(res => {
       if (res.status === 200) {
         console.log(res.status);
-        enqueueSnackbar('Profile updated successfully', { variant: 'success' });
+        enqueueSnackbar(alertMsg, { variant: 'success' });
         res.json()
           .then((data) => {
             sessionStorage.setItem('tutor', JSON.stringify(data));
@@ -144,7 +144,18 @@ const TutorProfile = () => {
       </Combobox.Option>
     ));
 
-
+  const getStatusIcon = (status) => {
+    switch (status) {
+      case 'busy':
+        return <Badge color='orange'>Busy</Badge>
+      case 'available':
+        return <Badge color='green'>Available</Badge>
+      case 'not available':
+        return <Badge color='red'>Not Available</Badge>
+      default:
+        return <Badge color='gray'>Unknown</Badge>
+    }
+  }
 
   // const personalForm = useForm
 
@@ -223,6 +234,13 @@ const TutorProfile = () => {
         </Card>
 
         <Card mt={'lg'} shadow="sm" padding="lg" radius="md" withBorder>
+          <Flex align={'center'} gap={10}>
+            <Text size="md" fw={'bold'}>Status: </Text>
+            {getStatusIcon(currentUser.status)}
+            <SegmentedControl data={['available', 'not available', 'busy']} onChange={
+              (v) => {updateProfile({status: v}, "Status updated successfully")}
+            } />
+          </Flex>
           <Title order={2} align="center" my="lg">Edit Your Profile</Title>
           <Button onClick={() => {
             updateProfile(currentUser)

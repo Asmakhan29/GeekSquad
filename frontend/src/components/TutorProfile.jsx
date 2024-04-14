@@ -23,7 +23,12 @@ const locations = [
 ]
 
 const subjects = [
-  'Maths', 'Science', 'English', 'Social Studies'
+  'Maths',
+  'Physics',
+  'Chemistry',
+  'Computer',
+  'Accountancy',
+  'Economics'
 ]
 
 const TutorProfile = () => {
@@ -285,9 +290,9 @@ const TutorProfile = () => {
                   <TextInput
                     placeholder="Degree"
                   />
-                  <Textarea
+                  {/* <Textarea
                     placeholder="Institution Details"
-                  />
+                  /> */}
                 </Box>
               </Box>
             </Tabs.Panel>

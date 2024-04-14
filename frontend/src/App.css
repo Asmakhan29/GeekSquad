@@ -44,26 +44,6 @@ input{
 .dash-head{
     color:#ffff
 }
-
-.message{
-    padding: 10px 20px;
-    max-width: 60%;
-    color: white;
-    margin-bottom: 10px;
-    width: fit-content;
-}
-
-.message p{
-    margin: 0;
-}
-
-.sent-msg{
-    background-color: #00ad59;
-    border-radius: 20px 20px 20px 4px;
-    margin-left: auto;
-}
-
-.rec-msg{
-    background-color: #006dac;
-    border-radius:  20px 20px 4px 20px;
+.find{
+    color:#ffff
 }

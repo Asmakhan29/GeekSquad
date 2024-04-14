@@ -1,7 +1,7 @@
 import { ActionIcon, Flex, Group, Paper, TextInput, rem } from '@mantine/core';
 import { IconArrowRight, IconSearch } from '@tabler/icons-react';
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { io } from "socket.io-client";cd
+import { io } from "socket.io-client";
 
 const ChatPage = () => {
     const hasConnected = useRef(false);

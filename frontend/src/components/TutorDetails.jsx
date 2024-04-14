@@ -67,7 +67,7 @@ function TutorDetails() {
           />
           <Container mt={'lg'}>
             <Grid gutter={30}>
-              <Grid.Col span={{ sm: 12, md: 4 }}>
+              <Grid.Col span={{ sm: 12, md: 3 }}>
 
                 <Image
                   src={`${import.meta.env.VITE_API_URL}/${tutorDetails.avatar}`}
@@ -76,7 +76,7 @@ function TutorDetails() {
                   className={classes.avatar}
                 />
               </Grid.Col>
-              <Grid.Col span={{ sm: 12, md: 8 }}>
+              <Grid.Col span={{ sm: 12, md: 9 }}>
                 <Flex justify="space-between">
                   <Box>
 
@@ -90,8 +90,8 @@ function TutorDetails() {
                   {/* <Button component={Link} to={"/checkout/" + tutorDetails._id} color='green' leftSection={<IconCoin size={24} />} variant="filled">
                     Pay Tutor
                   </Button> */}
-                  <Button color='blue' onClick={toggleChat.open} leftSection={<IconMessage size={24} />} variant="filled">
-                    Chat with Tutor
+                  <Button disabled={tutorDetails.status === 'not available'} color='blue' w={170} onClick={toggleChat.open} leftSection={<IconMessage size={24} />} variant="filled">
+                    {tutorDetails.status === 'not available' ? 'Not Available' : 'Chat'}
                   </Button>
                 </Flex>
                 <Divider my={20} />

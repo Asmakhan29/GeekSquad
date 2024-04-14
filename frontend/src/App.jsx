@@ -35,7 +35,7 @@ const theme = createTheme({
 function App() {
   return (
     <>
-      <MantineProvider theme={theme} defaultColorScheme="light">
+      <MantineProvider theme={theme} defaultColorScheme="dark">
         <SnackbarProvider anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
           <BrowserRouter>
 

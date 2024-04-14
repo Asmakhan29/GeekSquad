@@ -44,7 +44,7 @@ const PaymentGateway = ({tutorid}) => {
     };
 
     return (
-        <Card withBorder p={30} mt={30}>
+        <Card withBorder p={30} mt={30} style={{backgroundColor: '#333'}}>
             
             <form onSubmit={handleSubmit}>
                 <Title order={3} my={30} mx="auto">Secure Payment Gateway</Title>

@@ -31,13 +31,14 @@ const subjects = [
   'Economics'
 ]
 
+const availability = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+
+const timings = ['6AM-9AM', '9AM-12PM', '12PM-3PM', '3PM-6PM', '6PM-9PM', '9PM-12AM'];
+
 const TutorProfile = () => {
 
   const [currentUser, setCurrentUser] = useState(JSON.parse(sessionStorage.getItem('tutor')));
   const [paymentList, setPaymentList] = useState([]);
-
-  const [selLocation, setSelLocation] = useState('');
-  const [selSubject, setSelSubject] = useState('');
 
   const [chatOpened, toggleChat] = useDisclosure(false);
 
@@ -49,12 +50,14 @@ const TutorProfile = () => {
   }
 
   useEffect(() => {
-    getPaymentInfo()
+    getPaymentInfo();
+    setAvailabilityValue(currentUser.availability);
+    setTimingsValue(currentUser.timings);
   }, [])
 
 
-  const updateProfile = (dataToUpdate, alertMsg="Profile updated successfully") => {
-    // dataToUpdate.location = selLocation;
+  const updateProfile = (dataToUpdate, alertMsg = "Profile updated successfully") => {
+    dataToUpdate.gra
     fetch(`${import.meta.env.VITE_API_URL}/tutor/update/${currentUser._id}`, {
       method: 'PUT',
       headers: {
@@ -113,22 +116,83 @@ const TutorProfile = () => {
     onDropdownOpen: () => curriculamCombobox.updateSelectedOptionIndex('active'),
   });
 
+  const availabilityCombobox = useCombobox({
+    onDropdownClose: () => availabilityCombobox.resetSelectedOption(),
+    onDropdownOpen: () => availabilityCombobox.updateSelectedOptionIndex('active'),
+  });
+
+  const timingsCombobox = useCombobox({
+    onDropdownClose: () => timingsCombobox.resetSelectedOption(),
+    onDropdownOpen: () => timingsCombobox.updateSelectedOptionIndex('active'),
+  });
+
+
+
   const [gradeSearch, setGradeSearch] = useState('');
   const [gradeValue, setGradeValue] = useState([]);
 
-  const handleValueSelect = (val) =>
+  const [availabilitySearch, setAvailabilitySearch] = useState('');
+  const [availabilityValue, setAvailabilityValue] = useState([]);
+
+  const [timingsSearch, setTimingsSearch] = useState('');
+  const [timingsValue, setTimingsValue] = useState([]);
+
+  useEffect(() => {
+    console.log(availabilityValue);
+    setCurrentUser({ ...currentUser, availability: availabilityValue });
+  }, [availabilityValue]);
+
+  useEffect(() => {
+    setCurrentUser({ ...currentUser, timings: timingsValue });
+  }, [timingsValue]);
+
+
+
+  const handleValueSelect = (val) => {
     setGradeValue((current) =>
       current.includes(val) ? current.filter((v) => v !== val) : [...current, val]
     );
+  }
 
 
   const handleGradeValueRemove = (val) =>
     setGradeValue((current) => current.filter((v) => v !== val));
 
+  const handleAvailabilityValueSelect = (val) => {
+    setAvailabilityValue((current) =>
+      current.includes(val) ? current.filter((v) => v !== val) : [...current, val]
+    )
+  }
+
+  const handleAvailabilityValueRemove = (val) =>
+    setAvailabilityValue((current) => current.filter((v) => v !== val));
+
+  const handleTimingsValueSelect = (val) => {
+    setTimingsValue((current) =>
+      current.includes(val) ? current.filter((v) => v !== val) : [...current, val]
+    )
+  }
+
+  const handleTimingsValueRemove = (val) =>
+
+    setTimingsValue((current) => current.filter((v) => v !== val));
 
 
   const gradeValues = gradeValue.map((item) => (
     <Pill key={item} withRemoveButton onRemove={() => handleGradeValueRemove(item)}>
+      {item}
+    </Pill>
+  ));
+
+  const availabilityValues = availabilityValue.map((item) => (
+
+    <Pill key={item} withRemoveButton onRemove={() => handleAvailabilityValueRemove(item)}>
+      {item}
+    </Pill>
+  ));
+
+  const timingsValues = timingsValue.map((item) => (
+    <Pill key={item} withRemoveButton onRemove={() => handleTimingsValueRemove(item)}>
       {item}
     </Pill>
   ));
@@ -143,6 +207,30 @@ const TutorProfile = () => {
         </Group>
       </Combobox.Option>
     ));
+
+  const availabilityOptions = availability
+    .filter((item) => item.toLowerCase().includes(availabilitySearch.trim().toLowerCase()))
+    .map((item) => (
+      <Combobox.Option value={item} key={item} active={availabilityValue.includes(item)}>
+        <Group gap="sm">
+          {availabilityValue.includes(item) ? <CheckIcon size={12} /> : null}
+          <span>{item}</span>
+        </Group>
+      </Combobox.Option>
+    ));
+
+  const timingsOptions = timings
+    .filter((item) => item.toLowerCase().includes(timingsSearch.trim().toLowerCase()))
+    .map((item) => (
+      <Combobox.Option value={item} key={item} active={timingsValue.includes(item)}>
+        <Group gap="sm">
+          {timingsValue.includes(item) ? <CheckIcon size={12} /> : null}
+          <span>{item}</span>
+        </Group>
+      </Combobox.Option>
+    ));
+
+
 
   const getStatusIcon = (status) => {
     switch (status) {
@@ -238,7 +326,7 @@ const TutorProfile = () => {
             <Text size="md" fw={'bold'}>Status: </Text>
             {getStatusIcon(currentUser.status)}
             <SegmentedControl data={['available', 'not available', 'busy']} onChange={
-              (v) => {updateProfile({status: v}, "Status updated successfully")}
+              (v) => { updateProfile({ status: v }, "Status updated successfully") }
             } />
           </Flex>
           <Title order={2} align="center" my="lg">Edit Your Profile</Title>
@@ -344,7 +432,6 @@ const TutorProfile = () => {
                       <PillsInput onClick={() => gradeCombobox.openDropdown()}>
                         <Pill.Group>
                           {gradeValues}
-
                           <Combobox.EventsTarget>
                             <PillsInput.Field
                               onFocus={() => gradeCombobox.openDropdown()}
@@ -374,6 +461,87 @@ const TutorProfile = () => {
                     </Combobox.Dropdown>
                   </Combobox>
                 </Box>
+
+                <Box mb={10}>
+                  <Title order={3}>Select Availability</Title>
+                  <Combobox store={availabilityCombobox} onOptionSubmit={handleAvailabilityValueSelect}>
+                    <Combobox.DropdownTarget>
+                      <PillsInput onClick={() => availabilityCombobox.openDropdown()}>
+                        <Pill.Group>
+                          {availabilityValues}
+
+                          <Combobox.EventsTarget>
+                            <PillsInput.Field
+                              onFocus={() => availabilityCombobox.openDropdown()}
+                              onBlur={() => availabilityCombobox.closeDropdown()}
+                              value={availabilitySearch}
+                              placeholder="Search Availability"
+                              onChange={(event) => {
+                                availabilityCombobox.updateSelectedOptionIndex();
+                                setAvailabilitySearch(event.currentTarget.value);
+                              }}
+
+                              onKeyDown={(event) => {
+                                if (event.key === 'Backspace' && search.length === 0) {
+                                  event.preventDefault();
+                                  handleAvailabilityValueRemove(value[value.length - 1]);
+                                }
+                              }}
+                            />
+                          </Combobox.EventsTarget>
+                        </Pill.Group>
+                      </PillsInput>
+                    </Combobox.DropdownTarget>
+
+
+                    <Combobox.Dropdown>
+                      <Combobox.Options>
+                        {availabilityOptions.length > 0 ? availabilityOptions : <Combobox.Empty>Nothing found...</Combobox.Empty>}
+                      </Combobox.Options>
+                    </Combobox.Dropdown>
+                  </Combobox>
+                </Box>
+
+                <Box mb={10}>
+                  <Title order={3}>Select Timings</Title>
+                  <Combobox store={timingsCombobox} onOptionSubmit={handleTimingsValueSelect}>
+                    <Combobox.DropdownTarget>
+                      <PillsInput onClick={() => timingsCombobox.openDropdown()}>
+                        <Pill.Group>
+                          {timingsValues}
+
+                          <Combobox.EventsTarget>
+                            <PillsInput.Field
+                              onFocus={() => timingsCombobox.openDropdown()}
+                              onBlur={() => timingsCombobox.closeDropdown()}
+                              value={timingsSearch}
+                              placeholder="Search Timings"
+                              onChange={(event) => {
+                                timingsCombobox.updateSelectedOptionIndex();
+                                setTimingsSearch(event.currentTarget.value);
+                              }}
+
+                              onKeyDown={(event) => {
+                                if (event.key === 'Backspace' && search.length === 0) {
+                                  event.preventDefault();
+                                  handleTimingsValueRemove(value[value.length - 1]);
+                                }
+                              }}
+                            />
+                          </Combobox.EventsTarget>
+                        </Pill.Group>
+                      </PillsInput>
+                    </Combobox.DropdownTarget>
+
+                    <Combobox.Dropdown>
+                      <Combobox.Options>
+                        {timingsOptions.length > 0 ? timingsOptions : <Combobox.Empty>Nothing found...</Combobox.Empty>}
+                      </Combobox.Options>
+                    </Combobox.Dropdown>
+                  </Combobox>
+                </Box>
+
+
 
                 {/* <Box mt={10}>
                   <Title order={3}>Select Curriculam</Title>

@@ -83,6 +83,7 @@ function TutorDetails() {
                     <Text size="lg" fw={'bold'}>{tutorDetails.experience}+ years of experience</Text>
                     <Title order={1}>{tutorDetails.name}</Title>
                     <Text size="lg" c={'dimmed'}> <IconAt /> {tutorDetails.email}</Text>
+                    <Text size="lg">Location : {tutorDetails.location || 'Not Provided'}</Text>
                     <Text size="lg">{tutorDetails.description}</Text>
                     <Rating value={calculateAverageRating()} size={'lg'} fractions={3} readOnly />
                     <Text size="lg">{reviewList.length} Reviews</Text>

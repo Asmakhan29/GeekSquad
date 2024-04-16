@@ -1,4 +1,4 @@
-import { ActionIcon, Flex, Group, Paper, Text, TextInput, rem } from '@mantine/core';
+import { ActionIcon, Avatar, Box, Flex, Group, Paper, Text, TextInput, Tooltip, rem } from '@mantine/core';
 import { IconArrowRight, IconSearch } from '@tabler/icons-react';
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { io } from "socket.io-client";
@@ -11,10 +11,17 @@ const ChatPage = () => {
 
     const [messageList, setMessageList] = useState([]);
 
+    const [contactList, setContactList] = useState([]);
+
     const socket = useMemo(() => io("http://localhost:5000"), []);
     const [currentUser, setCurrentUser] = useState(
         JSON.parse(sessionStorage.getItem("user")) || JSON.parse(sessionStorage.getItem("tutor"))
     );
+
+    const checkNewContact = (id) => {
+        return contactList.find(contact => contact._id === id)
+    }
+
 
     useEffect(() => {
         if (!hasConnected.current) {
@@ -22,8 +29,27 @@ const ChatPage = () => {
             hasConnected.current = true;
         }
     }, [])
+
+    useEffect(() => {
+        if (currentUser.role === 'tutor') {
+            const contacts = localStorage.getItem('tutor-contacts');
+            if (contacts) {
+                setContactList(JSON.parse(contacts))
+            }
+        }
+    }, []);
+
+    useEffect(() => {
+        if(contactList.length)
+        localStorage.setItem('tutor-contacts', JSON.stringify(contactList));
+    }, [contactList])
+
+
     socket.on("rec-message", ({ senderData, message, date }) => {
         console.log({ senderData, message, date });
+        if (!checkNewContact(senderData)) {
+            setContactList([...contactList, senderData])
+        }
         setMessageList([...messageList, { senderData, message, sent: false, date }]);
     })
 
@@ -38,13 +64,32 @@ const ChatPage = () => {
         messageRef.current.value = '';
     }
 
-
+    const displayContacts = () => {
+        return <Flex columnGap={20} style={{width: '25rem', overflowX: 'auto'}}>
+            {
+                contactList.map(contact => (
+                    <Tooltip label={contact.email}>
+                        <Box align="center">
+                            <Avatar src="avatar.png" alt={contact.email} />
+                            <Text size='sm'>{contact.email.split('@')[0]}</Text>
+                        </Box>
+                    </Tooltip>
+                ))
+            }
+            
+        </Flex>
+    }
 
 
 
     return (
         <Paper h={'90vh'} >
-            <Flex direction={'column'} justify={'end'} h={'85vh'} style={{overflowY: 'scroll'}}>
+            {
+                currentUser.role === 'tutor' && (
+                    displayContacts()
+                )
+            }
+            <Flex direction={'column'} justify={'end'} h={'85vh'} style={{ overflowY: 'scroll' }}>
                 {
                     messageList.map((message, index) => (
                         <>

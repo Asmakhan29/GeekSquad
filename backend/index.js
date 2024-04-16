@@ -72,9 +72,12 @@ io.on("connection", (socket) => {
     console.log(connectedUsers);
   })
 
-  socket.on("send-message", ({ senderData, message, date }) => {
+  socket.on("send-message", ({ senderData, message, date, rec_id }) => {
     console.log({ senderData, message, date });
-    socket.broadcast.emit("rec-message", {senderData, message, date});
+    // socket.broadcast.emit("rec-message", {senderData, message, date});
+    if (connectedUsers[rec_id]) {
+      io.to(connectedUsers[rec_id]).emit("rec-message", { senderData, message, date });
+    }
   });
 
   socket.on("disconnect", () => {

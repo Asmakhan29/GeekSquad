@@ -93,9 +93,9 @@ function TutorDetails() {
                     <Button disabled={tutorDetails.status === 'not available'} color='blue' w={170} onClick={toggleChat.open} leftSection={<IconMessage size={24} />} variant="filled">
                       {tutorDetails.status === 'not available' ? 'Not Available' : 'Chat'}
                     </Button>
-                    <Button component={Link} to={"/checkout/" + tutorDetails._id} color='green' leftSection={<IconCoin size={24} />} variant="filled">
+                    {/* <Button component={Link} to={"/checkout/" + tutorDetails._id} color='green' leftSection={<IconCoin size={24} />} variant="filled">
                       Pay Tutor
-                    </Button>
+                    </Button> */}
                   </Stack>
 
                 </Flex>
@@ -230,7 +230,7 @@ function TutorDetails() {
   return (
     <Box>
       <Drawer opened={chatOpened} onClose={toggleChat.close} title="Chat with Tutor" position='right'>
-        <ChatPage />
+        <ChatPage tutorData={tutorDetails} />
       </Drawer>
       <Container size={'xl'}>
         {displayTutorDetails()}

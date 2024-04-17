@@ -83,7 +83,8 @@ const TutorRegister = ({setPage}) => {
             if (res.status === 200) {
                 enqueueSnackbar('Registered successfully', { variant: 'success' });
                 // setPage('Login')
-                window.location.href = 'https://buy.stripe.com/test_cN24kecja6gwgPmeV1';
+                // window.location.href = 'https://buy.stripe.com/test_cN24kecja6gwgPmeV1';
+                window.location.href = 'https://buy.stripe.com/test_7sI6rt55daF2fAY4gh';
             } else {
                 enqueueSnackbar('Error registering', { variant: 'error' });
             }

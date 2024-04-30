@@ -20,9 +20,9 @@ input{
     outline: none;
 }
 
-#mega-menu-full-dropdown{
+/* #mega-menu-full-dropdown{
     /* display: none; */
-}
+/* } */ 
 
 #mega-menu-full-dropdown-button:hover #mega-menu-full-dropdown{
     display: block;
@@ -76,4 +76,7 @@ input{
 
 .sent-msg{
     margin-left: auto;
+}
+.pay-white{
+    color:#ffff
 }

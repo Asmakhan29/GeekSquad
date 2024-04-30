@@ -18,6 +18,7 @@ import React, { useState } from 'react'
 import { useInputState } from '@mantine/hooks';
 import { IconCheck, IconX } from '@tabler/icons-react';
 import { enqueueSnackbar } from 'notistack';
+import { useNavigate } from 'react-router-dom';
 
 function PasswordRequirement({ meets, label }) {
     return (
@@ -51,7 +52,7 @@ function getStrength(password) {
 
 const TutorRegister = ({setPage}) => {
 
-
+    const navigate = useNavigate();
 
     const form = useForm({
         initialValues: {
@@ -81,7 +82,9 @@ const TutorRegister = ({setPage}) => {
 
             if (res.status === 200) {
                 enqueueSnackbar('Registered successfully', { variant: 'success' });
-                setPage('Login')
+                // setPage('Login')
+                // window.location.href = 'https://buy.stripe.com/test_cN24kecja6gwgPmeV1';
+                window.location.href = 'https://buy.stripe.com/test_7sI6rt55daF2fAY4gh';
             } else {
                 enqueueSnackbar('Error registering', { variant: 'error' });
             }

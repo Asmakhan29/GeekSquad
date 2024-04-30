@@ -2,6 +2,7 @@ import { Button, TextInput, Title } from '@mantine/core';
 import { enqueueSnackbar } from 'notistack';
 import React, { useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
+import useUserContext from '../Context/UserContext';
 
 const UserAuthenticate = ({closeModal}) => {
 
@@ -9,6 +10,7 @@ const UserAuthenticate = ({closeModal}) => {
   const otpRef = useRef(null);
 
   const [otpSent, setOtpSent] = useState(false);
+  const {setLoggedIn, setCurrentUser} = useUserContext();
 
   const navigate = useNavigate();
 
@@ -33,6 +35,7 @@ const UserAuthenticate = ({closeModal}) => {
     console.log(res.status);
     if(res.status === 200){
       authenticateUser();
+      // sendOTP();
     }
   }
 
@@ -43,6 +46,8 @@ const UserAuthenticate = ({closeModal}) => {
       // perform login
       const data = await res.json();
       sessionStorage.setItem('user', JSON.stringify(data));
+      setCurrentUser(data);
+      setLoggedIn(true);
       enqueueSnackbar('Logged In Successfully', { variant: 'success' });
       navigate('/browse');
       closeModal();
@@ -81,7 +86,7 @@ const UserAuthenticate = ({closeModal}) => {
         <Button
           fullWidth
           mt={20}
-          onClick={authenticateUser}
+          onClick={sendOTP}
           type="submit"
         >
           Send OTP

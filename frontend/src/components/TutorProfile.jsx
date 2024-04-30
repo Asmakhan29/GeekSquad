@@ -1,10 +1,12 @@
-import { Badge, Box, Button, Card, CheckIcon, Combobox, Divider, Flex, Grid, Group, Pill, PillsInput, Progress, Stack, Tabs, Text, TextInput, Textarea, Title, rem, useCombobox } from '@mantine/core';
-import { IconSettings } from '@tabler/icons-react';
+import { Badge, Box, Button, Card, CheckIcon, Combobox, Divider, Drawer, Flex, Grid, Group, Pill, PillsInput, Progress, SegmentedControl, Select, Stack, Tabs, Text, TextInput, Textarea, Title, rem, useCombobox } from '@mantine/core';
+import { IconMessage, IconSettings } from '@tabler/icons-react';
 import { IconMessageCircle, IconPhoto } from '@tabler/icons-react';
 import React, { useEffect, useState } from 'react'
 import { DatePickerInput } from '@mantine/dates';
 import { FileUploader } from './FileUploader';
 import { enqueueSnackbar } from 'notistack';
+import ChatPage from './ChatPage';
+import { useDisclosure } from '@mantine/hooks';
 
 const iconStyle = { width: rem(12), height: rem(12) };
 
@@ -12,30 +14,50 @@ const grades = [
   'Pre-Primary',
   'Grades 1-5',
   'Grades 6-10',
-  'Grades 11-12',
-  'UG',
-  'PG & Above'
+  'Grades 11-12'
 ];
 
-const curriculams = [
-  'CBSE',
-  'ICSE',
-  'CAMBINT',
-  'IB',
-  'IGCSE',
-  'State Board - AP/TS',
-  'State Board - KA',
-  'State Board - MH',
-  'State Board - TN',
-  'State Board - UP',
-  'Others'
-];
+
+const locations = [
+  'Zone A', 'Zone B', 'Zone C', 'Zone D'
+]
+
+const subjects = [
+  'Maths',
+  'Physics',
+  'Chemistry',
+  'Computer',
+  'Accountancy',
+  'Economics'
+]
+
+const availability = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+
+const timings = ['6AM-9AM', '9AM-12PM', '12PM-3PM', '3PM-6PM', '6PM-9PM', '9PM-12AM'];
 
 const TutorProfile = () => {
 
   const [currentUser, setCurrentUser] = useState(JSON.parse(sessionStorage.getItem('tutor')));
+  const [paymentList, setPaymentList] = useState([]);
 
-  const updateProfile = (dataToUpdate) => {
+  const [chatOpened, toggleChat] = useDisclosure(false);
+
+  const getPaymentInfo = async () => {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/payment/getbytutor/${currentUser._id}`);
+    const data = await res.json();
+    console.log(data);
+    setPaymentList(data);
+  }
+
+  useEffect(() => {
+    getPaymentInfo();
+    setAvailabilityValue(currentUser.availability);
+    setTimingsValue(currentUser.timings);
+  }, [])
+
+
+  const updateProfile = (dataToUpdate, alertMsg = "Profile updated successfully") => {
+    dataToUpdate.gra
     fetch(`${import.meta.env.VITE_API_URL}/tutor/update/${currentUser._id}`, {
       method: 'PUT',
       headers: {
@@ -45,11 +67,12 @@ const TutorProfile = () => {
     }).then(res => {
       if (res.status === 200) {
         console.log(res.status);
-        enqueueSnackbar('Profile updated successfully', { variant: 'success' });
+        enqueueSnackbar(alertMsg, { variant: 'success' });
         res.json()
           .then((data) => {
             sessionStorage.setItem('tutor', JSON.stringify(data));
             setCurrentUser(data);
+            console.log(data);
           })
       }
     })
@@ -79,9 +102,9 @@ const TutorProfile = () => {
   // }, []);
 
 
-  const getProfileStatus = () => {
-    return
-  }
+  // const getProfileStatus = () => {
+  //   return
+  // }
 
   const gradeCombobox = useCombobox({
     onDropdownClose: () => gradeCombobox.resetSelectedOption(),
@@ -93,34 +116,66 @@ const TutorProfile = () => {
     onDropdownOpen: () => curriculamCombobox.updateSelectedOptionIndex('active'),
   });
 
+  const availabilityCombobox = useCombobox({
+    onDropdownClose: () => availabilityCombobox.resetSelectedOption(),
+    onDropdownOpen: () => availabilityCombobox.updateSelectedOptionIndex('active'),
+  });
+
+  const timingsCombobox = useCombobox({
+    onDropdownClose: () => timingsCombobox.resetSelectedOption(),
+    onDropdownOpen: () => timingsCombobox.updateSelectedOptionIndex('active'),
+  });
+
+
+
   const [gradeSearch, setGradeSearch] = useState('');
   const [gradeValue, setGradeValue] = useState([]);
 
-  const [curriculamSearch, setCurriculamSearch] = useState('');
-  const [curriculamValue, setCurriculamValue] = useState([]);
+  const [availabilitySearch, setAvailabilitySearch] = useState('');
+  const [availabilityValue, setAvailabilityValue] = useState([]);
 
-  const handleValueSelect = (val) =>
+  const [timingsSearch, setTimingsSearch] = useState('');
+  const [timingsValue, setTimingsValue] = useState([]);
+
+  useEffect(() => {
+    console.log(availabilityValue);
+    setCurrentUser({ ...currentUser, availability: availabilityValue });
+  }, [availabilityValue]);
+
+  useEffect(() => {
+    setCurrentUser({ ...currentUser, timings: timingsValue });
+  }, [timingsValue]);
+
+
+
+  const handleValueSelect = (val) => {
     setGradeValue((current) =>
       current.includes(val) ? current.filter((v) => v !== val) : [...current, val]
     );
-
-  const handleCurriculamValueSelect = (val) => {
-    setCurriculamValue((current) =>
-      current.includes(val) ? current.filter((v) => v !== val) : [...current, val]
-    );
   }
-
-  useEffect(() => {
-    console.log(curriculamValue);
-  }, [curriculamValue])
-
 
 
   const handleGradeValueRemove = (val) =>
     setGradeValue((current) => current.filter((v) => v !== val));
 
-  const handleCurriculamValueRemove = (val) =>
-    setCurriculamValue((current) => current.filter((v) => v !== val));
+  const handleAvailabilityValueSelect = (val) => {
+    setAvailabilityValue((current) =>
+      current.includes(val) ? current.filter((v) => v !== val) : [...current, val]
+    )
+  }
+
+  const handleAvailabilityValueRemove = (val) =>
+    setAvailabilityValue((current) => current.filter((v) => v !== val));
+
+  const handleTimingsValueSelect = (val) => {
+    setTimingsValue((current) =>
+      current.includes(val) ? current.filter((v) => v !== val) : [...current, val]
+    )
+  }
+
+  const handleTimingsValueRemove = (val) =>
+
+    setTimingsValue((current) => current.filter((v) => v !== val));
 
 
   const gradeValues = gradeValue.map((item) => (
@@ -129,8 +184,15 @@ const TutorProfile = () => {
     </Pill>
   ));
 
-  const curriculamValues = curriculamValue.map((item) => (
-    <Pill key={item} withRemoveButton onRemove={() => handleCurriculamValueRemove(item)}>
+  const availabilityValues = availabilityValue.map((item) => (
+
+    <Pill key={item} withRemoveButton onRemove={() => handleAvailabilityValueRemove(item)}>
+      {item}
+    </Pill>
+  ));
+
+  const timingsValues = timingsValue.map((item) => (
+    <Pill key={item} withRemoveButton onRemove={() => handleTimingsValueRemove(item)}>
       {item}
     </Pill>
   ));
@@ -146,36 +208,67 @@ const TutorProfile = () => {
       </Combobox.Option>
     ));
 
-  const curriculamOptions = curriculams
-    .filter((item) => item.toLowerCase().includes(curriculamSearch.trim().toLowerCase()))
+  const availabilityOptions = availability
+    .filter((item) => item.toLowerCase().includes(availabilitySearch.trim().toLowerCase()))
     .map((item) => (
-      <Combobox.Option value={item} key={item} active={curriculamValue.includes(item)}>
+      <Combobox.Option value={item} key={item} active={availabilityValue.includes(item)}>
         <Group gap="sm">
-          {curriculamValue.includes(item) ? <CheckIcon size={12} /> : null}
+          {availabilityValue.includes(item) ? <CheckIcon size={12} /> : null}
           <span>{item}</span>
         </Group>
       </Combobox.Option>
     ));
 
+  const timingsOptions = timings
+    .filter((item) => item.toLowerCase().includes(timingsSearch.trim().toLowerCase()))
+    .map((item) => (
+      <Combobox.Option value={item} key={item} active={timingsValue.includes(item)}>
+        <Group gap="sm">
+          {timingsValue.includes(item) ? <CheckIcon size={12} /> : null}
+          <span>{item}</span>
+        </Group>
+      </Combobox.Option>
+    ));
+
+
+
+  const getStatusIcon = (status) => {
+    switch (status) {
+      case 'busy':
+        return <Badge color='orange'>Busy</Badge>
+      case 'available':
+        return <Badge color='green'>Available</Badge>
+      case 'not available':
+        return <Badge color='red'>Not Available</Badge>
+      default:
+        return <Badge color='gray'>Unknown</Badge>
+    }
+  }
+
   // const personalForm = useForm
 
   return (
     <div className='profile-header'>
+      <Drawer opened={chatOpened} onClose={toggleChat.close} title="Chat with Student" position='right'>
+        <ChatPage />
+      </Drawer>
       <div className="container ">
-        <h3>Hi, {currentUser.name}, welcome to your dashboard!</h3>
-        <h5>Overview at glance</h5>
+        <div className='dash-head'>
+          <h3>Hi, {currentUser.name}, welcome to your dashboard!</h3>
+          <h5>Overview at glance</h5>
+        </div>
 
 
         <Card shadow="sm" padding="lg" radius="md" withBorder>
-          <Title order={2}>Onboarding</Title>
-          <Badge
-            size="md"
-            variant="gradient"
-            gradient={{ from: 'pink', to: 'pink', deg: 90 }}
-          >
-            Profile is not live
-          </Badge>
-          <Button variant="filled" mt={'lg'} color="blue">Complete Onboarding</Button>
+          <Flex justify={'space-between'}>
+
+            <Title order={3}>Number of Students : {paymentList.length}</Title>
+            <Button color='blue' onClick={toggleChat.open} leftSection={<IconMessage size={24} />} variant="filled">
+              Open Chat
+            </Button>
+          </Flex>
+
+          {/* <Button variant="filled" mt={'lg'} color="blue">Complete Onboarding</Button>
 
           <Text mt="lg" size="sm" color="dimmed">
             You must complete all mandatory fields marked red in each of the sections below to be “Live”. You will be visible to students only if your profile is Live.
@@ -225,10 +318,17 @@ const TutorProfile = () => {
             <Grid.Col span={{ md: 4, sm: 12 }}>
               <Button fullWidth variant="outline" color="blue">Add Working Hours</Button>
             </Grid.Col>
-          </Grid>
+          </Grid> */}
         </Card>
 
         <Card mt={'lg'} shadow="sm" padding="lg" radius="md" withBorder>
+          <Flex align={'center'} gap={10}>
+            <Text size="md" fw={'bold'}>Status: </Text>
+            {getStatusIcon(currentUser.status)}
+            <SegmentedControl data={['available', 'not available', 'busy']} onChange={
+              (v) => { updateProfile({ status: v }, "Status updated successfully") }
+            } />
+          </Flex>
           <Title order={2} align="center" my="lg">Edit Your Profile</Title>
           <Button onClick={() => {
             updateProfile(currentUser)
@@ -241,9 +341,9 @@ const TutorProfile = () => {
               <Tabs.Tab value="teaching" leftSection={<IconMessageCircle style={iconStyle} />}>
                 Teaching
               </Tabs.Tab>
-              <Tabs.Tab value="settings" leftSection={<IconSettings style={iconStyle} />}>
+              {/* <Tabs.Tab value="settings" leftSection={<IconSettings style={iconStyle} />}>
                 Settings
-              </Tabs.Tab>
+              </Tabs.Tab> */}
             </Tabs.List>
 
             <Tabs.Panel value="personal">
@@ -264,7 +364,7 @@ const TutorProfile = () => {
                   </Grid>
                 </Box>
 
-                <Box mb={10}>
+                {/* <Box mb={10}>
                   <Title order={3}>Cover Picture</Title>
                   <Grid>
                     <Grid.Col span={{ md: 6, sm: 12 }}>
@@ -279,7 +379,7 @@ const TutorProfile = () => {
                       } label={'Upload Cover Image'} />
                     </Grid.Col>
                   </Grid>
-                </Box>
+                </Box> */}
 
                 <Box mb={10}>
                   <Title order={3}>Bio</Title>
@@ -296,9 +396,9 @@ const TutorProfile = () => {
                   <TextInput
                     placeholder="Degree"
                   />
-                  <Textarea
+                  {/* <Textarea
                     placeholder="Institution Details"
-                  />
+                  /> */}
                 </Box>
               </Box>
             </Tabs.Panel>
@@ -332,7 +432,6 @@ const TutorProfile = () => {
                       <PillsInput onClick={() => gradeCombobox.openDropdown()}>
                         <Pill.Group>
                           {gradeValues}
-
                           <Combobox.EventsTarget>
                             <PillsInput.Field
                               onFocus={() => gradeCombobox.openDropdown()}
@@ -363,7 +462,88 @@ const TutorProfile = () => {
                   </Combobox>
                 </Box>
 
-                <Box mt={10}>
+                <Box mb={10}>
+                  <Title order={3}>Select Availability</Title>
+                  <Combobox store={availabilityCombobox} onOptionSubmit={handleAvailabilityValueSelect}>
+                    <Combobox.DropdownTarget>
+                      <PillsInput onClick={() => availabilityCombobox.openDropdown()}>
+                        <Pill.Group>
+                          {availabilityValues}
+
+                          <Combobox.EventsTarget>
+                            <PillsInput.Field
+                              onFocus={() => availabilityCombobox.openDropdown()}
+                              onBlur={() => availabilityCombobox.closeDropdown()}
+                              value={availabilitySearch}
+                              placeholder="Search Availability"
+                              onChange={(event) => {
+                                availabilityCombobox.updateSelectedOptionIndex();
+                                setAvailabilitySearch(event.currentTarget.value);
+                              }}
+
+                              onKeyDown={(event) => {
+                                if (event.key === 'Backspace' && search.length === 0) {
+                                  event.preventDefault();
+                                  handleAvailabilityValueRemove(value[value.length - 1]);
+                                }
+                              }}
+                            />
+                          </Combobox.EventsTarget>
+                        </Pill.Group>
+                      </PillsInput>
+                    </Combobox.DropdownTarget>
+
+
+                    <Combobox.Dropdown>
+                      <Combobox.Options>
+                        {availabilityOptions.length > 0 ? availabilityOptions : <Combobox.Empty>Nothing found...</Combobox.Empty>}
+                      </Combobox.Options>
+                    </Combobox.Dropdown>
+                  </Combobox>
+                </Box>
+
+                <Box mb={10}>
+                  <Title order={3}>Select Timings</Title>
+                  <Combobox store={timingsCombobox} onOptionSubmit={handleTimingsValueSelect}>
+                    <Combobox.DropdownTarget>
+                      <PillsInput onClick={() => timingsCombobox.openDropdown()}>
+                        <Pill.Group>
+                          {timingsValues}
+
+                          <Combobox.EventsTarget>
+                            <PillsInput.Field
+                              onFocus={() => timingsCombobox.openDropdown()}
+                              onBlur={() => timingsCombobox.closeDropdown()}
+                              value={timingsSearch}
+                              placeholder="Search Timings"
+                              onChange={(event) => {
+                                timingsCombobox.updateSelectedOptionIndex();
+                                setTimingsSearch(event.currentTarget.value);
+                              }}
+
+                              onKeyDown={(event) => {
+                                if (event.key === 'Backspace' && search.length === 0) {
+                                  event.preventDefault();
+                                  handleTimingsValueRemove(value[value.length - 1]);
+                                }
+                              }}
+                            />
+                          </Combobox.EventsTarget>
+                        </Pill.Group>
+                      </PillsInput>
+                    </Combobox.DropdownTarget>
+
+                    <Combobox.Dropdown>
+                      <Combobox.Options>
+                        {timingsOptions.length > 0 ? timingsOptions : <Combobox.Empty>Nothing found...</Combobox.Empty>}
+                      </Combobox.Options>
+                    </Combobox.Dropdown>
+                  </Combobox>
+                </Box>
+
+
+
+                {/* <Box mt={10}>
                   <Title order={3}>Select Curriculam</Title>
                   <Combobox store={curriculamCombobox} onOptionSubmit={handleCurriculamValueSelect}>
                     <Combobox.DropdownTarget>
@@ -399,25 +579,37 @@ const TutorProfile = () => {
                       </Combobox.Options>
                     </Combobox.Dropdown>
                   </Combobox>
-                </Box>
+                </Box> */}
 
                 <Box mt={10}>
 
-                  <Title order={3}>Select Subject Taught</Title>
-                  <TextInput
-                    onChange={e => setCurrentUser({ ...currentUser, subject: e.target.value })}
-                    value={currentUser.subject}
-                    placeholder="Subject Taught"
+                  <Title order={3}>Select Location</Title>
+                  <Select
+                    placeholder="Pick Location"
+                    data={locations}
+                    value={currentUser.location}
+                    onChange={v => setCurrentUser({ ...currentUser, location: v })}
                   />
 
                 </Box>
                 <Box mt={10}>
 
-                  <Title order={3}>Pricing per hour</Title>
+                  <Title order={3}>Select Subject Taught</Title>
+
+                  <Select
+                    data={subjects}
+                    value={currentUser.subject}
+                    onChange={v => setCurrentUser({ ...currentUser, subject: v })}
+                  />
+
+                </Box>
+                <Box mt={10}>
+
+                  <Title order={3}>Fees per hour</Title>
                   <TextInput
                     onChange={e => setCurrentUser({ ...currentUser, pricing: e.target.value })}
                     value={currentUser.pricing}
-                    placeholder="Pricing per hour"
+                    placeholder="Fees per hour"
                     type="number"
                   />
 

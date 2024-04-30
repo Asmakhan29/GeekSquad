@@ -1,11 +1,13 @@
-import { Text, Title, TextInput, Button, Image, Box, Container, BackgroundImage, Center, Grid, Rating, Divider, ActionIcon, Paper, Group, Avatar, TypographyStylesProvider, Textarea, Flex, Stack } from '@mantine/core';
+import { Text, Title, TextInput, Button, Image, Box, Container, BackgroundImage, Center, Grid, Rating, Divider, ActionIcon, Paper, Group, Avatar, TypographyStylesProvider, Textarea, Flex, Stack, Drawer } from '@mantine/core';
 // import image from './image.svg';
 import classes from './tutordetails.module.css';
 import { Link, useParams } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
-import { IconAt, IconCoin, IconTrash, IconTrashFilled } from '@tabler/icons-react';
+import { IconAt, IconCoin, IconMessage, IconTrash, IconTrashFilled } from '@tabler/icons-react';
 import { enqueueSnackbar } from 'notistack';
 import ReactTimeAgo from 'react-time-ago'
+import ChatPage from './ChatPage';
+import { useDisclosure } from '@mantine/hooks';
 
 function TutorDetails() {
 
@@ -15,6 +17,8 @@ function TutorDetails() {
   const [reviewList, setReviewList] = useState([]);
   const [rating, setRating] = useState(3);
   const reviewRef = useRef();
+
+  const [chatOpened, toggleChat] = useDisclosure(false);
 
   const [currentUser, setCurrentUser] = useState(
     JSON.parse(sessionStorage.getItem('user'))
@@ -63,7 +67,7 @@ function TutorDetails() {
           />
           <Container mt={'lg'}>
             <Grid gutter={30}>
-              <Grid.Col span={{ sm: 12, md: 4 }}>
+              <Grid.Col span={{ sm: 12, md: 3 }}>
 
                 <Image
                   src={`${import.meta.env.VITE_API_URL}/${tutorDetails.avatar}`}
@@ -72,23 +76,31 @@ function TutorDetails() {
                   className={classes.avatar}
                 />
               </Grid.Col>
-              <Grid.Col span={{ sm: 12, md: 8 }}>
+              <Grid.Col span={{ sm: 12, md: 9 }}>
                 <Flex justify="space-between">
                   <Box>
 
                     <Text size="lg" fw={'bold'}>{tutorDetails.experience}+ years of experience</Text>
                     <Title order={1}>{tutorDetails.name}</Title>
                     <Text size="lg" c={'dimmed'}> <IconAt /> {tutorDetails.email}</Text>
+                    <Text size="lg">Location : {tutorDetails.location || 'Not Provided'}</Text>
                     <Text size="lg">{tutorDetails.description}</Text>
                     <Rating value={calculateAverageRating()} size={'lg'} fractions={3} readOnly />
                     <Text size="lg">{reviewList.length} Reviews</Text>
                   </Box>
-                  <Button component={Link} to={"/checkout/"+tutorDetails._id} color='green' leftSection={<IconCoin size={24} />} variant="filled">
-                    Pay Tutor
-                  </Button>
+                  <Stack>
+
+                    <Button disabled={tutorDetails.status === 'not available'} color='blue' w={170} onClick={toggleChat.open} leftSection={<IconMessage size={24} />} variant="filled">
+                      {tutorDetails.status === 'not available' ? 'Not Available' : 'Chat'}
+                    </Button>
+                    <Button component={Link} to={"/checkout/" + tutorDetails._id} color='green' leftSection={<IconCoin size={24} />} variant="filled">
+                      Pay Tutor
+                    </Button>
+                  </Stack>
+
                 </Flex>
                 <Divider my={20} />
-                <Text size="xl" fw={'bold'}>Pricing: ₹{tutorDetails.pricing}/hour</Text>
+                <Text size="xl" fw={'bold'}>Fees: ₹{tutorDetails.pricing}/hour</Text>
                 <Text size="lg">Subject: {tutorDetails.subject}</Text>
                 <Text size="lg">Avalaible Days</Text>
                 <ActionIcon.Group my={20}>
@@ -111,7 +123,7 @@ function TutorDetails() {
                   }
                 </ActionIcon.Group>
 
-                <Text size="lg">Preferred Locations: {tutorDetails.preferredLocation.join(',')}</Text>
+                {/* <Text size="lg">Preferred Locations: {tutorDetails.preferredLocation.join(',')}</Text> */}
               </Grid.Col>
             </Grid>
 
@@ -217,6 +229,9 @@ function TutorDetails() {
 
   return (
     <Box>
+      <Drawer opened={chatOpened} onClose={toggleChat.close} title="Chat with Tutor" position='right'>
+        <ChatPage />
+      </Drawer>
       <Container size={'xl'}>
         {displayTutorDetails()}
       </Container>

@@ -24,7 +24,8 @@ function TutorCard({ tutorData, onClick }) {
             <Card.Section
                 h={140}
                 style={{
-                    backgroundImage: `url(${import.meta.env.VITE_API_URL}/${tutorData.cover})`,
+                    // backgroundImage: `url(${import.meta.env.VITE_API_URL}/${tutorData.cover})`,
+                    backgroundImage: `url(https://images.unsplash.com/photo-1528460033278-a6ba57020470?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Ymx1ZSUyMGJhY2tncm91bmR8ZW58MHx8MHx8fDA%3D)`,
                     backgroundPosition:'center',
                     backgroundSize:'cover'
                 }}
@@ -47,7 +48,7 @@ function TutorCard({ tutorData, onClick }) {
                 {tutorData.description}
             </Text>
             <Title ta="center" order={4} mt="md" mb="sm">
-                Price ₹{tutorData.pricing} per hour
+                Fees ₹{tutorData.pricing} per hour
             </Title>
             {/* <Group mt="md" justify="center" gap={30}>
                 {items}

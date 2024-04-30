@@ -37,7 +37,20 @@ router.get("/getall", (req, res) => {
     });
 });
 
+router.get("/getbymail/:email", (req, res) => {
+  Model.findOne({email : req.params.email})
+    .then((result) => {
+      if(result) res.status(200).json(result);
+      else res.status(404).json({message : 'user not found'});
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json(err);
+    });
+});
+
 router.put("/update/:id", (req, res) => {
+  console.log(req.body);
   Model.findByIdAndUpdate(req.params.id, req.body, { new: true })
     .then((result) => {
       res.status(200).json(result);

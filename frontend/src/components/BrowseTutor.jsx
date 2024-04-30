@@ -22,7 +22,7 @@ const curriculamOptions = [
 const subjects = [
     'Maths',
     'Physics',
-    'Chemitry',
+    'Chemistry',
     'Computer',
     'Accountancy',
     'Economics'
@@ -32,9 +32,7 @@ const levelOptions = [
     'Pre-Primary',
     'Grades 1-5',
     'Grades 6-10',
-    'Grades 11-12',
-    'UG',
-    'PG & Above'
+    'Grades 11-12'
 ];
 
 const availabilityOptions = [
@@ -43,6 +41,10 @@ const availabilityOptions = [
 
 const timingOptions = [
     '6AM-9AM', '9AM-12PM', '12PM-3PM', '3PM-6PM', '6PM-9PM', '9PM-12AM'
+]
+
+const locations = [
+    'Zone A', 'Zone B', 'Zone C', 'Zone D'
 ]
 
 const BrowseTutor = () => {
@@ -54,6 +56,7 @@ const BrowseTutor = () => {
     const [selDays, setSelDays] = useState([]);
     const [selTimings, setSelTimings] = useState([]);
     const [selSubjects, setSelSubjects] = useState([]);
+    const [selLocations, setSelLocations] = useState([]);
     const navigate = useNavigate();
 
     const { subject } = useParams();
@@ -118,6 +121,16 @@ const BrowseTutor = () => {
 
     }
 
+    const filterLocation = () => {
+        setTutorList(
+            masterList.filter(tutor => {
+                return selLocations.every(location => tutor.location.toLowerCase().includes(location.toLowerCase()));
+            }
+            )
+        )
+    }
+
+
     const filterSubjects = () => {
         if (selSubjects.length === 0) {
             setTutorList(masterList);
@@ -147,13 +160,18 @@ const BrowseTutor = () => {
         filterSubjects();
     }, [selSubjects])
 
+    useEffect(() => {
+        filterLocation();
+    }, [selLocations])
+
+
     return (
         <div>
             <div className='browse-header'>
 
                 <Container size="md" my={20} py={50} className='browse-container' >
-                    <Title order={1} align="center" mb={20}>Find a Tutor</Title>
-                    <TextInput
+                    <Title order={1} align="center" mb={20} className='find'>Connect with Tutors...</Title>
+                    {/* <TextInput
                         onChange={e => (
                             setTutorList(
                                 masterList.filter(tutor => tutor.name.toLowerCase().includes(e.target.value.toLowerCase()))
@@ -169,7 +187,7 @@ const BrowseTutor = () => {
                                 <IconArrowRight style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
                             </ActionIcon>
                         }
-                    />
+                    /> */}
                 </Container>
             </div>
             <Container size="xl" my={20}>
@@ -177,7 +195,7 @@ const BrowseTutor = () => {
                 <Grid>
                     <Grid.Col span={{ md: 3 }}>
                         <Card shadow="sm" padding="lg" radius="md" withBorder>
-                            <Title order={4} mt={10} mb={5}>Location</Title>
+                            {/* <Title order={4} mt={10} mb={5}>Location</Title>
                             <Stack>
                                 <Checkbox
                                     defaultChecked
@@ -187,7 +205,7 @@ const BrowseTutor = () => {
                                     defaultChecked
                                     label="Student's Home"
                                 />
-                            </Stack>
+                            </Stack> */}
                             <Title order={4} my={10}>Availability</Title>
                             <ActionIcon.Group w={'100%'} mb={10}>
                                 {
@@ -274,6 +292,25 @@ const BrowseTutor = () => {
                                         mb={5}
                                         defaultChecked
                                         label={option}
+                                    />
+                                })
+                            }
+
+                            <Divider my={10} />
+                            <Title order={4} my={10}>Locations</Title>
+                            {
+                                locations.map((option) => {
+                                    return <Checkbox
+                                        onChange={(e) => {
+                                            if (e.target.checked) {
+                                                setSelLocations([...selLocations, option]);
+                                            } else {
+                                                setSelLocations(selLocations.filter(loc => loc.toLowerCase() !== option.toLowerCase()));
+                                            }
+                                        }}
+                                        mb={5}
+                                        label={option}
+                                        checked={selLocations.map(loc => loc.toLowerCase()).includes(option.toLowerCase())}
                                     />
                                 })
                             }

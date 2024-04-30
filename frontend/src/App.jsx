@@ -22,6 +22,9 @@ import Feedback from './components/Feedback';
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en'
 import PaymentHistory from './components/PaymentHistory';
+import ResetPassword from './components/reset-password';
+import Contact from './components/Contact';
+import ChatPage from './components/ChatPage';
 
 TimeAgo.addDefaultLocale(en)
 
@@ -30,7 +33,6 @@ const theme = createTheme({
 });
 
 function App() {
-
   return (
     <>
       <MantineProvider theme={theme} defaultColorScheme="light">
@@ -44,11 +46,14 @@ function App() {
                 <Routes>
                   <Route path='/' element={<Navigate to="/home" />} />
                   <Route path='/home' element={<Home />} />
+                  <Route path='/reset-password' element={<ResetPassword />} />
                   <Route path='/TermsOfUse' element={<TermsOfUse />} />
+                  <Route path='/contact' element={<Contact />} />
                   <Route path='/tutor/:category' element={<ListTutor />} />
                   <Route path='/browse/:subject' element={<BrowseTutor />} />
+                  <Route path='/chat' element={<ChatPage />} />
                   <Route path='/browse' element={<BrowseTutor />} />
-                  <Route path='/details/:id' element={<TutorDetails />} />
+                  <Route path='/details/:id' element={<UserAuthoriser> <TutorDetails /> </UserAuthoriser> } />
                   <Route path='/tutorprofile' element={<TutorAuthoriser> <TutorProfile /> </TutorAuthoriser>} />
                   <Route path='/userprofile' element={<UserAuthoriser> <UserProfile /> </UserAuthoriser>} />
                   <Route path='/checkout/:tutorid' element={

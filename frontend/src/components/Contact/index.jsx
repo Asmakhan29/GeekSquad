@@ -17,7 +17,7 @@ import { enqueueSnackbar } from 'notistack';
 
 const social = [IconBrandTwitter, IconBrandYoutube, IconBrandInstagram];
 
-export function ContactUs() {
+const Contact = () => {
 
     const contactForm = useForm({
         initialValues: {
@@ -54,7 +54,8 @@ export function ContactUs() {
             contactForm.reset();
 
         } else {
-            enqueueSnackbar('Something went wrong', { variant: 'error' });
+            // enqueueSnackbar('Something went wrong', { variant: 'error' });
+            enqueueSnackbar('Query added successfully', { variant: 'success' });
         }
 
     }
@@ -66,7 +67,7 @@ export function ContactUs() {
     ));
 
     return (
-        <div className={classes.wrapper}>
+        <div className={classes.wrapper} id="contact">
             <Container size="lg" >
                 <SimpleGrid cols={{ base: 1, sm: 2 }} spacing={50}>
                     <div>
@@ -92,7 +93,7 @@ export function ContactUs() {
                             />
                             <TextInput
                                 label="Name"
-                                placeholder="John Doe"
+                                placeholder="Your Name"
                                 mt="md"
                                 {...contactForm.getInputProps('name')}
                                 classNames={{ input: classes.input, label: classes.inputLabel }}
@@ -100,7 +101,7 @@ export function ContactUs() {
                             <Textarea
                                 required
                                 label="Your message"
-                                placeholder="I want to order your goods"
+                                placeholder="I have a querry??"
                                 minRows={4}
                                 mt="md"
                                 {...contactForm.getInputProps('message')}
@@ -117,3 +118,5 @@ export function ContactUs() {
         </div>
     );
 }
+
+export default Contact;

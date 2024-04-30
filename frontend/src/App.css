@@ -41,3 +41,39 @@ input{
     object-fit: contain;
     width: 100%;
 }
+.dash-head{
+    color:#ffff
+}
+.find{
+    color:#ffff
+}
+
+.message .inner-text{
+    padding: 10px 20px;
+    color: white;
+}
+
+.message{
+    width: fit-content;
+    margin-bottom: 10px;
+    max-width: 60%;
+}
+
+.message .inner-text{
+    margin: 0;
+}
+
+.sent-msg .inner-text{
+    background-color: #00ad59;
+    border-radius: 20px 4px 20px 20px;
+    
+}
+
+.rec-msg .inner-text{
+    background-color: #006dac;
+    border-radius:  4px 20px 20px 20px;
+}
+
+.sent-msg{
+    margin-left: auto;
+}

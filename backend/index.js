@@ -1,5 +1,10 @@
 const express = require("express");
 const cors = require("cors");
+const { createServer } = require("http");
+const { Server } = require("socket.io");
+
+const connectedUsers = {};
+
 require("dotenv").config();
 
 const userRouter = require("./routers/userRouter");
@@ -11,6 +16,12 @@ const utilRouter = require("./routers/util");
 
 
 const app = express();
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+  cors: {
+    origin: ["http://localhost:5173"],
+  },
+});
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 // middlewares
@@ -52,6 +63,25 @@ app.post('/retrieve-payment-intent', async (req, res) => {
   res.json(paymentIntent);
 });
 
-app.listen(process.env.PORT, () => {
+io.on("connection", (socket) => {
+  console.log("User Connected", socket.id);
+
+
+  socket.on("connect-user", (id) => {
+    connectedUsers[id] = socket.id;
+    console.log(connectedUsers);
+  })
+
+  socket.on("send-message", ({ senderData, message, date }) => {
+    console.log({ senderData, message, date });
+    socket.broadcast.emit("rec-message", {senderData, message, date});
+  });
+
+  socket.on("disconnect", () => {
+    console.log("User Disconnected", socket.id);
+  });
+});
+
+httpServer.listen(process.env.PORT, () => {
   console.info("Server Started>>");
 });
